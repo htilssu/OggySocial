@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wrong_password">Mật khẩu bạn vừa nhập không đúng</string>
+    <string name="login_logo_description">Logo login của ứng dụng</string>
+    <string name="username_hint">Số di động hoặc email</string>
+    <string name="password_hint">Mật Khẩu</string>
+    <string name="login_button">Đăng nhập</string>
+    <string name="forgot_password">Bạn quên mật khẩu ư?</string>
+    <string name="create_account">Tạo tài khoản mới</string>
+    <string name="empty_username">Bạn chưa nhập tên đăng nhập</string>
+    <string name="already_have_an_account">Bạn đã có tài khoản ư?</string>
+    <string name="empty_password">Bạn chưa nhập mật khẩu</string>
+    <string name="what_is_your_name">Bạn tên gì?</string>
+    <string name="type_real_name">Nhập tên thật của bạn</string>
+    <string name="first_name_hint">Tên</string>
+    <string name="last_name_hint">Họ</string>
+    <string name="next">Tiếp</string>
+    <integer name="password_max_length">32</integer>
+    <integer name="password_min_length">8</integer>
+    <integer name="username_max_length">100</integer>
+    <integer name="username_min_length">8</integer>
+    <color name="login_button_background_color">@color/colorPrimary</color>
+    <dimen name="medium_heading_text_size">20sp</dimen>
+</resources>
