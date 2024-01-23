@@ -11,14 +11,12 @@ import com.aesocial.aesocial.R
 
 class RegisterName : Fragment() {
 
-    private lateinit var rootView: View;
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var rootView: View
 
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         rootView = inflater.inflate(R.layout.fragment_register_name, container, false)
         initListener()
         return rootView
@@ -28,10 +26,10 @@ class RegisterName : Fragment() {
         val btnNext = rootView.findViewById<Button>(R.id.btnNext)
         btnNext.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.register_fragment_container, RegisterBirthday())
-                    .addToBackStack(null)
-                    .commit()
+                .setReorderingAllowed(true)
+                .replace(R.id.register_fragment_container, RegisterBirthday())
+                .addToBackStack(null)
+                .commit()
         }
     }
 

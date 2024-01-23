@@ -17,7 +17,8 @@ import com.aesocial.aesocial.services.Auth;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginFragment extends Fragment {
-    
+
+
     FragmentLoginBinding binding;
     AuthActivity authActivity;
 
@@ -27,6 +28,10 @@ public class LoginFragment extends Fragment {
         this.authActivity = AuthActivity.getInstance();
     }
 
+    public void loginSuccess() {
+        authActivity.navigateMain();
+        authActivity.finish();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,6 @@ public class LoginFragment extends Fragment {
         initListeners();
     }
 
-
     private void initListeners() {
         //Login Button
         Button loginButton = rootView.findViewById(R.id.btnLogin);
@@ -66,13 +70,14 @@ public class LoginFragment extends Fragment {
         if (userName == null || password == null) return;
         String userNameString = userName.toString();
         String passwordString = password.toString();
-
-        if (Auth.login(userNameString, passwordString)) {
-            authActivity.navigateMain();
-            authActivity.finish();
-        }
+        Auth.login(userNameString, passwordString).thenAccept(aBoolean -> {
+            if (aBoolean) {
+                loginSuccess();
+            } else {
+                //TODO Handle login fail
+            }
+        });
 
     }
-
 
 }
