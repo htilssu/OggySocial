@@ -4,29 +4,35 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class Auth {
 
-    private static final String host = "http://localhost:8080";
+    private static final String host = "http://10.0.2.2:8080";
     static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private static FirebaseUser user;
 
-    static public boolean login(String userName, String password) {
-        AtomicBoolean isSuccess = new AtomicBoolean(false);
-        if (userName.isEmpty() || password.isEmpty()) return false;
+    static public CompletableFuture<Boolean> login(String userName, String password) {
+        CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
+        if (userName.isEmpty() || password.isEmpty()) {
+            completableFuture.complete(false);
+            return completableFuture;
+        }
         Task<AuthResult> authResultTask = firebaseAuth.signInWithEmailAndPassword(userName, password);
         authResultTask.addOnSuccessListener(authResult -> {
             sendAuthenticationToken(authResult.getUser());
-            isSuccess.set(true);
+            completableFuture.complete(true);
         });
 
-        return isSuccess.get();
+        return completableFuture;
     }
 
     static public void register(String userName, String password) {
@@ -49,13 +55,16 @@ public class Auth {
 
     private static void sendAuthenticationToken(FirebaseUser user) {
         if (user != null) {
-            user.getIdToken(true).addOnCompleteListener(task -> {
+            Task<GetTokenResult> resultTask = user.getIdToken(true);
+            resultTask.addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     String idToken = task.getResult().getToken();
                     sendTokenToServer(idToken);
                 }
             });
+
         }
+
     }
 
     private static void sendTokenToServer(String idToken) {
@@ -64,10 +73,16 @@ public class Auth {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Authorization", "Bearer " + idToken);
-            int responseCode = connection.getResponseCode();
-            String content = connection.getResponseMessage();
+            Executors.newSingleThreadExecutor().execute(() -> {
+                try {
+                    connection.connect();
+                    int responseCode = connection.getResponseCode();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         } catch (IOException e) {
-            // Handle exception
+            throw new RuntimeException(e);
         }
     }
 
