@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class Auth {
@@ -69,7 +68,7 @@ public class Auth {
 
     private static void sendTokenToServer(String idToken) {
         try {
-            URL url = new URL(host + "/auth/login");
+            URL url = new URL(host + "/login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Authorization", "Bearer " + idToken);
