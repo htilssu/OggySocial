@@ -14,7 +14,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@drawable/login_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AESocial">
+        android:theme="@style/Theme.oggysocial">
         <activity
             android:name=".activities.MainActivity"
             android:exported="false" />

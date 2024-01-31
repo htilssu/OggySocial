@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AESocial"
+rootProject.name = "OggySocial"
 include(":app")

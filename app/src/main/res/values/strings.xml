@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AESocial</string>
+    <string name="app_name">oggysocial</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back_btn_description">Back</string>
     <string name="what_is_your_birthday">Ngày sinh của bạn</string>

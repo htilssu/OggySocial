@@ -7,11 +7,11 @@ plugins {
 
 
 android {
-    namespace = "com.aesocial.aesocial"
+    namespace = "com.oggysocial.oggysocial"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.aesocial.aesocial"
+        applicationId = "com.oggysocial.oggysocial"
         minSdk = 34
         targetSdk = 34
         versionCode = 1

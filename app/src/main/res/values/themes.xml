@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AESocial" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.oggysocial" parent="Theme.Material3.DayNight.NoActionBar">
 
     </style>
 
-    <style name="Theme.AESocial" parent="Base.Theme.AESocial" />
+    <style name="Theme.oggysocial" parent="Base.Theme.oggysocial" />
 </resources>
