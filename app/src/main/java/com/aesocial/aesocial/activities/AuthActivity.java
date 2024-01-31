@@ -13,17 +13,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.strictmode.FragmentStrictMode;
 
 import com.aesocial.aesocial.R;
 import com.aesocial.aesocial.fragments.authentication.LoginFragment;
 import com.aesocial.aesocial.fragments.authentication.RegisterFragment;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.snackbar.Snackbar;
+
+import lombok.Getter;
 
 public class AuthActivity extends AppCompatActivity {
 
     public static AuthActivity instance;
-    private final String PREFERENCE = "AESocial";
+    private final String PREFERENCES = "App";
     private MaterialToolbar toolbar;
 
     public static AuthActivity getInstance() {
@@ -59,7 +61,6 @@ public class AuthActivity extends AppCompatActivity {
     private void initField() {
         toolbar = findViewById(R.id.toolbar_auth);
         toolbar.setNavigationOnClickListener(v -> {
-            Log.i("AAA", "initField: onNavigationClick");
             onBackNavigationClick();
         });
     }
@@ -69,7 +70,6 @@ public class AuthActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.auth_fragment_container, new LoginFragment())
                 .commit();
-//        setSupportActionBar(null);
     }
 
     public void navigateMain() {
@@ -87,7 +87,7 @@ public class AuthActivity extends AppCompatActivity {
 
 
     private void checkLogin() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
         if (isLoggedIn) {
             navigateMain();

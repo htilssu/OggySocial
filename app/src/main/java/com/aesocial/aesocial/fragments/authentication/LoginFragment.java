@@ -25,7 +25,7 @@ public class LoginFragment extends Fragment {
     View rootView;
 
     public LoginFragment() {
-        this.authActivity = AuthActivity.getInstance();
+        this.authActivity = AuthActivity.instance;
     }
 
     public void loginSuccess() {
