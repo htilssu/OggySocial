@@ -19,7 +19,7 @@ public class UserController {
         logOut();
         authResult.addOnSuccessListener(v -> {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            database.getReference("users").child(Objects.requireNonNull(firebase.getCurrentUser()).getUid()).setValue(new User(firstName, lastName, email, birthday));
+            database.getReference("users").child(Objects.requireNonNull(firebase.getCurrentUser()).getUid()).setValue(user);
         });
         authResult.addOnFailureListener(e -> {
             throw new RuntimeException(e.getMessage());
@@ -31,8 +31,8 @@ public class UserController {
         } catch (InterruptedException e) {
             return false;
         }
-        FirebaseUser user = firebase.getCurrentUser();
-        return user != null;
+        FirebaseUser loginUser = firebase.getCurrentUser();
+        return loginUser != null;
     }
 
     public static boolean logOut() {

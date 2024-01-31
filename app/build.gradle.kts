@@ -64,7 +64,6 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
-    compileOnly("org.projectlombok:lombok:1.18.30")
     testImplementation("org.mockito:mockito-core:5.7.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
