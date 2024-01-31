@@ -3,7 +3,7 @@
     <string name="wrong_password">Mật khẩu bạn vừa nhập không đúng</string>
     <string name="login_logo_description">Logo login của ứng dụng</string>
     <string name="username_hint">Số di động hoặc email</string>
-    <string name="password_hint">Mật Khẩu</string>
+    <string name="password_hint">Mật khẩu</string>
     <string name="login_button">Đăng nhập</string>
     <string name="forgot_password">Bạn quên mật khẩu ư?</string>
     <string name="create_account">Tạo tài khoản mới</string>

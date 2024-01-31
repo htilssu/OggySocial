@@ -1,5 +1,18 @@
 <resources>
-    <string name="app_name">AESocial</string>
+    <string name="app_name">oggysocial</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back_btn_description">Back</string>
+    <string name="what_is_your_birthday">Ngày sinh của bạn</string>
+    <string name="birthday_description">Chọn ngày sinh của bạn. Bạn luôn có thể đặt thông tin này ở chế độ riêng tư vào lúc khác.</string>
+    <string name="your_birthday">Ngày sinh của bạn</string>
+    <string name="required_input">Không được để trống</string>
+    <string name="what_is_your_email">Thông tin đăng nhập</string>
+    <string name="email">Email</string>
+    <string name="repassword_hint">Nhập lại mật khẩu</string>
+    <string name="required_birthday">Vui lòng chọn ngày sinh</string>
+    <string name="required_email">Yêu cầu nhập email</string>
+    <string name="invalid_email">Email phải đúng định dạng</string>
+    <string name="required_password">Yêu cầu nhập mật khẩu</string>
+    <string name="invalid_password">Mật khẩu phải từ 8-32 ký tự</string>
+    <string name="confirm">Xác nhận</string>
 </resources>

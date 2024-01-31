@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#037EDC</color>
     <color name="primaryHintTextColor">#78909C</color>
+    <color name="error_stroke">#EF5C5C</color>
 </resources>
