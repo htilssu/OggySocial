@@ -9,22 +9,22 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="118dp"
-        android:layout_height="113dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginStart="146dp"
         android:layout_marginTop="132dp"
         android:layout_marginEnd="147dp"
         android:layout_marginBottom="486dp"
         android:contentDescription="@string/login_logo_description"
-        android:src="@drawable/login_logo"
+        android:src="@drawable/oggy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilUserName"
+        android:id="@+id/teEmailLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -33,7 +33,7 @@
 
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tipUserName"
+            android:id="@+id/teEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="phone, username, email"
@@ -47,16 +47,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilPassword"
+        android:id="@+id/tePasswordLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/tilUserName"
+        app:layout_constraintTop_toBottomOf="@+id/teEmailLayout"
         app:passwordToggleEnabled="true"
         tools:layout_editor_absoluteX="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tipPassword"
+            android:id="@+id/tePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="password"
@@ -76,7 +76,7 @@
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/login_button"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/tilPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tePasswordLayout"
         tools:ignore="VisualLintButtonSize,TextContrastCheck"
         tools:layout_editor_absoluteX="20dp" />
 

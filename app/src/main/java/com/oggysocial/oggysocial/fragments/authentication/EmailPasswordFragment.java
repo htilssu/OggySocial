@@ -9,14 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.MainActivity;
 import com.oggysocial.oggysocial.controllers.UserController;
+import com.oggysocial.oggysocial.models.Status;
 import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.EmailService;
 import com.google.android.material.textfield.TextInputEditText;
@@ -54,17 +59,8 @@ public class EmailPasswordFragment extends Fragment {
     private void initListener() {
         btnNext.setOnClickListener(v -> {
             if (validateEmail() && validatePassword()) {
-                SharedPreferences sharedPreferences = requireContext().getSharedPreferences("App", MODE_PRIVATE);
-                String firstName = sharedPreferences.getString("firstName", "");
-                String lastName = sharedPreferences.getString("lastName", "");
-                String birthday = sharedPreferences.getString("birthday", "");
-                User user = new User(firstName, lastName, email, birthday);
-                if (UserController.registerUser(getContext(), user, password)) {
-                    Intent intent = new Intent(requireContext(), MainActivity.class);
-                    startActivity(intent);
-                }
+                registerUser();
             }
-
         });
     }
 
@@ -102,5 +98,22 @@ public class EmailPasswordFragment extends Fragment {
         }
         tePasswordLayout.setError(null);
         return true;
+    }
+
+    private void registerUser() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("App", MODE_PRIVATE);
+        String firstName = sharedPreferences.getString("firstName", "");
+        String lastName = sharedPreferences.getString("lastName", "");
+        String birthday = sharedPreferences.getString("birthday", "");
+        User user = new User(firstName, lastName, email, birthday);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(v -> {
+                    UserController.addUser(user);
+                    Intent intent = new Intent(requireContext(), MainActivity.class);
+                    startActivity(intent);
+                    requireActivity().finish();
+                })
+                .addOnFailureListener(e -> Toast.makeText(requireContext(), "Email này đã được sử dụng", Toast.LENGTH_LONG).show());
     }
 }

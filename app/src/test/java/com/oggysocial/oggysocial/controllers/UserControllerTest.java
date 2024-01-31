@@ -34,14 +34,14 @@ public class UserControllerTest {
     public void registerUserSuccessfully() {
         when(firebaseAuth.createUserWithEmailAndPassword("test@test.com", "password")).thenReturn(authResultTask);
         when(authResultTask.isSuccessful()).thenReturn(true);
-        assertTrue(UserController.registerUser("John", "Doe", "test@test.com", "password", "01/01/2000"));
+        assertTrue(UserController.registerUser("Doe", "test@test.com", "password", "01/01/2000"));
     }
 
     @Test
     public void registerUserFailed() {
         when(firebaseAuth.createUserWithEmailAndPassword("test@test.com", "password")).thenReturn(authResultTask);
         when(authResultTask.isSuccessful()).thenReturn(false);
-        assertFalse(UserController.registerUser("John", "Doe", "test@test.com", "password", "01/01/2000"));
+        assertFalse(UserController.registerUser("Doe", "test@test.com", "password", "01/01/2000"));
     }
 
     @Test

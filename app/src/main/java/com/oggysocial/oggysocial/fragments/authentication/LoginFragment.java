@@ -1,30 +1,41 @@
 package com.oggysocial.oggysocial.fragments.authentication;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.AuthActivity;
 import com.oggysocial.oggysocial.databinding.FragmentLoginBinding;
-import com.oggysocial.oggysocial.services.Auth;
-import com.google.android.material.textfield.TextInputEditText;
+import com.oggysocial.oggysocial.services.FirebaseDB;
+
+import java.util.Objects;
 
 public class LoginFragment extends Fragment {
 
 
     FragmentLoginBinding binding;
     AuthActivity authActivity;
+    String email, password;
 
     View rootView;
 
     public LoginFragment() {
+        FirebaseDatabase database = FirebaseDB.getDatabase();
+        DatabaseReference myRef = database.getReference().push();
+
+        myRef.setValue("Hello, World!");
         this.authActivity = AuthActivity.instance;
     }
 
@@ -40,8 +51,7 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
         return rootView;
     }
@@ -63,21 +73,45 @@ public class LoginFragment extends Fragment {
     }
 
     private void onLoginClick() {
-        TextInputEditText tipUserName = rootView.findViewById(R.id.tipUserName);
-        TextInputEditText tipPassword = rootView.findViewById(R.id.tipPassword);
-        Editable userName = tipUserName.getText();
-        Editable password = tipPassword.getText();
-        if (userName == null || password == null) return;
-        String userNameString = userName.toString();
-        String passwordString = password.toString();
-        Auth.login(userNameString, passwordString).thenAccept(aBoolean -> {
-            if (aBoolean) {
-                loginSuccess();
-            } else {
-                //TODO Handle login fail
-            }
-        });
+        if (validateInput()) {
+            login(email, password);
+        }
 
+    }
+
+    private void login(String email, String password) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(v -> {
+                    loginSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Tài khoản hoặc mật khẩu không đúng", Toast.LENGTH_LONG).show();
+                });
+    }
+
+    private boolean validateInput() {
+        TextInputEditText teEmail = requireView().findViewById(R.id.teEmail);
+        TextInputEditText tePassword = requireView().findViewById(R.id.tePassword);
+        email = Objects.requireNonNull(teEmail.getText()).toString();
+        password = Objects.requireNonNull(tePassword.getText()).toString();
+        if (email.isEmpty()) {
+            TextInputLayout teEmailLayout = requireView().findViewById(R.id.teEmailLayout);
+            teEmailLayout.setError(getString(R.string.required_email));
+            return false;
+        } else {
+            TextInputLayout teEmailLayout = requireView().findViewById(R.id.teEmailLayout);
+            teEmailLayout.setError(null);
+        }
+        if (password.isEmpty()) {
+            TextInputLayout teEmailLayout = requireView().findViewById(R.id.tePasswordLayout);
+            teEmailLayout.setError(getString(R.string.required_password));
+            return false;
+        } else {
+            TextInputLayout teEmailLayout = requireView().findViewById(R.id.tePasswordLayout);
+            teEmailLayout.setError(null);
+        }
+
+        return true;
     }
 
 }

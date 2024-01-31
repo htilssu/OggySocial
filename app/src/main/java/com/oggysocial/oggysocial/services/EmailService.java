@@ -1,7 +1,5 @@
 package com.oggysocial.oggysocial.services;
 
-import lombok.val;
-
 public class EmailService {
 
     public static boolean isValidEmail(String email) {
