@@ -27,6 +27,7 @@
         android:name="com.oggysocial.oggysocial.fragments.authentication.LoginFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:padding="@dimen/medium_padding"
         tools:layout="@layout/fragment_register" />
 </LinearLayout>
