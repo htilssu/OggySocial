@@ -19,4 +19,7 @@
     <string name="home">Trang chủ</string>
     <string name="profile">Hồ sơ</string>
     <string name="setting">Cài đặt</string>
+    <string name="author_avatar">author avatar</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consetetur pariatur nihil accumsan reprehenderit eirmod luptatum labore elit quis cillum aliquyam placerat. Sunt nihil dignissim id. Sanctus ea ex exercitation lorem sadipscing tempor. Elit dolores pariatur. Nobis accumsan labore.</string>
+    <string name="todo">TODO</string>
 </resources>
