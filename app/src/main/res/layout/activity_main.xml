@@ -39,6 +39,7 @@
         android:layout_gravity="bottom"
         android:background="@color/white"
         android:elevation="4dp"
+        app:itemActiveIndicatorStyle="@color/white"
         app:itemHorizontalTranslationEnabled="true"
         app:itemIconTint="@color/bottom_bar_item"
         app:itemPaddingTop="8dp"
