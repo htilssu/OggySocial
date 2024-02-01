@@ -15,9 +15,12 @@
         android:roundIcon="@drawable/oggy"
         android:supportsRtl="true"
         android:theme="@style/Theme.oggysocial">
+
+
         <activity
             android:name=".activities.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.oggysocial" />
         <activity
             android:name=".activities.AuthActivity"
             android:exported="true">
@@ -28,4 +31,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

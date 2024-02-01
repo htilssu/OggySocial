@@ -5,4 +5,6 @@
     <color name="colorPrimary">#037EDC</color>
     <color name="primaryHintTextColor">#78909C</color>
     <color name="error_stroke">#EF5C5C</color>
+    <color name="inactive">#686868</color>
+    <color name="backround_primary">#FEF7FF</color>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.Material3.BottomNavigationView.ActiveTextAppearance">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+</resources>
