@@ -9,6 +9,15 @@ public class Post {
     String date;
     List<String> likes;
     List<Comment> comments;
+    List<String> images;
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
 
     public String getContent() {
         return content;

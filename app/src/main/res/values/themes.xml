@@ -1,7 +1,7 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.oggysocial" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:windowBackground">#F6F6F6</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/white</item>
@@ -10,4 +10,6 @@
     <style name="Theme.oggysocial" parent="Base.Theme.oggysocial">
 
     </style>
+
+    <color name="windowBackground">#F6F6F6</color>
 </resources>

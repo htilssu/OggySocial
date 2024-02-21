@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:contentDescription="@string/cover_image"
+            android:src="@drawable/oggy" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-80dp"
+            android:src="@drawable/common_google_signin_btn_icon_dark_normal_background"
+            app:civ_border_color="@color/windowBackground"
+            app:civ_border_width="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/small_padding"
+            android:text="oggy"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/small_padding"
+            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTintMode="src_in"
+            android:drawableLeft="@drawable/plus"
+            android:paddingHorizontal="@dimen/xlarge_padding"
+            android:text="@string/create_new_post"
+            app:cornerRadius="5dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPosts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_padding" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

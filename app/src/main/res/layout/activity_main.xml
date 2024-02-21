@@ -27,16 +27,17 @@
             app:titleTextColor="@color/colorPrimary" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <androidx.fragment.app.FragmentContainerView
-            android:name="com.oggysocial.oggysocial.fragments.authentication.LoginFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </androidx.core.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -44,9 +45,7 @@
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
         android:background="@color/white"
-        android:elevation="4dp"
         app:itemActiveIndicatorStyle="@color/white"
-        app:itemHorizontalTranslationEnabled="true"
         app:itemIconTint="@color/bottom_bar_item"
         app:itemPaddingBottom="14dp"
         app:itemPaddingTop="10dp"
