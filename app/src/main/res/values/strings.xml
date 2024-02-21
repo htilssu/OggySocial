@@ -22,4 +22,9 @@
     <string name="author_avatar">author avatar</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consetetur pariatur nihil accumsan reprehenderit eirmod luptatum labore elit quis cillum aliquyam placerat. Sunt nihil dignissim id. Sanctus ea ex exercitation lorem sadipscing tempor. Elit dolores pariatur. Nobis accumsan labore.</string>
     <string name="todo">TODO</string>
+    <string name="thinking">Bạn đang nghĩ gì?</string>
+    <string name="like">Thích</string>
+    <string name="comment">Bình luận</string>
+    <string name="cover_image">Ảnh bìa</string>
+    <string name="create_new_post">Đăng bài</string>
 </resources>

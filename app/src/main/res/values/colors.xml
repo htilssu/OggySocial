@@ -7,4 +7,5 @@
     <color name="error_stroke">#EF5C5C</color>
     <color name="inactive">#686868</color>
     <color name="backround_primary">#FEF7FF</color>
+    <color name="red_heart">#BC0B0B</color>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/medium_padding"
@@ -10,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/small_padding">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivAuthorImage"
@@ -29,9 +31,10 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvPostContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/small_padding"
+        android:padding="@dimen/small_padding"
         android:text="@string/lorem" />
 
     <!--<GridLayout
@@ -61,13 +64,17 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingVertical="@dimen/small_padding">
+
+        android:padding="@dimen/small_padding">
 
         <TextView
+            android:id="@+id/tvLikeCount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="11K" />
+            android:drawablePadding="@dimen/small_padding"
+            android:text="11K"
+            app:drawableStartCompat="@drawable/heart_solid" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -89,10 +96,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/medium_padding"
-            android:drawableLeft="@drawable/heart_line"
             android:drawablePadding="@dimen/medium_padding"
             android:drawableTint="@color/inactive"
-            android:text="Chuchu"
+            android:text="@string/like"
             android:textColor="@color/inactive" />
 
 
@@ -105,7 +111,7 @@
             android:drawableLeft="@drawable/sending_new_mail_bold"
             android:drawablePadding="@dimen/medium_padding"
             android:drawableTint="@color/inactive"
-            android:text="Bình luận"
+            android:text="@string/comment"
             android:textColor="@color/inactive" />
 
 

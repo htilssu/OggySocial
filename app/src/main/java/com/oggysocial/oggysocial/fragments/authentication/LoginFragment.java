@@ -1,5 +1,6 @@
 package com.oggysocial.oggysocial.fragments.authentication;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +33,6 @@ public class LoginFragment extends Fragment {
     View rootView;
 
     public LoginFragment() {
-        FirebaseDatabase database = FirebaseDB.getDatabase();
-        DatabaseReference myRef = database.getReference().push();
-
-        myRef.setValue("Hello, World!");
         this.authActivity = AuthActivity.instance;
     }
 

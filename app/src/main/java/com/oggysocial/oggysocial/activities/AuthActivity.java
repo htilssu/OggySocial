@@ -4,15 +4,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.authentication.LoginFragment;
 import com.oggysocial.oggysocial.fragments.authentication.RegisterFragment;
@@ -83,8 +87,8 @@ public class AuthActivity extends AppCompatActivity {
 
 
     private void checkLogin() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        boolean isLoggedIn = user != null;
         if (isLoggedIn) {
             navigateMain();
         } else {
@@ -117,4 +121,12 @@ public class AuthActivity extends AppCompatActivity {
             fragmentManager.popBackStack();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
+
+
 }
