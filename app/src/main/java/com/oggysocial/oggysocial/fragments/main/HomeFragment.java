@@ -50,4 +50,11 @@ public class HomeFragment extends Fragment {
                     return post;
                 }).collect(Collectors.toList());
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        postAdapter = null;
+        postRecyclerView = null;
+    }
 }

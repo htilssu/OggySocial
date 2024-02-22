@@ -28,4 +28,7 @@
     <string name="cover_image">Ảnh bìa</string>
     <string name="create_new_post">Đăng bài</string>
     <string name="edit_profile">Chỉnh sửa hồ sơ</string>
+    <string name="profile_info">Thông tin cá nhân</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="add_friend">Thêm bạn</string>
 </resources>

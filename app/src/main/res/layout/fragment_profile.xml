@@ -70,6 +70,73 @@
 
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/small_padding"
+            android:layout_marginEnd="@dimen/small_padding"
+            android:backgroundTint="@color/colorPrimary"
+            android:drawableLeft="@drawable/plus"
+            android:paddingHorizontal="@dimen/xlarge_padding"
+            android:text="@string/add_friend"
+            app:cornerRadius="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/small_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/smaller_padding"
+                android:text="@string/profile_info"
+                android:textSize="@dimen/medium_heading_text_size" />
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/small_padding"
+                android:gravity="center_vertical"
+                android:paddingVertical="@dimen/smaller_padding"
+                android:text="Đã học tại THPT An Lạc"
+                app:drawableLeftCompat="@drawable/education" />
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/small_padding"
+                android:gravity="center_vertical"
+                android:paddingVertical="@dimen/smaller_padding"
+                android:text="Đã học tại THCS Tân Kiên"
+                android:textAlignment="gravity"
+                app:drawableLeftCompat="@drawable/education" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/small_padding"
+                android:gravity="center_vertical"
+                android:paddingVertical="@dimen/smaller_padding"
+                android:text="Sống tại Bình Chánh"
+
+                app:drawableLeftCompat="@drawable/home_full" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/small_padding"
+                android:gravity="center_vertical"
+                android:paddingVertical="@dimen/smaller_padding"
+                android:text="Làm việc tại thành phố Hồ Chí Minh"
+                app:drawableLeftCompat="@drawable/work" />
+        </LinearLayout>
+
+        <!--        TODO: add friend section-->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPosts"
             android:layout_width="match_parent"
