@@ -28,12 +28,9 @@ public class MainActivity extends AppCompatActivity {
         initVariables();
         initListener();
         initFragments();
+        showFragment(homeFragment);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     private void initFragments() {
         homeFragment = new HomeFragment();

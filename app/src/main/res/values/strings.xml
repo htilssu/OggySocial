@@ -27,4 +27,5 @@
     <string name="comment">Bình luận</string>
     <string name="cover_image">Ảnh bìa</string>
     <string name="create_new_post">Đăng bài</string>
+    <string name="edit_profile">Chỉnh sửa hồ sơ</string>
 </resources>

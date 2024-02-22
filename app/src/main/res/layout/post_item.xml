@@ -18,7 +18,7 @@
             android:id="@+id/ivAuthorImage"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/common_google_signin_btn_icon_dark_focused" />
+            android:src="@drawable/avatar" />
 
         <TextView
             android:id="@+id/tvAuthorName"
@@ -28,6 +28,7 @@
             android:text="@string/author_avatar"
             android:textSize="16sp"
             android:textStyle="bold" />
+        <!--        TODO : add option for post-->
     </LinearLayout>
 
     <TextView
@@ -37,27 +38,15 @@
         android:padding="@dimen/small_padding"
         android:text="@string/lorem" />
 
-    <!--<GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <GridView
-            android:id="@+id/gvPostImages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_row="0"
-            android:layout_column="0"
-            android:numColumns="2"
-            android:verticalSpacing="@dimen/smaller_padding" />
-    </GridLayout>-->
 
     <ImageView
+        android:id="@+id/ivPostImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:contentDescription="@string/todo"
         android:scaleType="fitXY"
-        android:src="@mipmap/ic_launcher_round" />
+        android:src="@drawable/bia" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,6 +66,7 @@
             app:drawableStartCompat="@drawable/heart_solid" />
 
         <TextView
+            android:id="@+id/tvCommentCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
