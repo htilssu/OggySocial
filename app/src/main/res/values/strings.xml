@@ -13,7 +13,7 @@
     <string name="required_email">Yêu cầu nhập email</string>
     <string name="invalid_email">Email phải đúng định dạng</string>
     <string name="required_password">Yêu cầu nhập mật khẩu</string>
-    <string name="invalid_password">Mật khẩu phải từ 8-32 ký tự</string>
+    <string name="invalid_password">Mật khẩu phải từ 8–32 ký tự</string>
     <string name="confirm">Xác nhận</string>
     <string name="search">Tìm kiếm</string>
     <string name="home">Trang chủ</string>
@@ -31,4 +31,7 @@
     <string name="profile_info">Thông tin cá nhân</string>
     <string name="logout">Đăng xuất</string>
     <string name="add_friend">Thêm bạn</string>
+    <string name="post_it">Đăng</string>
+    <string name="write_your_thinking">Hãy viết cảm nghĩ của bạn…</string>
+    <string name="add_image">Thêm ảnh</string>
 </resources>
