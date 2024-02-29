@@ -1,5 +1,6 @@
 package com.oggysocial.oggysocial.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,13 +10,13 @@ public class Post {
     String date;
     List<String> likes;
     List<Comment> comments;
-    List<String> images;
+    ArrayList<String> images;
 
-    public List<String> getImages() {
+    public ArrayList<String> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(ArrayList<String> images) {
         this.images = images;
     }
 

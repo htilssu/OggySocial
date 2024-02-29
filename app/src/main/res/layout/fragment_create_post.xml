@@ -71,8 +71,8 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/tvPostContent"
+        <EditText
+            android:id="@+id/etPostContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_padding"
