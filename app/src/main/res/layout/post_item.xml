@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/medium_padding"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/small_padding">
 
 
     <LinearLayout
@@ -25,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_padding"
-            android:text="@string/author_avatar"
+            android:text="Oggy"
             android:textSize="16sp"
             android:textStyle="bold" />
         <!--        TODO : add option for post-->
@@ -86,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/medium_padding"
+            android:drawableLeft="@drawable/heart_solid"
             android:drawablePadding="@dimen/medium_padding"
             android:drawableTint="@color/inactive"
             android:text="@string/like"
