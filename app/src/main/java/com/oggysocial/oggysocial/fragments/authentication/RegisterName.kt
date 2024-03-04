@@ -33,7 +33,7 @@ class RegisterName : Fragment() {
     }
 
     private fun initVariables() {
-        sharedPreferences = context?.getSharedPreferences("App", Context.MODE_PRIVATE)!!
+        sharedPreferences = context?.getSharedPreferences("OggySocial", Context.MODE_PRIVATE)!!
         btnNext = rootView.findViewById(R.id.btnNext)
         teFirstName = rootView.findViewById(R.id.teFirstName)
         teLastName = rootView.findViewById(R.id.teLastName)

@@ -1,22 +1,50 @@
 package com.oggysocial.oggysocial.models;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Post {
     String content;
     String author;
+
+    User user;
     String date;
     List<String> likes;
     List<Comment> comments;
-    ArrayList<String> images;
+    Map<String, String> images;
 
-    public ArrayList<String> getImages() {
+    public Post() {
+        likes = new ArrayList<>();
+        comments = new ArrayList<>();
+        images = new HashMap<>();
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
+    }
+
+    public Map<String, String> getImages() {
         return images;
     }
 
-    public void setImages(ArrayList<String> images) {
+    public void setImages(Map<String, String> images) {
         this.images = images;
     }
 
@@ -28,28 +56,12 @@ public class Post {
         this.content = content;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getDate() {
         return date;
     }
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public List<String> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(List<String> likes) {
-        this.likes = likes;
     }
 
     public List<Comment> getComments() {

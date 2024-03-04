@@ -1,28 +1,31 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Post;
+import com.oggysocial.oggysocial.services.PostService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class ProfileFragment extends Fragment {
 
     PostAdapter postAdapter;
+    List<Post> listPosts;
+
+    RecyclerView postRecyclerView;
     View v;
 
     public ProfileFragment() {
@@ -32,34 +35,34 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        postAdapter = new PostAdapter((ArrayList<Post>) generateDummyPosts());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_profile, container, false);
-        RecyclerView postRecyclerView = v.findViewById(R.id.rvPosts);
+        postRecyclerView = v.findViewById(R.id.rvPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        postRecyclerView.setAdapter(postAdapter);
+        if (listPosts == null) {
+            PostService.getUserPosts(posts -> {
+                postAdapter = new PostAdapter(posts);
+                postRecyclerView.setAdapter(postAdapter);
+                listPosts = posts;
+            });
+        } else {
+            postAdapter = new PostAdapter(listPosts);
+            postRecyclerView.setAdapter(postAdapter);
+        }
 
         return v;
     }
 
-    private List<Post> generateDummyPosts() {
-        return IntStream.rangeClosed(1, 10)
-                .mapToObj(i -> {
-                    Post post = new Post();
-                    post.setAuthor("Author " + i);
-                    post.setContent("Content " + i);
-                    return post;
-                }).collect(Collectors.toList());
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        postAdapter = null;
         v = null;
     }
+
+
 }

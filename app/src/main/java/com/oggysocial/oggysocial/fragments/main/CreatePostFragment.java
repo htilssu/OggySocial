@@ -16,12 +16,14 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.services.ImageService;
+import com.oggysocial.oggysocial.services.PostService;
+import com.oggysocial.oggysocial.services.UserService;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class CreatePostFragment extends Fragment {
@@ -83,19 +85,20 @@ public class CreatePostFragment extends Fragment {
         btnPickImage.setOnClickListener(v -> pickMedia.launch(new PickVisualMediaRequest.Builder().setMediaType(new ActivityResultContracts.PickVisualMedia.SingleMimeType(mime)).build()));
         btnPostIt.setOnClickListener(v -> {
             Post newPost = new Post();
-            ImageService.uploadImage(imageUri, uri -> {
-                newPost.setAuthor(FirebaseAuth.getInstance().getUid());
-                newPost.setContent(etPostContent.getEditableText().toString());
-                newPost.setImages(new ArrayList<>() {
-                    {
-                        add(uri.toString());
-                    }
-                });
-                return null;
-            });
-
-            newPost.setAuthor(FirebaseAuth.getInstance().getUid());
             newPost.setContent(etPostContent.getEditableText().toString());
+            if (imageUri != null) {
+                ImageService.uploadImage(imageUri, ref -> {
+                    String name = ref.getName();
+                    ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                        newPost.getImages().put(name, uri.toString());
+                        PostService.savePost(newPost);
+                        imageUri = null;
+                    });
+                    return null;
+                });
+            } else {
+                PostService.savePost(newPost);
+            }
         });
     }
 

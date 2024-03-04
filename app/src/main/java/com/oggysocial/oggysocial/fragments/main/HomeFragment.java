@@ -20,6 +20,8 @@ import com.oggysocial.oggysocial.activities.PopupActivity;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Popup;
 import com.oggysocial.oggysocial.models.Post;
+import com.oggysocial.oggysocial.models.User;
+import com.oggysocial.oggysocial.services.PostService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,12 +59,13 @@ public class HomeFragment extends Fragment {
     }
 
     private List<Post> generateDummyPosts() {
-        return IntStream.rangeClosed(1, 10).mapToObj(i -> {
-            Post post = new Post();
-            post.setAuthor("Author " + i);
-            post.setContent("Content " + i);
-            return post;
-        }).collect(Collectors.toList());
+        return IntStream.rangeClosed(1, 10)
+                .mapToObj(i -> {
+                    Post post = new Post();
+                    post.setAuthor("Author " + i);
+                    post.setContent("Content " + i);
+                    return post;
+                }).collect(Collectors.toList());
     }
 
     private void initView() {

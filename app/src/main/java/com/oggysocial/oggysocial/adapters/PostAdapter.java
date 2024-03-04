@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,18 +17,23 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Post;
+import com.oggysocial.oggysocial.models.User;
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
-    ArrayList<Post> posts;
+    List<Post> posts;
 
-    public PostAdapter(ArrayList<Post> posts) {
+    public PostAdapter(List<Post> posts) {
         this.posts = posts;
     }
 
@@ -40,7 +46,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull PostHolder holder, int position) {
-        holder.tvAuthorName.setText(posts.get(position).getAuthor());
+
+        String fullName = "123";
+        posts.get(position).getImages().forEach((s, uri) -> {
+            Glide.with(holder.v.getContext()).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivPostImage);
+        });
+        holder.tvAuthorName.setText(fullName);
         holder.tvPostContent.setText(posts.get(position).getContent());
     }
 
@@ -52,6 +63,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     public static class PostHolder extends RecyclerView.ViewHolder {
         TextView tvAuthorName, tvPostContent, tvLikeCount;
         CircleImageView ivAuthorAvatar;
+
+        ImageView ivPostImage;
         Button btnLike;
         boolean isLiked = false;
         View v;
@@ -64,6 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             tvPostContent = view.findViewById(R.id.tvPostContent);
             ivAuthorAvatar = view.findViewById(R.id.ivAuthorImage);
             btnLike = view.findViewById(R.id.btnLike);
+            ivPostImage = view.findViewById(R.id.ivPostImage);
             changeLikeStatus(isLiked);
             initListener();
         }

@@ -26,6 +26,7 @@ import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.EmailService;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.oggysocial.oggysocial.services.UserService;
 
 import java.util.Objects;
 
@@ -101,7 +102,7 @@ public class EmailPasswordFragment extends Fragment {
     }
 
     private void registerUser() {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("App", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("OggySocial", MODE_PRIVATE);
         String firstName = sharedPreferences.getString("firstName", "");
         String lastName = sharedPreferences.getString("lastName", "");
         String birthday = sharedPreferences.getString("birthday", "");
@@ -109,6 +110,7 @@ public class EmailPasswordFragment extends Fragment {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(v -> {
+                    UserService.saveUser(user);
                     UserController.addUser(user);
                     Intent intent = new Intent(requireContext(), MainActivity.class);
                     startActivity(intent);
