@@ -1,14 +1,11 @@
 package com.oggysocial.oggysocial.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,8 +15,8 @@ import androidx.fragment.app.FragmentManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.oggysocial.oggysocial.R;
-import com.oggysocial.oggysocial.fragments.authentication.LoginFragment;
-import com.oggysocial.oggysocial.fragments.authentication.RegisterFragment;
+import com.oggysocial.oggysocial.fragments.auth.LoginFragment;
+import com.oggysocial.oggysocial.fragments.auth.RegisterFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.oggysocial.oggysocial.services.UserService;
 
