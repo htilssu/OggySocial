@@ -16,29 +16,29 @@ public class UserService {
 
     /**
      * Lấy thông tin user hiện tại
-     *
-     * @return {@link User} user
      */
-    public static User getUser() {
+    public static void getUser(OnUserLoadedListener listener) {
 
-        return getUserById(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
+        getUserById(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()), listener);
     }
 
     /**
      * Lấy thông tin user theo id
      *
-     * @param userId id của user
-     * @return {@link User} user
+     * @param userId   id của user
+     * @param listener callback
      */
-    public static User getUserById(String userId) {
+    public static void getUserById(String userId, OnUserLoadedListener listener) {
 
         if (user == null) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
                 user = documentSnapshot.toObject(User.class);
+                listener.onUserLoaded(user);
             });
+        } else {
+            listener.onUserLoaded(user);
         }
-        return user;
     }
 
     public static Task<User> getUserByIdAsync(String userId) {
@@ -63,17 +63,20 @@ public class UserService {
         db.collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).set(user);
     }
 
-    public static void getFriends(String userId, OnUserLoadedListener listener) {
+    public static void getFriends(String userId, OnListUserLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(userId).collection("friends").get().addOnSuccessListener(queryDocumentSnapshots -> {
-            listener.onUserLoaded(queryDocumentSnapshots.toObjects(User.class));
+            listener.onListUserLoaded(queryDocumentSnapshots.toObjects(User.class));
         });
     }
 
     public interface OnUserLoadedListener {
         void onUserLoaded(User user);
 
-        void onUserLoaded(List<User> user);
+    }
+
+    public interface OnListUserLoadedListener {
+        void onListUserLoaded(List<User> users);
     }
 
 

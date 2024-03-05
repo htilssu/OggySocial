@@ -1,5 +1,6 @@
 package com.oggysocial.oggysocial.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,14 +15,17 @@ public class User {
     List<String> posts;
     List<String> friends;
 
-    public User() {
-    }
 
     public User(String firstName, String lastName, String email, String birthday) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.birthday = birthday;
+    }
+
+    public User() {
+        posts = new ArrayList<>();
+        friends = new ArrayList<>();
     }
 
     public String getAvatar() {
@@ -98,4 +102,7 @@ public class User {
     }
 
 
+    public void removePost(String postId) {
+        posts.remove(postId);
+    }
 }

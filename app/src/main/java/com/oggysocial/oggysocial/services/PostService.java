@@ -26,7 +26,16 @@ public class PostService {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         newPost.setAuthor(FirebaseAuth.getInstance().getUid());
         newPost.setDate(LocalDateTime.now().toString());
-        db.collection("posts").add(newPost);
+        db.collection("posts")
+                .add(newPost)
+                .addOnSuccessListener(command -> {
+                    newPost.setId(command.getId());
+                    updatePost(newPost);
+                    UserService.getUser(user -> {
+                        user.addPost(newPost.getId());
+                        UserService.saveUser(user);
+                    });
+                });
     }
 
     /**
@@ -36,30 +45,23 @@ public class PostService {
      */
     public static void deletePost(String postId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").document(postId).delete();
+        db.collection("posts").document(postId).delete().addOnSuccessListener(command -> {
+            UserService.getUser(user -> {
+                user.removePost(postId);
+                UserService.saveUser(user);
+            });
+        });
     }
 
-    public static void likePost(String postId) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static void deletePost(Post post) {
+        deletePost(post.getId());
     }
 
-    /**
-     * Lấy thông tin bài viết theo id
-     *
-     * @param postId id của bài viết
-     * @return {@link Post} bài viết
-     */
-    public static Post getPostById(String postId) {
+    public static void updatePost(Post post) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        AtomicReference<Post> post = new AtomicReference<>();
-        db.collection("posts").document(postId)
-                .get()
-                .addOnSuccessListener(command -> {
-                    post.set(command.toObject(Post.class));
-                });
-        User user = UserService.getUserById(post.get().getAuthor());
-        return post.get();
+        db.collection("posts").document(post.getId()).set(post);
     }
+
 
     /**
      * Lấy thông tin bài viết của user

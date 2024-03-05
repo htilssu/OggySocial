@@ -3,7 +3,6 @@ package com.oggysocial.oggysocial.services;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.oggysocial.oggysocial.models.User;
 
 import org.junit.Before;
@@ -34,14 +33,14 @@ public class UserServiceTest {
 
     @Test
     public void getUserByIdReturnsUserWhenUserExists() {
-        UserService.getUserById("testUid");
+        UserService.getUserById("testUid", listener);
         verify(firebaseFirestore.collection("users").document("testUid").get(), times(1)).addOnSuccessListener(any());
     }
 
     @Test
     public void getUserByIdLogsErrorWhenExceptionOccurs() {
         when(firebaseFirestore.collection("users").document("testUid").get()).thenThrow(new RuntimeException());
-        UserService.getUserById("testUid");
+        UserService.getUserById("testUid", listener);
         verify(firebaseFirestore.collection("users").document("testUid").get(), times(1)).addOnFailureListener(any());
     }
 

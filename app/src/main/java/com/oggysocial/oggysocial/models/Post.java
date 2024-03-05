@@ -1,6 +1,6 @@
 package com.oggysocial.oggysocial.models;
 
-import android.net.Uri;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,9 +9,10 @@ import java.util.Map;
 
 
 public class Post {
+    String id;
     String content;
     String author;
-
+    @Exclude
     User user;
     String date;
     List<String> likes;
@@ -22,6 +23,22 @@ public class Post {
         likes = new ArrayList<>();
         comments = new ArrayList<>();
         images = new HashMap<>();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getAuthor() {
