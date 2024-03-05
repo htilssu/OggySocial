@@ -17,11 +17,15 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
 public class ImageService {
 
+    /**
+     * Đường dẫn lưu trữ ảnh trên storage
+     */
     static String imageRefPath = "/users/%userId%/images/";
     static FirebaseStorage storage = FirebaseDB.getStorage();
 
@@ -33,20 +37,15 @@ public class ImageService {
     public static void uploadImage(Uri imageUri, Function<StorageReference, Void> callback) throws RuntimeException {
         String userId = FirebaseAuth.getInstance().getUid();
         if (userId != null) {
-            StorageReference imageRef = storage
-                    .getReference()
-                    .child(imageRefPath.replace("%userId%", userId))
-                    .child(UUID.randomUUID().toString());
+            StorageReference imageRef = storage.getReference().child(imageRefPath.replace("%userId%", userId)).child(UUID.randomUUID().toString());
 
-            imageRef.putFile(imageUri)
-                    .addOnSuccessListener(taskSnapshot -> callback.apply(imageRef))
-                    .addOnFailureListener(l -> {
-                        try {
-                            throw l;
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+            imageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> callback.apply(imageRef)).addOnFailureListener(l -> {
+                try {
+                    throw l;
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
     }
 
@@ -72,8 +71,8 @@ public class ImageService {
         return getImageRef(userId, imageId);
     }
 
-    public static void deleteImage() {
-
+    public static void deleteImage(String imageRefPath, OnDeletedImageListener listener) {
+        storage.getReference().child(imageRefPath.replace("%userId%", Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))).delete().addOnSuccessListener(unused -> listener.onDeletedImage());
     }
 
     /**
@@ -83,10 +82,10 @@ public class ImageService {
      * @throws ClassCastException Nếu context không phải là AppCompatActivity
      * @apiNote Phải gọi trước khi state của activity chuyển sang resumed
      */
-    public static ActivityResultLauncher<PickVisualMediaRequest> getPickMedia(Context context, Function<Uri, Void> callback) {
+    public static ActivityResultLauncher<PickVisualMediaRequest> getPickMedia(Context context, OnImageSelectedListener callback) throws ClassCastException {
         AppCompatActivity activity = (AppCompatActivity) context;
 
-        return activity.registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), callback::apply);
+        return activity.registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), callback::onImageSelected);
     }
 
     public static Bitmap getBitmapFromAsset(Context context, String filePath) {
@@ -99,5 +98,13 @@ public class ImageService {
         } catch (IOException ignored) {
         }
         return bitmap;
+    }
+
+    public interface OnDeletedImageListener {
+        void onDeletedImage();
+    }
+
+    public interface OnImageSelectedListener {
+        void onImageSelected(Uri uri);
     }
 }

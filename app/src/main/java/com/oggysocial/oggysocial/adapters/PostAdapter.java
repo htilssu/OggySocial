@@ -47,9 +47,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     public void onBindViewHolder(@NonNull PostHolder holder, int position) {
 
         String fullName = "123";
-        posts.get(position).getImages().forEach((s, uri) -> {
-            Glide.with(holder.itemView.getContext()).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivPostImage);
-        });
+        posts.get(position).getImages().forEach((s, uri) -> Glide.with(holder.itemView.getContext()).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivPostImage));
         holder.tvAuthorName.setText(fullName);
         holder.tvPostContent.setText(posts.get(position).getContent());
         holder.tvLikeCount.setText(String.valueOf(posts.get(position).getLikes().size()));
@@ -104,11 +102,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         }
 
         private void initListener() {
-            btnLike.setOnClickListener(v -> {
-                setLiked(!isLiked);
-            });
+            btnLike.setOnClickListener(v -> setLiked(!isLiked));
             btnPostMenu.setOnClickListener(v -> {
-                PostBottomSheetModel postBottomSheetModel = new PostBottomSheetModel(this.itemView.getContext());
+                PostBottomSheetModel postBottomSheetModel = new PostBottomSheetModel(this.itemView.getContext(), posts.get(getBindingAdapterPosition()));
                 postBottomSheetModel.show();
             });
         }

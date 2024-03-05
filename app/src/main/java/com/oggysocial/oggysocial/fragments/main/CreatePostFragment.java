@@ -20,10 +20,6 @@ import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.PostService;
-import com.oggysocial.oggysocial.services.UserService;
-
-import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class CreatePostFragment extends Fragment {
@@ -59,9 +55,7 @@ public class CreatePostFragment extends Fragment {
             try {
                 imageUri = uri;
                 ivPostImage.setImageURI(imageUri);
-                return null;
-            } catch (Exception e) {
-                return null;
+            } catch (Exception ignored) {
             }
         });
         initListener();

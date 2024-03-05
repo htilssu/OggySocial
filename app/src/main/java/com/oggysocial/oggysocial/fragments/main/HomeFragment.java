@@ -19,7 +19,6 @@ import com.oggysocial.oggysocial.models.Popup;
 
 public class HomeFragment extends Fragment {
     PostAdapter postAdapter;
-
     View v;
     TextView tvCreatePost;
     private RecyclerView postRecyclerView;

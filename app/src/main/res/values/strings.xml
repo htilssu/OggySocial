@@ -34,4 +34,5 @@
     <string name="post_it">Đăng</string>
     <string name="write_your_thinking">Hãy viết cảm nghĩ của bạn…</string>
     <string name="add_image">Thêm ảnh</string>
+    <string name="delete_post">Xóa bài viết</string>
 </resources>
