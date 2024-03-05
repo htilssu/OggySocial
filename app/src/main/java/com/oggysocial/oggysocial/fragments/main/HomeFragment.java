@@ -1,9 +1,6 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +16,6 @@ import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.PopupActivity;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Popup;
-import com.oggysocial.oggysocial.models.Post;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class HomeFragment extends Fragment {
     PostAdapter postAdapter;
@@ -38,7 +27,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        postAdapter = new PostAdapter((ArrayList<Post>) generateDummyPosts());
+//        postAdapter = new PostAdapter((ArrayList<Post>) generateDummyPosts());
     }
 
     @Override
@@ -53,17 +42,9 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         postRecyclerView = view.findViewById(R.id.rvPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        postRecyclerView.setAdapter(postAdapter);
+//        postRecyclerView.setAdapter(postAdapter);
     }
 
-    private List<Post> generateDummyPosts() {
-        return IntStream.rangeClosed(1, 10).mapToObj(i -> {
-            Post post = new Post();
-            post.setAuthor("Author " + i);
-            post.setContent("Content " + i);
-            return post;
-        }).collect(Collectors.toList());
-    }
 
     private void initView() {
         postRecyclerView = v.findViewById(R.id.rvPosts);

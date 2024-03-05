@@ -21,6 +21,7 @@ import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.authentication.LoginFragment;
 import com.oggysocial.oggysocial.fragments.authentication.RegisterFragment;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.oggysocial.oggysocial.services.UserService;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -91,6 +92,8 @@ public class AuthActivity extends AppCompatActivity {
         boolean isLoggedIn = user != null;
         if (isLoggedIn) {
             navigateMain();
+            UserService.getUser(v -> {
+            });
         } else {
             navigateLogin();
         }

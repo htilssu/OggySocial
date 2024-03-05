@@ -38,7 +38,7 @@ class RegisterBirthday : Fragment() {
         btnNext = rootView.findViewById(R.id.btnNext)
         btnNext.setOnClickListener {
             if (isValid()) {
-                context?.getSharedPreferences("App", Context.MODE_PRIVATE)?.edit()
+                context?.getSharedPreferences("OggySocial", Context.MODE_PRIVATE)?.edit()
                     ?.putString("birthday", birthday)?.apply()
                 parentFragmentManager.beginTransaction().setReorderingAllowed(true)
                     .replace(R.id.register_fragment_container, EmailPasswordFragment())
