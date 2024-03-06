@@ -1,10 +1,7 @@
 package com.oggysocial.oggysocial.adapters;
 
-import static android.content.ContentValues.TAG;
-
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +43,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     @Override
     public void onBindViewHolder(@NonNull PostHolder holder, int position) {
 
-        String fullName = "123";
-        posts.get(position).getImages().forEach((s, uri) -> Glide.with(holder.itemView.getContext()).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivPostImage));
-        holder.tvAuthorName.setText(fullName);
+        Post currentPost = posts.get(position);
+        currentPost.getImages().forEach((s, uri) -> Glide.with(holder.itemView.getContext()).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivPostImage));
+        holder.tvAuthorName.setText(currentPost.getUser().getFullName());
         holder.tvPostContent.setText(posts.get(position).getContent());
         holder.tvLikeCount.setText(String.valueOf(posts.get(position).getLikes().size()));
-        Log.d(TAG, "onBindViewHolder: " + posts.get(position).getLikes().size());
         String commentCount = posts.get(position).getComments().size() + " " + holder.itemView.getResources().getString(R.string.comment);
         holder.tvCommentCount.setText(commentCount);
         boolean isLiked = posts.get(position).getLikes().contains(FirebaseAuth.getInstance().getUid());
@@ -106,6 +102,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             btnPostMenu.setOnClickListener(v -> {
                 PostBottomSheetModel postBottomSheetModel = new PostBottomSheetModel(this.itemView.getContext(), posts.get(getBindingAdapterPosition()));
                 postBottomSheetModel.show();
+                postBottomSheetModel.setOnDeletePost(() -> {
+                    posts.remove(getBindingAdapterPosition());
+                    notifyItemRemoved(getBindingAdapterPosition());
+                });
             });
         }
 
