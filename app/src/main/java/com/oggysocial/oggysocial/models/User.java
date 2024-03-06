@@ -105,4 +105,8 @@ public class User {
     public void removePost(String postId) {
         posts.remove(postId);
     }
+
+    public String getFullName() {
+        return lastName + " " + firstName;
+    }
 }
