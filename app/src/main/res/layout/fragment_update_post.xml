@@ -108,10 +108,10 @@
         style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="-100dp"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/small_padding"
         android:theme="?bottomSheetDialogTheme"
+        android:translationZ="1dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 

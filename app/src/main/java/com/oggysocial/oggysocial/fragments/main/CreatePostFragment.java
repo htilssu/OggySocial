@@ -12,11 +12,14 @@ import android.widget.LinearLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
+import com.oggysocial.oggysocial.activities.MainActivity;
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.PostService;
@@ -39,6 +42,7 @@ public class CreatePostFragment extends Fragment {
 
 
     public CreatePostFragment() {
+
     }
 
 
@@ -85,13 +89,16 @@ public class CreatePostFragment extends Fragment {
                     String name = ref.getName();
                     ref.getDownloadUrl().addOnSuccessListener(uri -> {
                         newPost.getImages().put(name, uri.toString());
-                        PostService.savePost(newPost);
+                        PostService.savePost(newPost, p -> {
+                        });
                         imageUri = null;
+
                     });
                     return null;
                 });
             } else {
-                PostService.savePost(newPost);
+                PostService.savePost(newPost, post -> {
+                });
             }
         });
     }

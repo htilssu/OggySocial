@@ -9,110 +9,117 @@
     android:orientation="vertical"
     tools:context=".fragments.main.CreatePostFragment">
 
-
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClose"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/close" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnClose"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/close" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="3"
-                    android:text="@string/create_new_post"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/medium_heading_text_size" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnPostIt"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_weight="1"
-                    android:text="@string/post_it"
-                    android:textColor="@color/colorPrimary" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/smaller_padding"
-                android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/small_padding">
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:text="@string/create_new_post"
+                android:textAlignment="center"
+                android:textSize="@dimen/medium_heading_text_size" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/ivAuthorImage"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/avatar" />
-
-                <TextView
-                    android:id="@+id/tvAuthorName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/small_padding"
-                    android:text="Oggy"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/etPostContent"
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPostIt"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_padding"
-                android:background="@null"
-                android:hint="@string/write_your_thinking"
-                android:inputType="text|textMultiLine"
-                android:paddingHorizontal="@dimen/small_padding"
-                android:paddingBottom="@dimen/large_padding"
-                android:textAlignment="viewStart"
-                tools:ignore="Autofill" />
-
-            <ImageView
-                android:id="@+id/ivPostImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                tools:ignore="ContentDescription" />
+                android:layout_gravity="end|center_vertical"
+                android:layout_weight="1"
+                android:text="@string/post_it"
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
-            
-    </androidx.core.widget.NestedScrollView>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/smaller_padding"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/small_padding">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivAuthorImage"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/avatar" />
+
+                    <TextView
+                        android:id="@+id/tvAuthorName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/small_padding"
+                        android:text="Oggy"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/etPostContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_padding"
+                    android:background="@null"
+                    android:hint="@string/write_your_thinking"
+                    android:inputType="text|textMultiLine"
+                    android:paddingHorizontal="@dimen/small_padding"
+                    android:paddingBottom="@dimen/large_padding"
+                    android:textAlignment="viewStart"
+                    tools:ignore="Autofill" />
+
+                <ImageView
+                    android:id="@+id/ivPostImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llCreatePostOptions"
         style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="-100dp"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/small_padding"
         android:theme="?bottomSheetDialogTheme"
+        android:translationZ="1dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
         <com.google.android.material.bottomsheet.BottomSheetDragHandleView
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content" />
 
 
