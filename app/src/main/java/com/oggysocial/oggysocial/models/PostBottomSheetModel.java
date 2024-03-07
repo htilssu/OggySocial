@@ -65,6 +65,7 @@ public class PostBottomSheetModel extends BottomSheetDialog {
 
         assert btnEdit != null;
         btnEdit.setOnClickListener(l -> {
+            this.dismiss();
             Intent intent = new Intent(getContext(), PopupActivity.class);
             intent.putExtra("popup", Popup.UPDATE_POST);
             intent.putExtra("post", post);
