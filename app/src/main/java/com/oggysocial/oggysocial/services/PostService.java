@@ -6,16 +6,20 @@ import static com.google.firebase.firestore.Filter.or;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.oggysocial.oggysocial.models.Post;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class PostService {
     private static final String USA = "USA";
     static FirebaseStorage storage = FirebaseDB.getStorage();
+    static Source source = Source.CACHE;
+
 
     public static List<Post> getPosts(String userId) {
         return null;
@@ -98,7 +102,9 @@ public class PostService {
     public static void getUserPosts(String userId, OnListPostLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Query query = db.collection("posts").where(or(equalTo("author", userId))).orderBy("date", Query.Direction.DESCENDING);
+        Query query = db.collection("posts")
+                .where(or(equalTo("author", userId)))
+                .orderBy("date", Query.Direction.DESCENDING);
         query.addSnapshotListener((command, e) -> {
             assert command != null;
             List<Post> posts = command.toObjects(Post.class);
@@ -132,8 +138,23 @@ public class PostService {
      */
     public static void getNewFeeds(OnListPostLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").limit(5).get().addOnSuccessListener(queryDocumentSnapshots -> listener.onListPostLoaded(queryDocumentSnapshots.toObjects(Post.class)));
+        List<Post> newFeedPost = new ArrayList<>();
+        UserService.getUser(user -> {
+            UserService.getFriends(FirebaseAuth.getInstance().getUid(), friends -> {
+                friends.forEach(friend -> {
+                    db.collection("posts")
+                            .whereEqualTo("author", friend.getId()).get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                List<Post> posts = queryDocumentSnapshots.toObjects(Post.class);
+                                posts.forEach(post -> post.setUser(friend));
+                                newFeedPost.addAll(posts);
+                                listener.onListPostLoaded(newFeedPost);
+                            });
+                });
 
+                listener.onListPostLoaded(newFeedPost);
+            });
+        });
     }
 
     public interface OnListPostLoadedListener {

@@ -51,6 +51,7 @@ public class UserService {
      */
     public static void saveUser(User user) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        user.setId(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
         db.collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).set(user);
     }
 

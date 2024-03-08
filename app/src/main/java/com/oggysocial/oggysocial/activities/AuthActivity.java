@@ -73,6 +73,7 @@ public class AuthActivity extends AppCompatActivity {
     public void navigateMain() {
         Intent mainIntent = new Intent(this, MainActivity.class);
         startActivity(mainIntent);
+        this.finish();
     }
 
     public void navigateRegister() {

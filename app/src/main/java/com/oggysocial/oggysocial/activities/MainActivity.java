@@ -90,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
                 .replace(R.id.fragmentContainerView, fragment).commit();
     }
 }

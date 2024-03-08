@@ -105,12 +105,12 @@ public class UpdatePostFragment extends Fragment {
                         });
                         post.getImages().put(storageReference.getName(), String.valueOf(uri));
                         PostService.updatePost(post);
-                        onUpdatedPost.onUpdated();
+//                        onUpdatedPost.onUpdated();
                     });
                 });
             } else {
                 PostService.updatePost(post);
-                onUpdatedPost.onUpdated();
+//                onUpdatedPost.onUpdated();
             }
             requireActivity().finish();
         });
