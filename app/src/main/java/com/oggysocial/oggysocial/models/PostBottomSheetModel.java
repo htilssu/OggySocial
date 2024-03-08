@@ -13,17 +13,21 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.PopupActivity;
+import com.oggysocial.oggysocial.fragments.main.UpdatePostFragment;
 import com.oggysocial.oggysocial.services.PostService;
-
-import java.io.Serializable;
 
 public class PostBottomSheetModel extends BottomSheetDialog {
     Post post;
     OnDeletePost onDeletePost;
+    OnUpdatedPost onupdatedPost;
 
     public PostBottomSheetModel(@NonNull Context context, Post post) {
         super(context);
         this.post = post;
+    }
+
+    public void setOnUpdatedPost(OnUpdatedPost onupdatedPost) {
+        this.onupdatedPost = onupdatedPost;
     }
 
     public void setOnDeletePost(OnDeletePost onDeletePost) {
@@ -58,29 +62,30 @@ public class PostBottomSheetModel extends BottomSheetDialog {
 
         for (int i = 0; i < btnDelete.getChildCount(); i++) {
             View child = btnDelete.getChildAt(i);
-            child.setOnClickListener(v -> {
-                btnDelete.performClick();
-            });
+            child.setOnClickListener(v -> btnDelete.performClick());
         }
 
         assert btnEdit != null;
         btnEdit.setOnClickListener(l -> {
-            this.dismiss();
+            dismiss();
             Intent intent = new Intent(getContext(), PopupActivity.class);
             intent.putExtra("popup", Popup.UPDATE_POST);
             intent.putExtra("post", post);
             getContext().startActivity(intent);
+            UpdatePostFragment.setOnUpdatedPost(() -> onupdatedPost.onUpdated());
         });
         for (int i = 0; i < btnEdit.getChildCount(); i++) {
             View child = btnEdit.getChildAt(i);
-            child.setOnClickListener(v -> {
-                btnEdit.performClick();
-            });
+            child.setOnClickListener(v -> btnEdit.performClick());
         }
 
     }
 
     public interface OnDeletePost {
         void onDelete();
+    }
+
+    public interface OnUpdatedPost {
+        void onUpdated();
     }
 }

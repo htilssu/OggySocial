@@ -1,6 +1,5 @@
 package com.oggysocial.oggysocial.fragments.auth;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +13,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.AuthActivity;
 import com.oggysocial.oggysocial.databinding.FragmentLoginBinding;
-import com.oggysocial.oggysocial.services.FirebaseDB;
 
 import java.util.Objects;
 

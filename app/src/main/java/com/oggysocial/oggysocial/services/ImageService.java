@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Function;
 
 public class ImageService {
 
@@ -31,21 +30,16 @@ public class ImageService {
 
     /**
      * @param imageUri Uri của file cần upload lên storage
-     * @param callback Hàm callback sẽ được gọi khi upload thành công, trả về StorageReference của file đã upload
+     * @param listener Hàm callback sẽ được gọi khi upload thành công, trả về StorageReference của file đã upload
      * @throws RuntimeException Nếu upload thất bại
      */
-    public static void uploadImage(Uri imageUri, Function<StorageReference, Void> callback) throws RuntimeException {
+    public static void uploadImage(Uri imageUri, OnUploadImageListener listener) throws RuntimeException {
         String userId = FirebaseAuth.getInstance().getUid();
         if (userId != null) {
             StorageReference imageRef = storage.getReference().child(imageRefPath.replace("%userId%", userId)).child(UUID.randomUUID().toString());
 
-            imageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> callback.apply(imageRef)).addOnFailureListener(l -> {
-                try {
-                    throw l;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            imageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> listener.onUploadImage(imageRef)
+            );
         }
     }
 
@@ -73,6 +67,10 @@ public class ImageService {
 
     public static void deleteImage(String imageRefPath, OnDeletedImageListener listener) {
         storage.getReference().child(imageRefPath.replace("%userId%", Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))).delete().addOnSuccessListener(unused -> listener.onDeletedImage());
+    }
+
+    public static void deleteImage(String downloadUri) {
+        storage.getReferenceFromUrl(downloadUri).delete();
     }
 
     /**
@@ -106,5 +104,12 @@ public class ImageService {
 
     public interface OnImageSelectedListener {
         void onImageSelected(Uri uri);
+    }
+
+    /**
+     * Hàm callback sẽ được gọi khi upload ảnh lên storage thành công
+     */
+    public interface OnUploadImageListener {
+        void onUploadImage(StorageReference ref);
     }
 }

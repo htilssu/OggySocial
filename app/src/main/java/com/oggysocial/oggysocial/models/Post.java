@@ -2,13 +2,14 @@ package com.oggysocial.oggysocial.models;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class Post {
+public class Post implements Serializable {
     String id;
     String content;
     String author;

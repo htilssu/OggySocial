@@ -106,6 +106,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                     posts.remove(getBindingAdapterPosition());
                     notifyItemRemoved(getBindingAdapterPosition());
                 });
+                postBottomSheetModel.setOnUpdatedPost(() -> notifyItemChanged(getBindingAdapterPosition()));
             });
         }
 

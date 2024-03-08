@@ -1,7 +1,11 @@
 package com.oggysocial.oggysocial.services;
 
+import static com.google.firebase.firestore.Filter.equalTo;
+import static com.google.firebase.firestore.Filter.or;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.oggysocial.oggysocial.models.Post;
 
@@ -10,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PostService {
+    private static final String USA = "USA";
     static FirebaseStorage storage = FirebaseDB.getStorage();
 
     public static List<Post> getPosts(String userId) {
@@ -25,24 +30,21 @@ public class PostService {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         newPost.setAuthor(FirebaseAuth.getInstance().getUid());
         newPost.setDate(LocalDateTime.now().toString());
-        db.collection("posts")
-                .add(newPost)
-                .addOnSuccessListener(command -> {
-                    newPost.setId(command.getId());
-                    updatePost(newPost);
-                    UserService.getUser(user -> {
-                        user.addPost(newPost.getId());
-                        newPost.setUser(user);
-                        listener.onPostSaved(newPost);
-                        UserService.saveUser(user);
-                    });
-                });
+        db.collection("posts").add(newPost).addOnSuccessListener(command -> {
+            newPost.setId(command.getId());
+            updatePost(newPost);
+            UserService.getUser(user -> {
+                user.addPost(newPost.getId());
+                newPost.setUser(user);
+                listener.onPostSaved(newPost);
+                UserService.saveUser(user);
+            });
+        });
     }
 
     public static void getPost(String postId, OnPostLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").document(postId).get()
-                .addOnSuccessListener(documentSnapshot -> listener.onPostLoaded(documentSnapshot.toObject(Post.class)));
+        db.collection("posts").document(postId).get().addOnSuccessListener(documentSnapshot -> listener.onPostLoaded(documentSnapshot.toObject(Post.class)));
     }
 
     /**
@@ -95,12 +97,22 @@ public class PostService {
      */
     public static void getUserPosts(String userId, OnListPostLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").whereEqualTo("author", userId).limit(5).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Post> posts = queryDocumentSnapshots.toObjects(Post.class);
-                    UserService.getUser(user -> posts.forEach(post -> post.setUser(user)));
-                    listener.onListPostLoaded(posts);
-                });
+
+        Query query = db.collection("posts").where(or(equalTo("author", userId))).orderBy("date", Query.Direction.DESCENDING);
+        query.addSnapshotListener((command, e) -> {
+            assert command != null;
+            List<Post> posts = command.toObjects(Post.class);
+            UserService.getUser(user -> posts.forEach(post -> post.setUser(user)));
+            listener.onListPostLoaded(posts);
+
+        });
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Post> posts = queryDocumentSnapshots.toObjects(Post.class);
+            UserService.getUser(user -> posts.forEach(post -> post.setUser(user)));
+            listener.onListPostLoaded(posts);
+        });
+
 
     }
 
@@ -120,8 +132,7 @@ public class PostService {
      */
     public static void getNewFeeds(OnListPostLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").limit(5).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> listener.onListPostLoaded(queryDocumentSnapshots.toObjects(Post.class)));
+        db.collection("posts").limit(5).get().addOnSuccessListener(queryDocumentSnapshots -> listener.onListPostLoaded(queryDocumentSnapshots.toObjects(Post.class)));
 
     }
 

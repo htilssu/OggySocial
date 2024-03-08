@@ -10,7 +10,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.main.CreatePostFragment;
+import com.oggysocial.oggysocial.fragments.main.UpdatePostFragment;
 import com.oggysocial.oggysocial.models.Popup;
+import com.oggysocial.oggysocial.models.Post;
 
 public class PopupActivity extends AppCompatActivity {
 
@@ -33,6 +35,12 @@ public class PopupActivity extends AppCompatActivity {
         switch (popup) {
             case CREATE_POST:
                 getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.fragmentContainerView, CreatePostFragment.class, null).commit();
+                break;
+            case UPDATE_POST:
+                Post post = getIntent().getSerializableExtra("post", Post.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("post", post);
+                getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.fragmentContainerView, UpdatePostFragment.class, bundle).commit();
                 break;
         }
     }
