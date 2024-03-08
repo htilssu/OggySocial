@@ -14,16 +14,13 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.PostService;
-import com.oggysocial.oggysocial.services.UserService;
-
-import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class CreatePostFragment extends Fragment {
@@ -43,6 +40,7 @@ public class CreatePostFragment extends Fragment {
 
 
     public CreatePostFragment() {
+
     }
 
 
@@ -58,10 +56,8 @@ public class CreatePostFragment extends Fragment {
         pickMedia = ImageService.getPickMedia(requireContext(), uri -> {
             try {
                 imageUri = uri;
-                ivPostImage.setImageURI(imageUri);
-                return null;
-            } catch (Exception e) {
-                return null;
+                Glide.with(requireContext()).load(imageUri).into(ivPostImage);
+            } catch (Exception ignored) {
             }
         });
         initListener();
@@ -91,13 +87,15 @@ public class CreatePostFragment extends Fragment {
                     String name = ref.getName();
                     ref.getDownloadUrl().addOnSuccessListener(uri -> {
                         newPost.getImages().put(name, uri.toString());
-                        PostService.savePost(newPost);
+                        PostService.savePost(newPost, p -> {
+                        });
                         imageUri = null;
+
                     });
-                    return null;
                 });
             } else {
-                PostService.savePost(newPost);
+                PostService.savePost(newPost, post -> {
+                });
             }
         });
     }

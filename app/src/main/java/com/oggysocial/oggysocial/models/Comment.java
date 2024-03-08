@@ -1,8 +1,13 @@
 package com.oggysocial.oggysocial.models;
 
+import com.google.firebase.firestore.Exclude;
+
 public class Comment {
     String content;
     String author;
+
+    @Exclude
+    User user;
     String image;
     String date;
 

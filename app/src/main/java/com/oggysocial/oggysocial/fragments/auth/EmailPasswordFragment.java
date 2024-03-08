@@ -1,4 +1,4 @@
-package com.oggysocial.oggysocial.fragments.authentication;
+package com.oggysocial.oggysocial.fragments.auth;
 
 import static android.content.Context.MODE_PRIVATE;
 

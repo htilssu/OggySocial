@@ -1,17 +1,25 @@
 package com.oggysocial.oggysocial.services;
 
+import static com.google.firebase.firestore.Filter.equalTo;
+import static com.google.firebase.firestore.Filter.or;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.oggysocial.oggysocial.models.Post;
-import com.oggysocial.oggysocial.models.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Map;
 
 public class PostService {
+    private static final String USA = "USA";
     static FirebaseStorage storage = FirebaseDB.getStorage();
+    static Source source = Source.CACHE;
+
 
     public static List<Post> getPosts(String userId) {
         return null;
@@ -22,20 +30,25 @@ public class PostService {
      *
      * @param newPost bài viết mới
      */
-    public static void savePost(Post newPost) {
+    public static void savePost(Post newPost, OnPostSavedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         newPost.setAuthor(FirebaseAuth.getInstance().getUid());
         newPost.setDate(LocalDateTime.now().toString());
-        db.collection("posts")
-                .add(newPost)
-                .addOnSuccessListener(command -> {
-                    newPost.setId(command.getId());
-                    updatePost(newPost);
-                    UserService.getUser(user -> {
-                        user.addPost(newPost.getId());
-                        UserService.saveUser(user);
-                    });
-                });
+        db.collection("posts").add(newPost).addOnSuccessListener(command -> {
+            newPost.setId(command.getId());
+            updatePost(newPost);
+            UserService.getUser(user -> {
+                user.addPost(newPost.getId());
+                newPost.setUser(user);
+                listener.onPostSaved(newPost);
+                UserService.saveUser(user);
+            });
+        });
+    }
+
+    public static void getPost(String postId, OnPostLoadedListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("posts").document(postId).get().addOnSuccessListener(documentSnapshot -> listener.onPostLoaded(documentSnapshot.toObject(Post.class)));
     }
 
     /**
@@ -45,18 +58,35 @@ public class PostService {
      */
     public static void deletePost(String postId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").document(postId).delete().addOnSuccessListener(command -> {
-            UserService.getUser(user -> {
+        getPost(postId, post -> {
+            db.collection("posts").document(postId).delete().addOnSuccessListener(command -> UserService.getUser(user -> {
                 user.removePost(postId);
                 UserService.saveUser(user);
-            });
+            }));
+            Map<String, String> images = post.getImages();
+            if (images != null) {
+                images.forEach((s, uri) -> storage.getReferenceFromUrl(uri).delete());
+            }
         });
     }
 
     public static void deletePost(Post post) {
-        deletePost(post.getId());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("posts").document(post.getId()).delete().addOnSuccessListener(command -> UserService.getUser(user -> {
+            user.removePost(post.getId());
+            UserService.saveUser(user);
+        }));
+        Map<String, String> images = post.getImages();
+        if (images != null) {
+            images.forEach((s, uri) -> storage.getReferenceFromUrl(uri).delete());
+        }
     }
 
+    /**
+     * Cập nhật thông tin bài viết
+     *
+     * @param post bài viết
+     */
     public static void updatePost(Post post) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("posts").document(post.getId()).set(post);
@@ -69,12 +99,26 @@ public class PostService {
      * @param userId   id của user
      * @param listener listener
      */
-    public static void getUserPosts(String userId, OnPostLoadedListener listener) {
+    public static void getUserPosts(String userId, OnListPostLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").whereEqualTo("author", userId).limit(5).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    listener.onPostLoaded(queryDocumentSnapshots.toObjects(Post.class));
-                });
+
+        Query query = db.collection("posts")
+                .where(or(equalTo("author", userId)))
+                .orderBy("date", Query.Direction.DESCENDING);
+        query.addSnapshotListener((command, e) -> {
+            assert command != null;
+            List<Post> posts = command.toObjects(Post.class);
+            UserService.getUser(user -> posts.forEach(post -> post.setUser(user)));
+            listener.onListPostLoaded(posts);
+
+        });
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Post> posts = queryDocumentSnapshots.toObjects(Post.class);
+            UserService.getUser(user -> posts.forEach(post -> post.setUser(user)));
+            listener.onListPostLoaded(posts);
+        });
+
 
     }
 
@@ -83,7 +127,7 @@ public class PostService {
      *
      * @param listener listener
      */
-    public static void getUserPosts(OnPostLoadedListener listener) {
+    public static void getUserPosts(OnListPostLoadedListener listener) {
         getUserPosts(FirebaseAuth.getInstance().getUid(), listener);
     }
 
@@ -92,16 +136,36 @@ public class PostService {
      *
      * @param listener listener
      */
-    public static void getNewFeeds(OnPostLoadedListener listener) {
+    public static void getNewFeeds(OnListPostLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").limit(5).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    listener.onPostLoaded(queryDocumentSnapshots.toObjects(Post.class));
+        List<Post> newFeedPost = new ArrayList<>();
+        UserService.getUser(user -> {
+            UserService.getFriends(FirebaseAuth.getInstance().getUid(), friends -> {
+                friends.forEach(friend -> {
+                    db.collection("posts")
+                            .whereEqualTo("author", friend.getId()).get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                List<Post> posts = queryDocumentSnapshots.toObjects(Post.class);
+                                posts.forEach(post -> post.setUser(friend));
+                                newFeedPost.addAll(posts);
+                                listener.onListPostLoaded(newFeedPost);
+                            });
                 });
 
+                listener.onListPostLoaded(newFeedPost);
+            });
+        });
+    }
+
+    public interface OnListPostLoadedListener {
+        void onListPostLoaded(List<Post> posts);
     }
 
     public interface OnPostLoadedListener {
-        void onPostLoaded(List<Post> posts);
+        void onPostLoaded(Post post);
+    }
+
+    public interface OnPostSavedListener {
+        void onPostSaved(Post post);
     }
 }

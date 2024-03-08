@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.BottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingVertical="@dimen/medium_padding">
+
+    <LinearLayout
+        android:id="@+id/llEditPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:padding="8dp"
+            android:src="@drawable/edit"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:background="@android:color/transparent"
+            android:text="@string/edit_post"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llDeletePost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:padding="8dp"
+            android:src="@drawable/trash_line"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:background="@android:color/transparent"
+            android:text="@string/delete_post"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</LinearLayout>
+

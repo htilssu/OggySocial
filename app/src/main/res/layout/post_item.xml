@@ -24,13 +24,23 @@
 
         <TextView
             android:id="@+id/tvAuthorName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_padding"
+            android:layout_weight="1"
             android:text="Oggy"
             android:textSize="16sp"
             android:textStyle="bold" />
-        <!--        TODO : add option for post-->
+
+        <ImageView
+            android:id="@+id/btnPostMenu"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:padding="@dimen/small_padding"
+            android:src="@drawable/vertical_menu" />
     </LinearLayout>
 
     <TextView

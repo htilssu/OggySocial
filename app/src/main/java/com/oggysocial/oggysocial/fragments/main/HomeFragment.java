@@ -16,12 +16,16 @@ import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.PopupActivity;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Popup;
+import com.oggysocial.oggysocial.models.Post;
+import com.oggysocial.oggysocial.services.PostService;
+
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     PostAdapter postAdapter;
-
     View v;
     TextView tvCreatePost;
+    List<Post> postList;
     private RecyclerView postRecyclerView;
 
     @Override
@@ -34,7 +38,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_home, container, false);
         initView();
-        initListener();
         return v;
     }
 
@@ -49,6 +52,9 @@ public class HomeFragment extends Fragment {
     private void initView() {
         postRecyclerView = v.findViewById(R.id.rvPosts);
         tvCreatePost = v.findViewById(R.id.tvCreatePost);
+
+        loadData();
+        initListener();
     }
 
     private void initListener() {
@@ -57,6 +63,13 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getContext(), PopupActivity.class);
             intent.putExtra("popup", Popup.CREATE_POST);
             startActivity(intent);
+        });
+    }
+
+    private void loadData() {
+        PostService.getNewFeeds(posts -> {
+            postAdapter = new PostAdapter(posts);
+            postRecyclerView.setAdapter(postAdapter);
         });
     }
 

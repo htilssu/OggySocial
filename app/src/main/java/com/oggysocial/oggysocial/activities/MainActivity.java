@@ -10,20 +10,42 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.oggysocial.oggysocial.R;
-import com.oggysocial.oggysocial.fragments.main.ProfileFragment;
 import com.oggysocial.oggysocial.fragments.main.HomeFragment;
+import com.oggysocial.oggysocial.fragments.main.ProfileFragment;
 import com.oggysocial.oggysocial.fragments.main.SettingFragment;
+
+import java.lang.ref.WeakReference;
 
 public class MainActivity extends AppCompatActivity {
 
+    static WeakReference<MainActivity> instance;
     MaterialToolbar toolbar;
     BottomNavigationView bottomNavigationView;
     ProgressBar progressBar;
-    Fragment homeFragment, profileFragment, settingFragment;
+    Fragment homeFragment;
+    Fragment profileFragment;
+    Fragment settingFragment;
+
+    public static WeakReference<MainActivity> getInstance() {
+        return instance;
+    }
+
+    public Fragment getHomeFragment() {
+        return homeFragment;
+    }
+
+    public Fragment getProfileFragment() {
+        return profileFragment;
+    }
+
+    public Fragment getSettingFragment() {
+        return settingFragment;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = new WeakReference<>(this);
         setContentView(R.layout.activity_main);
         initVariables();
         initListener();
@@ -68,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
                 .replace(R.id.fragmentContainerView, fragment).commit();
     }
 }

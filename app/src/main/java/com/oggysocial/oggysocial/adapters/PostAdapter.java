@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Post;
+import com.oggysocial.oggysocial.models.PostBottomSheetModel;
 import com.oggysocial.oggysocial.services.PostService;
 
 import java.util.List;
@@ -42,11 +43,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     @Override
     public void onBindViewHolder(@NonNull PostHolder holder, int position) {
 
-        String fullName = "123";
-        posts.get(position).getImages().forEach((s, uri) -> {
-            Glide.with(holder.itemView.getContext()).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivPostImage);
-        });
-        holder.tvAuthorName.setText(fullName);
+        Post currentPost = posts.get(position);
+        currentPost.getImages().forEach((s, uri) -> Glide.with(holder.itemView.getContext()).load(uri).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivPostImage));
+        holder.tvAuthorName.setText(currentPost.getUser().getFullName());
         holder.tvPostContent.setText(posts.get(position).getContent());
         holder.tvLikeCount.setText(String.valueOf(posts.get(position).getLikes().size()));
         String commentCount = posts.get(position).getComments().size() + " " + holder.itemView.getResources().getString(R.string.comment);
@@ -63,7 +62,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     public class PostHolder extends RecyclerView.ViewHolder {
         TextView tvAuthorName, tvPostContent, tvLikeCount, tvCommentCount;
         CircleImageView ivAuthorAvatar;
-        ImageView ivPostImage;
+        ImageView ivPostImage, btnPostMenu;
         Button btnLike;
         boolean isLiked = false;
 
@@ -76,6 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             ivAuthorAvatar = itemView.findViewById(R.id.ivAuthorImage);
             btnLike = itemView.findViewById(R.id.btnLike);
             ivPostImage = itemView.findViewById(R.id.ivPostImage);
+            btnPostMenu = itemView.findViewById(R.id.btnPostMenu);
             initListener();
         }
 
@@ -89,15 +89,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                     PostService.updatePost(posts.get(getBindingAdapterPosition()));
                 }
             } else {
-                posts.get(getBindingAdapterPosition()).getLikes().remove(FirebaseAuth.getInstance().getUid());
-                addLike(-1);
-                PostService.updatePost(posts.get(getBindingAdapterPosition()));
+                if (posts.get(getBindingAdapterPosition()).getLikes().contains(FirebaseAuth.getInstance().getUid())) {
+                    posts.get(getBindingAdapterPosition()).getLikes().remove(FirebaseAuth.getInstance().getUid());
+                    addLike(-1);
+                    PostService.updatePost(posts.get(getBindingAdapterPosition()));
+                }
             }
         }
 
         private void initListener() {
-            btnLike.setOnClickListener(v -> {
-                setLiked(!isLiked);
+            btnLike.setOnClickListener(v -> setLiked(!isLiked));
+            btnPostMenu.setOnClickListener(v -> {
+                PostBottomSheetModel postBottomSheetModel = new PostBottomSheetModel(this.itemView.getContext(), posts.get(getBindingAdapterPosition()));
+                postBottomSheetModel.show();
+                postBottomSheetModel.setOnDeletePost(() -> {
+                    posts.remove(getBindingAdapterPosition());
+                    notifyItemRemoved(getBindingAdapterPosition());
+                });
+                postBottomSheetModel.setOnUpdatedPost(() -> notifyItemChanged(getBindingAdapterPosition()));
             });
         }
 

@@ -5,6 +5,7 @@
     android:id="@+id/auth_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backround_primary"
     android:orientation="vertical"
     tools:context=".activities.AuthActivity">
 
@@ -17,13 +18,16 @@
             android:id="@+id/toolbar_auth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@color/backround_primary"
+            android:visibility="invisible"
             app:navigationIcon="@drawable/baseline_chevron_left_40" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/auth_fragment_container"
-        android:name="com.oggysocial.oggysocial.fragments.authentication.LoginFragment"
+        android:name="com.oggysocial.oggysocial.fragments.auth.LoginFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/medium_padding" />

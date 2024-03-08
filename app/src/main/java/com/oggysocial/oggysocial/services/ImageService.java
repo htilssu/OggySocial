@@ -17,36 +17,29 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Function;
 
 public class ImageService {
 
+    /**
+     * Đường dẫn lưu trữ ảnh trên storage
+     */
     static String imageRefPath = "/users/%userId%/images/";
     static FirebaseStorage storage = FirebaseDB.getStorage();
 
     /**
      * @param imageUri Uri của file cần upload lên storage
-     * @param callback Hàm callback sẽ được gọi khi upload thành công, trả về StorageReference của file đã upload
+     * @param listener Hàm callback sẽ được gọi khi upload thành công, trả về StorageReference của file đã upload
      * @throws RuntimeException Nếu upload thất bại
      */
-    public static void uploadImage(Uri imageUri, Function<StorageReference, Void> callback) throws RuntimeException {
+    public static void uploadImage(Uri imageUri, OnUploadImageListener listener) throws RuntimeException {
         String userId = FirebaseAuth.getInstance().getUid();
         if (userId != null) {
-            StorageReference imageRef = storage
-                    .getReference()
-                    .child(imageRefPath.replace("%userId%", userId))
-                    .child(UUID.randomUUID().toString());
+            StorageReference imageRef = storage.getReference().child(imageRefPath.replace("%userId%", userId)).child(UUID.randomUUID().toString());
 
-            imageRef.putFile(imageUri)
-                    .addOnSuccessListener(taskSnapshot -> callback.apply(imageRef))
-                    .addOnFailureListener(l -> {
-                        try {
-                            throw l;
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+            imageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> listener.onUploadImage(imageRef)
+            );
         }
     }
 
@@ -72,8 +65,12 @@ public class ImageService {
         return getImageRef(userId, imageId);
     }
 
-    public static void deleteImage() {
+    public static void deleteImage(String imageRefPath, OnDeletedImageListener listener) {
+        storage.getReference().child(imageRefPath.replace("%userId%", Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))).delete().addOnSuccessListener(unused -> listener.onDeletedImage());
+    }
 
+    public static void deleteImage(String downloadUri) {
+        storage.getReferenceFromUrl(downloadUri).delete();
     }
 
     /**
@@ -83,10 +80,10 @@ public class ImageService {
      * @throws ClassCastException Nếu context không phải là AppCompatActivity
      * @apiNote Phải gọi trước khi state của activity chuyển sang resumed
      */
-    public static ActivityResultLauncher<PickVisualMediaRequest> getPickMedia(Context context, Function<Uri, Void> callback) {
+    public static ActivityResultLauncher<PickVisualMediaRequest> getPickMedia(Context context, OnImageSelectedListener callback) throws ClassCastException {
         AppCompatActivity activity = (AppCompatActivity) context;
 
-        return activity.registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), callback::apply);
+        return activity.registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), callback::onImageSelected);
     }
 
     public static Bitmap getBitmapFromAsset(Context context, String filePath) {
@@ -99,5 +96,20 @@ public class ImageService {
         } catch (IOException ignored) {
         }
         return bitmap;
+    }
+
+    public interface OnDeletedImageListener {
+        void onDeletedImage();
+    }
+
+    public interface OnImageSelectedListener {
+        void onImageSelected(Uri uri);
+    }
+
+    /**
+     * Hàm callback sẽ được gọi khi upload ảnh lên storage thành công
+     */
+    public interface OnUploadImageListener {
+        void onUploadImage(StorageReference ref);
     }
 }
