@@ -7,11 +7,13 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.main.HomeFragment;
 import com.oggysocial.oggysocial.fragments.main.ProfileFragment;
+import com.oggysocial.oggysocial.fragments.main.SearchFragment;
 import com.oggysocial.oggysocial.fragments.main.SettingFragment;
 
 import java.lang.ref.WeakReference;
@@ -19,9 +21,8 @@ import java.lang.ref.WeakReference;
 public class MainActivity extends AppCompatActivity {
 
     static WeakReference<MainActivity> instance;
-    MaterialToolbar toolbar;
+    AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigationView;
-    ProgressBar progressBar;
     Fragment homeFragment;
     Fragment profileFragment;
     Fragment settingFragment;
@@ -61,9 +62,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initVariables() {
-        toolbar = findViewById(R.id.toolbar);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        progressBar = findViewById(R.id.progressBar);
+        appBarLayout = findViewById(R.id.appBarLayout);
     }
 
     private void initListener() {
@@ -78,18 +78,12 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
-    }
 
-    private void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    private void hideLoading() {
-        progressBar.setVisibility(View.GONE);
     }
 
     private void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainerView, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, fragment).commit();
     }
+
+
 }
