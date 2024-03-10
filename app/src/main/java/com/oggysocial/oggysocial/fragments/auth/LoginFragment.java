@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.AuthActivity;
 import com.oggysocial.oggysocial.databinding.FragmentLoginBinding;
+import com.oggysocial.oggysocial.services.UserService;
 
 import java.util.Objects;
 
@@ -75,6 +76,9 @@ public class LoginFragment extends Fragment {
     private void login(String email, String password) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(v -> {
+                    UserService.getUser(user -> {
+                        UserService.user = user;
+                    });
                     loginSuccess();
                 })
                 .addOnFailureListener(e -> {

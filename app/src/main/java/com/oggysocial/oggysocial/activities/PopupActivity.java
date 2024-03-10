@@ -26,8 +26,7 @@ public class PopupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Slide slide = new Slide();
-        slide.setSlideEdge(Gravity.BOTTOM);
-        getWindow().setEnterTransition(slide);
+        slide.setDuration(1000);
         getWindow().setExitTransition(slide);
 
         EdgeToEdge.enable(this);
@@ -43,13 +42,13 @@ public class PopupActivity extends AppCompatActivity {
 
         switch (popup) {
             case CREATE_POST:
-                getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.fragmentContainerView, CreatePostFragment.class, null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, CreatePostFragment.class, null).commit();
                 break;
             case UPDATE_POST:
                 Post post = getIntent().getSerializableExtra("post", Post.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("post", post);
-                getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.fragmentContainerView, UpdatePostFragment.class, bundle).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, UpdatePostFragment.class, bundle).commit();
                 break;
         }
     }

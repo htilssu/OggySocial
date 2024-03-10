@@ -36,12 +36,12 @@ public class PostService {
         newPost.setDate(LocalDateTime.now().toString());
         db.collection("posts").add(newPost).addOnSuccessListener(command -> {
             newPost.setId(command.getId());
-            updatePost(newPost);
             UserService.getUser(user -> {
                 user.addPost(newPost.getId());
                 newPost.setUser(user);
                 listener.onPostSaved(newPost);
                 UserService.saveUser(user);
+                updatePost(newPost);
             });
         });
     }
@@ -105,21 +105,19 @@ public class PostService {
         Query query = db.collection("posts")
                 .where(or(equalTo("author", userId)))
                 .orderBy("date", Query.Direction.DESCENDING);
+
+        query.get().addOnSuccessListener(snapshot -> {
+            List<Post> posts = snapshot.toObjects(Post.class);
+            listener.onListPostLoaded(posts);
+        });
+
         query.addSnapshotListener((command, e) -> {
-            assert command != null;
-            List<Post> posts = command.toObjects(Post.class);
-            UserService.getUser(user -> posts.forEach(post -> post.setUser(user)));
-            listener.onListPostLoaded(posts);
 
+            if (command != null) {
+                List<Post> posts = command.toObjects(Post.class);
+                listener.onListPostLoaded(posts);
+            }
         });
-
-        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            List<Post> posts = queryDocumentSnapshots.toObjects(Post.class);
-            UserService.getUser(user -> posts.forEach(post -> post.setUser(user)));
-            listener.onListPostLoaded(posts);
-        });
-
-
     }
 
     /**

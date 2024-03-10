@@ -8,11 +8,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.oggysocial.oggysocial.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.oggysocial.oggysocial.R
 
 
 class RegisterBirthday : Fragment() {
@@ -54,6 +55,15 @@ class RegisterBirthday : Fragment() {
         teBirthday.setOnTouchListener { _, _ ->
             showDatePickerDialog()
             true
+        }
+
+        teBirthday.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                showDatePickerDialog()
+                val imm =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(teBirthday.windowToken, 0)
+            }
         }
     }
 

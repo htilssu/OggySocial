@@ -118,7 +118,10 @@ public class SearchFragment extends Fragment {
         userAdapter = new UserAdapter(userList);
         userAdapter.setOnUserClickListener(user -> {
             ProfileFragment profileFragment = new ProfileFragment(user);
-            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, profileFragment).addToBackStack(null).commit();
+            getParentFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .replace(R.id.fragmentContainerView, profileFragment).commit();
         });
         rvSearchResults.setAdapter(userAdapter);
 

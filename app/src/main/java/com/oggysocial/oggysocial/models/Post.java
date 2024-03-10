@@ -13,7 +13,6 @@ public class Post implements Serializable {
     String id;
     String content;
     String author;
-    @Exclude
     User user;
     String date;
     List<String> likes;

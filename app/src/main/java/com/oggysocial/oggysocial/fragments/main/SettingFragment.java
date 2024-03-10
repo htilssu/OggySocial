@@ -14,6 +14,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.AuthActivity;
+import com.oggysocial.oggysocial.services.UserService;
 
 import java.util.Objects;
 
@@ -54,6 +55,7 @@ public class SettingFragment extends Fragment {
 
     private void logout() {
         FirebaseAuth.getInstance().signOut();
+        UserService.user = null;
         Intent intent = new Intent(getActivity(), AuthActivity.class);
         startActivity(intent);
         requireActivity().finish();

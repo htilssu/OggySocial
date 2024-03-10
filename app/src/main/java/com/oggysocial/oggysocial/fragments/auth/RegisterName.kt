@@ -44,7 +44,8 @@ class RegisterName : Fragment() {
             firstName = teFirstName.text.toString()
             lastName = teLastName.text.toString()
             if (isValidate()) {
-                val sharedPreferences = context?.getSharedPreferences("App", Context.MODE_PRIVATE)
+                val sharedPreferences =
+                    context?.getSharedPreferences("OggySocial", Context.MODE_PRIVATE)
                 val editor = sharedPreferences?.edit()
                 editor?.putString("firstName", firstName)
                 editor?.putString("lastName", lastName)

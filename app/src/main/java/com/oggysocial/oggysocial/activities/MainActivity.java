@@ -1,6 +1,7 @@
 package com.oggysocial.oggysocial.activities;
 
 import android.os.Bundle;
+import android.transition.Fade;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = new WeakReference<>(this);
         setContentView(R.layout.activity_main);
+        initTransition();
         initVariables();
         initListener();
         initFragments();
@@ -86,5 +88,11 @@ public class MainActivity extends AppCompatActivity {
         showFragment(profileFragment);
     }
 
+
+    private void initTransition() {
+        Fade fade = new Fade();
+        fade.setDuration(1000);
+        getWindow().setEnterTransition(fade);
+    }
 
 }

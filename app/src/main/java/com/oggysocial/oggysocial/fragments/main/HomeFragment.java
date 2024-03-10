@@ -90,7 +90,10 @@ public class HomeFragment extends Fragment {
     private void loadData() {
         PostService.getNewFeeds(posts -> {
             postAdapter = new PostAdapter(posts);
-            postRecyclerView.setAdapter(postAdapter);
+            if (postRecyclerView != null) {
+                postRecyclerView.setAdapter(postAdapter);
+            }
+            postList = posts;
         });
     }
 

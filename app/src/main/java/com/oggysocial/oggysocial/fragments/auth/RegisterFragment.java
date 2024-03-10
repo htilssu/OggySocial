@@ -1,7 +1,5 @@
 package com.oggysocial.oggysocial.fragments.auth;
 
-import static com.oggysocial.oggysocial.databinding.FragmentRegisterBinding.inflate;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

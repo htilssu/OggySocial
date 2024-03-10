@@ -1,5 +1,7 @@
 package com.oggysocial.oggysocial.models;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +16,8 @@ public class User implements Serializable {
     String bio;
     String avatar;
     String birthday;
-    List<String> posts;
-    List<String> friends;
+    List<String> posts = new ArrayList<>();
+    List<String> friends = new ArrayList<>();
 
     public User(String firstName, String lastName, String email, String birthday) {
         this.firstName = firstName;
@@ -117,5 +119,11 @@ public class User implements Serializable {
 
     public String getFullName() {
         return lastName + " " + firstName;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return id;
     }
 }

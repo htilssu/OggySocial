@@ -90,8 +90,6 @@ public class AuthActivity extends AppCompatActivity {
         boolean isLoggedIn = user != null;
         if (isLoggedIn) {
             navigateMain();
-            UserService.getUser(v -> {
-            });
         } else {
             navigateLogin();
         }

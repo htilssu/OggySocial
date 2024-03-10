@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
     WeakReference<ProfileFragment> instance;
     PostAdapter postAdapter;
     CircleImageView civAvatar;
+    ImageView ivBack;
     List<Post> postList;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -81,8 +83,28 @@ public class ProfileFragment extends Fragment {
     private void initViews() {
         postRecyclerView = v.findViewById(R.id.rvPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
+        tvUsername = v.findViewById(R.id.tvUsername);
+        civAvatar = v.findViewById(R.id.civAvatar);
+        appBarLayout = v.findViewById(R.id.appBarLayout);
+        if (!showAppBar) {
+            appBarLayout.setVisibility(View.GONE);
+        }
+        ivBack = v.findViewById(R.id.ivBack);
+
+        initData();
+        initListeners();
+
+    }
+
+    private void initData() {
+        tvUsername.setText(user.getFullName());
+//        Glide.with(this).load(user.getAvatar()).into(civAvatar);
+        //TODO: load avatar
+
+
         if (postList == null) {
-            PostService.getUserPosts(posts -> {
+            PostService.getUserPosts(user.getId(), posts -> {
                 if (postAdapter == null) {
                     postAdapter = new PostAdapter(posts);
                     postRecyclerView.setAdapter(postAdapter);
@@ -96,30 +118,17 @@ public class ProfileFragment extends Fragment {
             postAdapter = new PostAdapter(postList);
             postRecyclerView.setAdapter(postAdapter);
         }
-
-        swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
-        tvUsername = v.findViewById(R.id.tvUsername);
-        civAvatar = v.findViewById(R.id.civAvatar);
-        appBarLayout = v.findViewById(R.id.appBarLayout);
-        if (!showAppBar) {
-            appBarLayout.setVisibility(View.GONE);
-        }
-
-        initData();
-        initListeners();
-
-    }
-
-    private void initData() {
-        tvUsername.setText(user.getFullName());
-//        Glide.with(this).load(user.getAvatar()).into(civAvatar);
-        //TODO: load avatar
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private void initListeners() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
             postAdapter.notifyDataSetChanged();
+        });
+
+        ivBack.setOnClickListener(v -> {
+            getParentFragmentManager().popBackStack();
         });
     }
 

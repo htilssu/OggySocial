@@ -10,13 +10,12 @@ import java.util.Objects;
 
 public class UserService {
 
-    static User user;
+    public static User user;
     private static List<User> userList;
 
     /**
      * Lấy thông tin user theo tên
      *
-     * @param name     tên của người dùng cần lấy thông tin
      * @param listener callback trả về {@link List<User>} thông tin người dùng
      */
 
@@ -31,16 +30,21 @@ public class UserService {
     }
 
     public static void getUserByName(String name, OnListUserLoadedListener listener) {
+        if (name.isBlank()) {
+            listener.onListUserLoaded(null);
+            return;
+        }
+
         if (userList == null) {
             getAllUser(users -> {
                 List<User> result = new ArrayList<>(userList);
                 result.removeIf(user -> !user.getFullName().toLowerCase().contains(name.toLowerCase()));
-                listener.onListUserLoaded(userList);
+                listener.onListUserLoaded(result);
             });
         } else {
             List<User> result = new ArrayList<>(userList);
             result.removeIf(user -> !user.getFullName().toLowerCase().contains(name.toLowerCase()));
-            listener.onListUserLoaded(userList);
+            listener.onListUserLoaded(result);
         }
 
 
@@ -56,7 +60,6 @@ public class UserService {
         if (user != null) {
             listener.onUserLoaded(user);
         } else {
-
             getUserById(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()), user -> {
                 UserService.user = user;
                 listener.onUserLoaded(user);
