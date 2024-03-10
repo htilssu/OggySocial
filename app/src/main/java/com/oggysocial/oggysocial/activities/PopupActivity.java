@@ -1,6 +1,9 @@
 package com.oggysocial.oggysocial.activities;
 
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.view.Gravity;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +24,11 @@ public class PopupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Slide slide = new Slide();
+        slide.setDuration(1000);
+        getWindow().setExitTransition(slide);
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_popup);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.fragmentContainerView), (v, insets) -> {
@@ -34,13 +42,13 @@ public class PopupActivity extends AppCompatActivity {
 
         switch (popup) {
             case CREATE_POST:
-                getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.fragmentContainerView, CreatePostFragment.class, null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, CreatePostFragment.class, null).commit();
                 break;
             case UPDATE_POST:
                 Post post = getIntent().getSerializableExtra("post", Post.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("post", post);
-                getSupportFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.fragmentContainerView, UpdatePostFragment.class, bundle).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, UpdatePostFragment.class, bundle).commit();
                 break;
         }
     }

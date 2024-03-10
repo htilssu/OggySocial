@@ -96,6 +96,9 @@ public class EmailPasswordFragment extends Fragment {
         } else if (password.length() < 8 || password.length() > 32) {
             tePasswordLayout.setError(getString(R.string.invalid_password));
             return false;
+        } else if (!password.equals(Objects.requireNonNull(teConfirmPassword.getText()).toString())) {
+            tePasswordLayout.setError(getString(R.string.password_not_match));
+            return false;
         }
         tePasswordLayout.setError(null);
         return true;
@@ -111,7 +114,9 @@ public class EmailPasswordFragment extends Fragment {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(v -> {
                     UserService.saveUser(user);
-                    UserController.addUser(user);
+                    UserService.getUser(user1 -> {
+                        UserService.user = user1;
+                    });
                     Intent intent = new Intent(requireContext(), MainActivity.class);
                     startActivity(intent);
                     requireActivity().finish();

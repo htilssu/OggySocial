@@ -38,4 +38,5 @@
     <string name="edit_post">Chỉnh sửa bài viết</string>
     <string name="update_post_title">Chỉnh sửa bài viết</string>
     <string name="save">Lưu</string>
+    <string name="password_not_match">Mật khẩu không khớp</string>
 </resources>
