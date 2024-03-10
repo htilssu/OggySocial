@@ -33,6 +33,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         this.posts = posts;
     }
 
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
     @NonNull
     @Override
     public PostAdapter.PostHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
