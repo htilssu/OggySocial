@@ -1,6 +1,9 @@
 package com.oggysocial.oggysocial.activities;
 
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.view.Gravity;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +24,12 @@ public class PopupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Slide slide = new Slide();
+        slide.setSlideEdge(Gravity.BOTTOM);
+        getWindow().setEnterTransition(slide);
+        getWindow().setExitTransition(slide);
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_popup);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.fragmentContainerView), (v, insets) -> {

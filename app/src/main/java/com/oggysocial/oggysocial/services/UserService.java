@@ -1,18 +1,50 @@
 package com.oggysocial.oggysocial.services;
 
-import android.util.Log;
-
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.oggysocial.oggysocial.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class UserService {
 
     static User user;
+    private static List<User> userList;
+
+    /**
+     * Lấy thông tin user theo tên
+     *
+     * @param name     tên của người dùng cần lấy thông tin
+     * @param listener callback trả về {@link List<User>} thông tin người dùng
+     */
+
+    public static void getAllUser(OnListUserLoadedListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if (queryDocumentSnapshots != null) {
+                userList = queryDocumentSnapshots.toObjects(User.class);
+                listener.onListUserLoaded(userList);
+            }
+        });
+    }
+
+    public static void getUserByName(String name, OnListUserLoadedListener listener) {
+        if (userList == null) {
+            getAllUser(users -> {
+                List<User> result = new ArrayList<>(userList);
+                result.removeIf(user -> !user.getFullName().toLowerCase().contains(name.toLowerCase()));
+                listener.onListUserLoaded(userList);
+            });
+        } else {
+            List<User> result = new ArrayList<>(userList);
+            result.removeIf(user -> !user.getFullName().toLowerCase().contains(name.toLowerCase()));
+            listener.onListUserLoaded(userList);
+        }
+
+
+    }
 
     /**
      * Lấy thông tin của user hiện tại
@@ -21,7 +53,15 @@ public class UserService {
      */
     public static void getUser(OnUserLoadedListener listener) {
 
-        getUserById(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()), listener);
+        if (user != null) {
+            listener.onUserLoaded(user);
+        } else {
+
+            getUserById(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()), user -> {
+                UserService.user = user;
+                listener.onUserLoaded(user);
+            });
+        }
     }
 
     /**
@@ -32,17 +72,12 @@ public class UserService {
      */
     public static void getUserById(String userId, OnUserLoadedListener listener) {
 
-        if (user == null) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
-                user = documentSnapshot.toObject(User.class);
-                listener.onUserLoaded(user);
-            });
-        } else {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            User user = documentSnapshot.toObject(User.class);
             listener.onUserLoaded(user);
-        }
+        });
     }
-
 
     /**
      * Lưu thông tin user

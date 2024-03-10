@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/search_item"
         android:background="@drawable/rounded_background"
         android:icon="@drawable/search_3"
         android:iconTint="@color/black"

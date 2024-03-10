@@ -1,156 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?actionBarSize">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:cropToPadding="false"
-                android:scaleType="fitXY"
-                android:src="@drawable/bia"
-                android:visibility="visible"
-                tools:ignore="ContentDescription" />
+                android:paddingHorizontal="@dimen/smaller_padding"
+                android:src="@drawable/baseline_chevron_left_24" />
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-80dp"
-                android:src="@drawable/avatar"
-                app:civ_border_color="@color/windowBackground"
-                app:civ_border_width="3dp" />
 
-            <TextView
-                android:id="@+id/tvUsername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/small_padding"
-                android:text="oggy"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/small_padding">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bia"
+                    android:visibility="visible"
+                    tools:ignore="ContentDescription" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civAvatar"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-80dp"
+                    android:src="@drawable/avatar"
+                    app:civ_border_color="@color/windowBackground"
+                    app:civ_border_width="3dp" />
+
+                <TextView
+                    android:id="@+id/tvUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/small_padding"
+                    android:text="oggy"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/small_padding">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_padding"
+                        android:layout_marginEnd="@dimen/small_padding"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableLeft="@drawable/plus"
+                        android:paddingHorizontal="@dimen/large_padding"
+                        android:text="@string/create_new_post"
+                        app:cornerRadius="5dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/small_padding"
+                        android:layout_marginTop="@dimen/small_padding"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableLeft="@drawable/feather"
+                        android:paddingHorizontal="@dimen/large_padding"
+                        android:text="@string/edit_profile"
+                        app:cornerRadius="5dp" />
+
+
+                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/small_padding"
                     android:layout_marginEnd="@dimen/small_padding"
                     android:backgroundTint="@color/colorPrimary"
                     android:drawableLeft="@drawable/plus"
-                    android:paddingHorizontal="@dimen/large_padding"
-                    android:text="@string/create_new_post"
+                    android:paddingHorizontal="@dimen/xlarge_padding"
+                    android:text="@string/add_friend"
                     app:cornerRadius="5dp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/small_padding"
                     android:layout_marginTop="@dimen/small_padding"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:drawableLeft="@drawable/feather"
-                    android:paddingHorizontal="@dimen/large_padding"
-                    android:text="@string/edit_profile"
-                    app:cornerRadius="5dp" />
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/small_padding"
+                    android:paddingVertical="@dimen/small_padding">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/smaller_padding"
+                        android:text="@string/profile_info"
+                        android:textSize="@dimen/medium_heading_text_size" />
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/small_padding"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="@dimen/smaller_padding"
+                        android:text="Đã học tại THPT An Lạc"
+                        app:drawableLeftCompat="@drawable/education" />
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/small_padding"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="@dimen/smaller_padding"
+                        android:text="Đã học tại THCS Tân Kiên"
+                        android:textAlignment="gravity"
+                        app:drawableLeftCompat="@drawable/education" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/small_padding"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="@dimen/smaller_padding"
+                        android:text="Sống tại Bình Chánh"
+
+                        app:drawableLeftCompat="@drawable/home_full" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/small_padding"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="@dimen/smaller_padding"
+                        android:text="Làm việc tại thành phố Hồ Chí Minh"
+                        app:drawableLeftCompat="@drawable/work" />
+                </LinearLayout>
+
+                <!--        TODO: add friend section-->
 
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPosts"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/medium_padding" />
             </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/small_padding"
-                android:layout_marginEnd="@dimen/small_padding"
-                android:backgroundTint="@color/colorPrimary"
-                android:drawableLeft="@drawable/plus"
-                android:paddingHorizontal="@dimen/xlarge_padding"
-                android:text="@string/add_friend"
-                app:cornerRadius="5dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_padding"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/small_padding"
-                android:paddingVertical="@dimen/small_padding">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/smaller_padding"
-                    android:text="@string/profile_info"
-                    android:textSize="@dimen/medium_heading_text_size" />
-
-                <TextView
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/small_padding"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="@dimen/smaller_padding"
-                    android:text="Đã học tại THPT An Lạc"
-                    app:drawableLeftCompat="@drawable/education" />
-
-                <TextView
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/small_padding"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="@dimen/smaller_padding"
-                    android:text="Đã học tại THCS Tân Kiên"
-                    android:textAlignment="gravity"
-                    app:drawableLeftCompat="@drawable/education" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/small_padding"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="@dimen/smaller_padding"
-                    android:text="Sống tại Bình Chánh"
-
-                    app:drawableLeftCompat="@drawable/home_full" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/small_padding"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="@dimen/smaller_padding"
-                    android:text="Làm việc tại thành phố Hồ Chí Minh"
-                    app:drawableLeftCompat="@drawable/work" />
-            </LinearLayout>
-
-            <!--        TODO: add friend section-->
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPosts"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/medium_padding" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

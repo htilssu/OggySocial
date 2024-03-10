@@ -111,7 +111,6 @@ public class EmailPasswordFragment extends Fragment {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(v -> {
                     UserService.saveUser(user);
-                    UserController.addUser(user);
                     Intent intent = new Intent(requireContext(), MainActivity.class);
                     startActivity(intent);
                     requireActivity().finish();

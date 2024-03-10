@@ -1,19 +1,15 @@
 package com.oggysocial.oggysocial.activities;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.main.HomeFragment;
 import com.oggysocial.oggysocial.fragments.main.ProfileFragment;
-import com.oggysocial.oggysocial.fragments.main.SearchFragment;
 import com.oggysocial.oggysocial.fragments.main.SettingFragment;
 
 import java.lang.ref.WeakReference;
@@ -72,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.home_item) {
                 showFragment(homeFragment);
             } else if (itemId == R.id.profile_item) {
+                ((ProfileFragment) profileFragment).setShowAppBar(false);
                 showFragment(profileFragment);
             } else if (itemId == R.id.setting_item) {
                 showFragment(settingFragment);
@@ -83,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, fragment).commit();
+    }
+
+    public void showProfile() {
+        showFragment(profileFragment);
     }
 
 

@@ -2,6 +2,7 @@ package com.oggysocial.oggysocial.fragments.main;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.transition.Slide;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -47,6 +49,10 @@ public class CreatePostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Slide slide = new Slide();
+        slide.setDuration(200);
+        slide.setSlideEdge(Gravity.END);
+        setEnterTransition(slide);
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:id="@+id/auth_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backround_primary"
+    android:background="@color/background_primary"
     android:orientation="vertical"
     tools:context=".activities.AuthActivity">
 
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:backgroundTint="@color/backround_primary"
+            android:backgroundTint="@color/background_primary"
             android:visibility="invisible"
             app:navigationIcon="@drawable/baseline_chevron_left_40" />
 
