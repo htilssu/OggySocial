@@ -28,6 +28,9 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -60,7 +63,7 @@
                     android:layout_height="120dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="-80dp"
-                    android:src="@drawable/avatar"
+                    android:src="@drawable/default_avatar"
                     app:civ_border_color="@color/windowBackground"
                     app:civ_border_width="3dp" />
 
@@ -90,6 +93,7 @@
                         android:drawableLeft="@drawable/plus"
                         android:paddingHorizontal="@dimen/large_padding"
                         android:text="@string/create_new_post"
+                        android:textColor="@color/white"
                         app:cornerRadius="5dp" />
 
                     <com.google.android.material.button.MaterialButton
@@ -97,10 +101,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/small_padding"
                         android:layout_marginTop="@dimen/small_padding"
+
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableLeft="@drawable/feather"
                         android:paddingHorizontal="@dimen/large_padding"
                         android:text="@string/edit_profile"
+                        android:textColor="@color/white"
                         app:cornerRadius="5dp" />
 
 
@@ -116,6 +122,7 @@
                     android:drawableLeft="@drawable/plus"
                     android:paddingHorizontal="@dimen/xlarge_padding"
                     android:text="@string/add_friend"
+                    android:textColor="@color/white"
                     app:cornerRadius="5dp" />
 
                 <LinearLayout
