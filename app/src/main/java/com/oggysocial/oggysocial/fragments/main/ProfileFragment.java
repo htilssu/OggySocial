@@ -1,10 +1,11 @@
 package com.oggysocial.oggysocial.fragments.main;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -12,33 +13,52 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.appbar.AppBarLayout;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Post;
-import com.oggysocial.oggysocial.services.EditProfile;
+import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment {
 
     WeakReference<ProfileFragment> instance;
     PostAdapter postAdapter;
+    CircleImageView civAvatar;
+    ImageView ivBack;
     List<Post> postList;
-    MaterialButton btnEditProfile;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
+    AppBarLayout appBarLayout;
     TextView tvUsername;
     View v;
+    User user;
+    boolean showAppBar = true;
 
     public ProfileFragment() {
+        UserService.getUser(user -> {
+            this.user = user;
+        });
+    }
+
+    public ProfileFragment(User user) {
+        this.user = user;
+    }
+
+    public void setShowAppBar(boolean showAppBar) {
+        this.showAppBar = showAppBar;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public ProfileFragment getInstance() {
@@ -59,23 +79,18 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void initViews() {
         postRecyclerView = v.findViewById(R.id.rvPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        if (postList == null) {
-            PostService.getUserPosts(posts -> {
-                postAdapter = new PostAdapter(posts);
-                postRecyclerView.setAdapter(postAdapter);
-                postList = posts;
-            });
-        } else {
-            postAdapter = new PostAdapter(postList);
-            postRecyclerView.setAdapter(postAdapter);
-        }
-
         swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
         tvUsername = v.findViewById(R.id.tvUsername);
-        btnEditProfile = v.findViewById(R.id.btnEditProfile);
+        civAvatar = v.findViewById(R.id.civAvatar);
+        appBarLayout = v.findViewById(R.id.appBarLayout);
+        if (!showAppBar) {
+            appBarLayout.setVisibility(View.GONE);
+        }
+        ivBack = v.findViewById(R.id.ivBack);
 
         initData();
         initListeners();
@@ -83,28 +98,37 @@ public class ProfileFragment extends Fragment {
     }
 
     private void initData() {
-        UserService.getUser(user -> {
-            tvUsername.setText(user.getFullName());
-        });
-    }
+        tvUsername.setText(user.getFullName());
+//        Glide.with(this).load(user.getAvatar()).into(civAvatar);
+        //TODO: load avatar
 
-    private void initListeners() {
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            Executor executor = Executors.newSingleThreadExecutor();
-            executor.execute(() -> {
-                PostService.getUserPosts(posts -> {
+
+        if (postList == null) {
+            PostService.getUserPosts(user.getId(), posts -> {
+                if (postAdapter == null) {
                     postAdapter = new PostAdapter(posts);
                     postRecyclerView.setAdapter(postAdapter);
-                    postList = posts;
-                    swipeRefreshLayout.setRefreshing(false);
-                });
+                } else {
+                    postAdapter.setPosts(posts);
+                    postAdapter.notifyDataSetChanged();
+                }
+                postList = posts;
             });
+        } else {
+            postAdapter = new PostAdapter(postList);
+            postRecyclerView.setAdapter(postAdapter);
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void initListeners() {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            postAdapter.notifyDataSetChanged();
         });
-        btnEditProfile.setOnClickListener(v1 -> {
-            Intent intent = new Intent(getContext(), EditProfile.class);
-            Bundle bundle = new Bundle();
-            intent.putExtras(bundle);
-            startActivity(intent);
+
+        ivBack.setOnClickListener(v -> {
+            getParentFragmentManager().popBackStack();
         });
     }
 
@@ -121,6 +145,5 @@ public class ProfileFragment extends Fragment {
         }
         postList.add(0, post);
     }
-
 
 }

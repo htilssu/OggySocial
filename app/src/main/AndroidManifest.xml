@@ -16,20 +16,13 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@drawable/oggy"
         android:supportsRtl="true"
-        android:theme="@style/Theme.oggysocial">
-        <activity
-            android:name=".services.EditProfile"
-            android:exported="false" />
-        <activity
-            android:name=".activities.SearchActivity"
-            android:exported="false" />
+        android:theme="@style/Theme.OggySocial">
         <activity
             android:name=".activities.PopupActivity"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"
-            android:exported="false"
-            android:theme="@style/Base.Theme.oggysocial" />
+            android:exported="false" />
         <activity
             android:name=".activities.AuthActivity"
             android:exported="true">

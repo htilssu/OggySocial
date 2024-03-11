@@ -1,13 +1,12 @@
 package com.oggysocial.oggysocial.activities;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
+import android.transition.Fade;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.main.HomeFragment;
@@ -19,9 +18,8 @@ import java.lang.ref.WeakReference;
 public class MainActivity extends AppCompatActivity {
 
     static WeakReference<MainActivity> instance;
-    MaterialToolbar toolbar;
+    AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigationView;
-    ProgressBar progressBar;
     Fragment homeFragment;
     Fragment profileFragment;
     Fragment settingFragment;
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = new WeakReference<>(this);
         setContentView(R.layout.activity_main);
+        initTransition();
         initVariables();
         initListener();
         initFragments();
@@ -61,9 +60,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initVariables() {
-        toolbar = findViewById(R.id.toolbar);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        progressBar = findViewById(R.id.progressBar);
+        appBarLayout = findViewById(R.id.appBarLayout);
     }
 
     private void initListener() {
@@ -72,24 +70,29 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.home_item) {
                 showFragment(homeFragment);
             } else if (itemId == R.id.profile_item) {
+                ((ProfileFragment) profileFragment).setShowAppBar(false);
                 showFragment(profileFragment);
             } else if (itemId == R.id.setting_item) {
                 showFragment(settingFragment);
             }
             return true;
         });
-    }
 
-    private void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    private void hideLoading() {
-        progressBar.setVisibility(View.GONE);
     }
 
     private void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainerView, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, fragment).commit();
     }
+
+    public void showProfile() {
+        showFragment(profileFragment);
+    }
+
+
+    private void initTransition() {
+        Fade fade = new Fade();
+        fade.setDuration(1000);
+        getWindow().setEnterTransition(fade);
+    }
+
 }
