@@ -1,33 +1,25 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
-import com.oggysocial.oggysocial.activities.MainActivity;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.models.User;
-import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
@@ -50,7 +42,6 @@ public class ProfileFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     AppBarLayout appBarLayout;
     TextView tvUsername;
-    ActivityResultLauncher<PickVisualMediaRequest> pickImage;
     View v;
     User user;
     boolean isMyProfile = false;
@@ -82,7 +73,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         instance = new WeakReference<>(this);
     }
 
@@ -107,9 +97,6 @@ public class ProfileFragment extends Fragment {
         }
         ivBack = v.findViewById(R.id.ivBack);
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
-        btnCreatePost = v.findViewById(R.id.btnCreatePost);
-        btnAddFriend = v.findViewById(R.id.btnAddFriend);
-
 
         //Hide add friend
         if (isMyProfile) {
@@ -130,12 +117,8 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     private void initData() {
         tvUsername.setText(user.getFullName());
-
-        if (user.getAvatar() != null) {
-            Glide.with(this).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(civAvatar);
-        } else {
-            Glide.with(this).load(R.drawable.default_avatar).into(civAvatar);
-        }
+//        Glide.with(this).load(user.getAvatar()).into(civAvatar);
+        //TODO: load avatar
 
 
         if (postList == null) {
@@ -180,13 +163,6 @@ public class ProfileFragment extends Fragment {
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         });
-
-        civAvatar.setOnClickListener(v -> {
-            MainActivity main = (MainActivity) getActivity();
-            assert main != null;
-            main.showPickAvatarImage();
-        });
-
     }
 
 
