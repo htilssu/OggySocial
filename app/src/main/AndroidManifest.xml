@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.oggysocial">
         <activity
+            android:name=".services.EditProfile"
+            android:exported="false" />
+        <activity
             android:name=".activities.SearchActivity"
             android:exported="false" />
         <activity

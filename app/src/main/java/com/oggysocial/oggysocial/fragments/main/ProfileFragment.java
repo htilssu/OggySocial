@@ -1,5 +1,6 @@
 package com.oggysocial.oggysocial.fragments.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Post;
+import com.oggysocial.oggysocial.services.EditProfile;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
@@ -29,6 +32,7 @@ public class ProfileFragment extends Fragment {
     WeakReference<ProfileFragment> instance;
     PostAdapter postAdapter;
     List<Post> postList;
+    MaterialButton btnEditProfile;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     TextView tvUsername;
@@ -71,6 +75,7 @@ public class ProfileFragment extends Fragment {
 
         swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
         tvUsername = v.findViewById(R.id.tvUsername);
+        btnEditProfile = v.findViewById(R.id.btnEditProfile);
 
         initData();
         initListeners();
@@ -95,6 +100,12 @@ public class ProfileFragment extends Fragment {
                 });
             });
         });
+        btnEditProfile.setOnClickListener(v1 -> {
+            Intent intent = new Intent(getContext(), EditProfile.class);
+            Bundle bundle = new Bundle();
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
     }
 
 
@@ -110,5 +121,6 @@ public class ProfileFragment extends Fragment {
         }
         postList.add(0, post);
     }
+
 
 }
