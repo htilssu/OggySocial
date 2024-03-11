@@ -23,6 +23,7 @@ import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.services.PostService;
 
 import java.util.List;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -85,6 +86,8 @@ public class HomeFragment extends Fragment {
             }
             return true;
         });
+
+
     }
 
     private void loadData() {
