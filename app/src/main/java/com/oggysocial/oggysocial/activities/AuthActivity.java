@@ -128,4 +128,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
 
+    public void navigateForgotPassword() {
+
+    }
 }

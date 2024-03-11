@@ -3,6 +3,7 @@
     <style name="Base.Theme.OggySocial" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Theme.OggySocial" parent="Base.Theme.OggySocial" />

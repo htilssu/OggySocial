@@ -1,6 +1,7 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Post;
@@ -35,6 +37,7 @@ public class ProfileFragment extends Fragment {
     CircleImageView civAvatar;
     ImageView ivBack;
     List<Post> postList;
+    MaterialButton btnEditProfile;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     AppBarLayout appBarLayout;
@@ -91,12 +94,14 @@ public class ProfileFragment extends Fragment {
             appBarLayout.setVisibility(View.GONE);
         }
         ivBack = v.findViewById(R.id.ivBack);
+        btnEditProfile = v.findViewById(R.id.btnEditProfile);
 
         initData();
         initListeners();
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void initData() {
         tvUsername.setText(user.getFullName());
 //        Glide.with(this).load(user.getAvatar()).into(civAvatar);
@@ -129,6 +134,9 @@ public class ProfileFragment extends Fragment {
 
         ivBack.setOnClickListener(v -> {
             getParentFragmentManager().popBackStack();
+        });
+
+        btnEditProfile.setOnClickListener(v -> {
         });
     }
 
