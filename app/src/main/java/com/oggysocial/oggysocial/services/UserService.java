@@ -106,6 +106,13 @@ public class UserService {
         });
     }
 
+    public static void resetPassword(String email, OnEmailSentListener listener) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            listener.onEmailSent();
+        });
+    }
+
+
     /**
      * Callback khi thông tin user được load
      */
@@ -120,6 +127,11 @@ public class UserService {
      */
     public interface OnListUserLoadedListener {
         void onListUserLoaded(List<User> users);
+    }
+
+
+    public interface OnEmailSentListener {
+        void onEmailSent();
     }
 
 

@@ -37,18 +37,20 @@ public class ProfileFragment extends Fragment {
     CircleImageView civAvatar;
     ImageView ivBack;
     List<Post> postList;
-    MaterialButton btnEditProfile;
+    MaterialButton btnEditProfile, btnAddFriend;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     AppBarLayout appBarLayout;
     TextView tvUsername;
     View v;
     User user;
+    boolean isMyProfile = false;
     boolean showAppBar = true;
 
     public ProfileFragment() {
         UserService.getUser(user -> {
             this.user = user;
+            isMyProfile = true;
         });
     }
 
@@ -95,6 +97,14 @@ public class ProfileFragment extends Fragment {
         }
         ivBack = v.findViewById(R.id.ivBack);
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
+
+        //Hide add friend
+        if (isMyProfile) {
+            btnEditProfile.setVisibility(View.VISIBLE);
+
+        } else {
+            btnEditProfile.setVisibility(View.GONE);
+        }
 
         initData();
         initListeners();

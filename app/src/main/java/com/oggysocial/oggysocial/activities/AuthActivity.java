@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.oggysocial.oggysocial.R;
+import com.oggysocial.oggysocial.fragments.auth.ForgotPasswordFragment;
 import com.oggysocial.oggysocial.fragments.auth.LoginFragment;
 import com.oggysocial.oggysocial.fragments.auth.RegisterFragment;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -34,19 +35,9 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         instance = this;
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_auth);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.auth_container), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
-            return insets;
-        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     protected void onStart() {
@@ -106,7 +97,7 @@ public class AuthActivity extends AppCompatActivity {
     private void initListeners() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.addOnBackStackChangedListener(() -> {
-            if (fragmentManager.getBackStackEntryCount() > 0 && getSupportActionBar() == null) {
+            if (fragmentManager.getBackStackEntryCount() > 0) {
                 showActionBar();
             } else {
                 hideActionBar();
@@ -128,7 +119,4 @@ public class AuthActivity extends AppCompatActivity {
     }
 
 
-    public void navigateForgotPassword() {
-
-    }
 }
