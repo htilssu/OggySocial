@@ -41,9 +41,7 @@
             android:hint="@string/username_hint"
             android:inputType="text"
             android:maxLength="@integer/username_max_length"
-            android:minHeight="48dp"
-            android:textColorHint="#546E7A"
-            tools:ignore="VisualLintTextFieldSize,TextContrastCheck" />
+            android:minHeight="48dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

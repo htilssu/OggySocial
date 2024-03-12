@@ -60,7 +60,13 @@ public class EmailPasswordFragment extends Fragment {
     private void initListener() {
         btnNext.setOnClickListener(v -> {
             if (validateEmail() && validatePassword()) {
-                registerUser();
+                EmailService.checkEmailExist(email, isExist -> {
+                    if (isExist) {
+                        Toast.makeText(getContext(), getString(R.string.email_is_exist), Toast.LENGTH_LONG).show();
+                    } else {
+                        registerUser();
+                    }
+                });
             }
         });
     }
@@ -84,6 +90,8 @@ public class EmailPasswordFragment extends Fragment {
             teEmailLayout.setError(getString(R.string.invalid_email));
             return false;
         }
+
+
         teEmailLayout.setError(null);
         return true;
     }

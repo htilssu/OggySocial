@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,11 +24,12 @@ import java.util.Objects;
 public class LoginFragment extends Fragment {
 
 
-    FragmentLoginBinding binding;
     AuthActivity authActivity;
     String email, password;
-
     View rootView;
+    TextView tvForgotPassword;
+    Button btnLogin, btnRegister;
+
 
     public LoginFragment() {
         this.authActivity = AuthActivity.instance;
@@ -41,7 +43,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = FragmentLoginBinding.inflate(getLayoutInflater());
     }
 
     @Override
@@ -53,22 +54,42 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initViews();
         initListeners();
+    }
+
+    private void initViews() {
+        tvForgotPassword = requireView().findViewById(R.id.tvForgotPassword);
+        btnLogin = requireView().findViewById(R.id.btnLogin);
+        btnRegister = requireView().findViewById(R.id.btnRegister);
     }
 
     private void initListeners() {
         //Login Button
-        Button loginButton = rootView.findViewById(R.id.btnLogin);
-        loginButton.setOnClickListener(v -> onLoginClick());
+        btnLogin.setOnClickListener(v -> onLoginClick());
 
         //Register Button
-        Button registerButton = rootView.findViewById(R.id.btnRegister);
-        registerButton.setOnClickListener(v -> authActivity.navigateRegister());
+        btnRegister.setOnClickListener(v -> authActivity.navigateRegister());
+
+        tvForgotPassword.setOnClickListener(v -> navigateToForgotPassword());
+    }
+
+    private void navigateToForgotPassword() {
+
+        getParentFragmentManager()
+                .beginTransaction()
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .replace(R.id.auth_fragment_container, new ForgotPasswordFragment())
+                .commit();
     }
 
     private void onLoginClick() {
         if (validateInput()) {
             login(email, password);
+        } else {
+            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_LONG).show();
+
         }
 
     }

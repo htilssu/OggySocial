@@ -1,5 +1,6 @@
 package com.oggysocial.oggysocial.activities;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.transition.Transition;
@@ -45,7 +46,12 @@ public class PopupActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, CreatePostFragment.class, null).commit();
                 break;
             case UPDATE_POST:
-                Post post = getIntent().getSerializableExtra("post", Post.class);
+                Post post = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    post = getIntent().getSerializableExtra("post", Post.class);
+                } else {
+                    post = (Post) getIntent().getSerializableExtra("post");
+                }
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("post", post);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, UpdatePostFragment.class, bundle).commit();
@@ -54,7 +60,11 @@ public class PopupActivity extends AppCompatActivity {
     }
 
     private void getData() {
-        popup = getIntent().getSerializableExtra("popup", Popup.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            popup = getIntent().getSerializableExtra("popup", Popup.class);
+        } else {
+            popup = (Popup) getIntent().getSerializableExtra("popup");
+        }
     }
 
 
