@@ -1,7 +1,9 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -56,35 +58,49 @@ public class EditProfile extends Fragment {
         if(user != null){
             String uid = user.getUid();
 
-        documentReference = db.collection("user").document(uid);
+        documentReference = db.collection("users").document(uid);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 user1 = documentSnapshot.toObject(User.class);
-                updateProfile();
             }
         });
         }
 
-        edBio = v.findViewById(R.id.Edit_Education);
-        edProfession = v.findViewById((R.id.Edit_Education));
-        button = v.findViewById(R.id.btn_up);
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        v = inflater.inflate(R.layout.activity_edit_profile, container, false);
+        initViews();
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateProfile();
-            }
-        });
-
-        ViewCompat.setOnApplyWindowInsetsListener(v.findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
+        return v;
     }
 
+    private void initViews() {
+        edBio = v.findViewById(R.id.Edit_Education);
+        edProfession = v.findViewById((R.id.Edit_bio));
+        button = v.findViewById(R.id.btn_up);
+
+        loadData();
+        initListener();
+    }
+
+    private void initListener() {
+        button.setOnClickListener(v -> {
+            updateProfile();
+        });
+    }
+
+    private void loadData() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+            documentReference = db.collection("user").document(uid);
+            documentReference.get().addOnSuccessListener(documentSnapshot -> {
+                user1 = documentSnapshot.toObject(User.class);
+            });
+        }
+    }
 
     private void updateProfile() {
 

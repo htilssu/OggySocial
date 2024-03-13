@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -135,12 +137,20 @@ public class ProfileFragment extends Fragment {
             getParentFragmentManager().popBackStack();
         });
         btnEditProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), EditProfile.class);
-            Bundle bundle = new Bundle();
-            intent.putExtras(bundle);
-            startActivity(intent);
+            EditProfile editProfileFragment = new EditProfile();
 
+            Bundle bundle = new Bundle();
+            bundle.putString("userId", user.getId());
+
+            editProfileFragment.setArguments(bundle);
+
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragmentContainerView, editProfileFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
+
     }
 
 
