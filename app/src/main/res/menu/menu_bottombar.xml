@@ -8,6 +8,9 @@
         android:id="@+id/profile_item"
         android:icon="@drawable/profile_bold"
         android:title="@string/profile" />
+  <!--  <item android:id="@+id/notification_item"
+        android:icon="@drawable/bell"
+        android:title="@string/notification" />-->
     <item android:id="@+id/setting_item"
         android:icon="@drawable/setting_bold"
         android:title="@string/setting" />
