@@ -1,12 +1,10 @@
 package com.oggysocial.oggysocial.fragments.main;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -14,33 +12,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Post;
-import com.oggysocial.oggysocial.models.User;
+import com.oggysocial.oggysocial.services.EditProfile;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class ProfileFragment extends Fragment {
 
     WeakReference<ProfileFragment> instance;
     PostAdapter postAdapter;
-    CircleImageView civAvatar;
-    ImageView ivBack;
     List<Post> postList;
     MaterialButton btnEditProfile, btnAddFriend, btnCreatePost;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
-    AppBarLayout appBarLayout;
     TextView tvUsername;
     View v;
     User user;
@@ -84,10 +78,20 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void initViews() {
         postRecyclerView = v.findViewById(R.id.rvPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (postList == null) {
+            PostService.getUserPosts(posts -> {
+                postAdapter = new PostAdapter(posts);
+                postRecyclerView.setAdapter(postAdapter);
+                postList = posts;
+            });
+        } else {
+            postAdapter = new PostAdapter(postList);
+            postRecyclerView.setAdapter(postAdapter);
+        }
+
         swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
         tvUsername = v.findViewById(R.id.tvUsername);
         civAvatar = v.findViewById(R.id.civAvatar);
@@ -178,5 +182,6 @@ public class ProfileFragment extends Fragment {
         }
         postList.add(0, post);
     }
+
 
 }
