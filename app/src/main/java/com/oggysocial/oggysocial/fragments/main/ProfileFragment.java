@@ -1,6 +1,7 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Post;
@@ -39,6 +41,7 @@ public class ProfileFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     AppBarLayout appBarLayout;
     TextView tvUsername;
+    MaterialButton btnEditProfile;
     View v;
     User user;
     boolean showAppBar = true;
@@ -87,6 +90,7 @@ public class ProfileFragment extends Fragment {
         tvUsername = v.findViewById(R.id.tvUsername);
         civAvatar = v.findViewById(R.id.civAvatar);
         appBarLayout = v.findViewById(R.id.appBarLayout);
+        btnEditProfile = v.findViewById(R.id.btnEditProfile);
         if (!showAppBar) {
             appBarLayout.setVisibility(View.GONE);
         }
@@ -129,6 +133,13 @@ public class ProfileFragment extends Fragment {
 
         ivBack.setOnClickListener(v -> {
             getParentFragmentManager().popBackStack();
+        });
+        btnEditProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), EditProfile.class);
+            Bundle bundle = new Bundle();
+            intent.putExtras(bundle);
+            startActivity(intent);
+
         });
     }
 

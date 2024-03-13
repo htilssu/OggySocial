@@ -1,4 +1,4 @@
-package com.oggysocial.oggysocial.services;
+package com.oggysocial.oggysocial.fragments.main;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,23 +32,25 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.User;
+import com.oggysocial.oggysocial.services.UserService;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditProfile extends AppCompatActivity {
+public class EditProfile extends Fragment {
 
     EditText edBio,edProfession;
     Button button;
     DocumentReference documentReference;
     User user1;
+    View v;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_edit_profile);
+//        EdgeToEdge.enable(this);
+//        setContentView(R.layout.activity_edit_profile);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
@@ -63,9 +66,9 @@ public class EditProfile extends AppCompatActivity {
         });
         }
 
-        edBio = findViewById(R.id.Edit_Education);
-        edProfession = findViewById((R.id.Edit_Education));
-        button = findViewById(R.id.btn_up);
+        edBio = v.findViewById(R.id.Edit_Education);
+        edProfession = v.findViewById((R.id.Edit_Education));
+        button = v.findViewById(R.id.btn_up);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +77,7 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(v.findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;

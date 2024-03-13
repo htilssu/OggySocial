@@ -101,7 +101,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/small_padding"
                         android:layout_marginTop="@dimen/small_padding"
-
+                        android:id="@+id/btnEditProfile"
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableLeft="@drawable/feather"
                         android:paddingHorizontal="@dimen/large_padding"

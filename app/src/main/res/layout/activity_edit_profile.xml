@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".services.EditProfile">
+    tools:context=".fragments.main.EditProfile">
     
     <TextView
         android:layout_width="match_parent"
@@ -70,7 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:drawablePadding="7dp"
-            android:text="Khác"/>
+            android:text="Khác"
+                />
     </RadioGroup>
     <Button
         android:layout_width="match_parent"
