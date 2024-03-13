@@ -1,6 +1,9 @@
 package com.oggysocial.oggysocial.fragments.auth;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +106,12 @@ public class LoginFragment extends Fragment {
                     loginSuccess();
                 })
                 .addOnFailureListener(e -> {
+                    Log.i(TAG, "login: " + e.getMessage());
                     Toast.makeText(getContext(), "Tài khoản hoặc mật khẩu không đúng", Toast.LENGTH_LONG).show();
+                }).addOnCompleteListener(task -> {
+                    Log.i(TAG, "login: " + task.isSuccessful());
+                }).addOnCanceledListener(() -> {
+                    Log.i(TAG, "login: " + "canceled");
                 });
     }
 

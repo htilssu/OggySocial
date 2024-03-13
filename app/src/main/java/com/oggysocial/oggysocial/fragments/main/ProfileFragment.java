@@ -1,7 +1,6 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -147,7 +148,20 @@ public class ProfileFragment extends Fragment {
         });
 
         btnEditProfile.setOnClickListener(v -> {
+            EditProfile editProfileFragment = new EditProfile();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("userId", user.getId());
+
+            editProfileFragment.setArguments(bundle);
+
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragmentContainerView, editProfileFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
+
     }
 
 
