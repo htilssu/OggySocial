@@ -106,9 +106,7 @@ public class CreatePostFragment extends Fragment {
                     });
                 });
             } else {
-                PostService.savePost(newPost, post -> {
-                    showSuccess();
-                });
+                PostService.savePost(newPost, post -> showSuccess());
             }
         });
     }

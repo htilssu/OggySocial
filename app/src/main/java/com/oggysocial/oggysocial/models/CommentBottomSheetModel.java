@@ -59,6 +59,8 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
                 comment.setAuthor(UserService.user);
                 comment.setDate(String.valueOf(LocalDateTime.now()));
                 post.addComment(comment);
+                commentAdapter.setComments(post.getComments());
+                commentAdapter.notifyItemInserted(post.getComments().size() - 1);
                 PostService.updatePost(post);
                 etComment.setText("");
             }
