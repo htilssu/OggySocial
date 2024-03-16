@@ -1,6 +1,7 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,11 +64,13 @@ public class EditProfile extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 user1 = documentSnapshot.toObject(User.class);
+                loadDataIntoViews();
             }
         });
         }
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.activity_edit_profile, container, false);
@@ -75,6 +78,7 @@ public class EditProfile extends Fragment {
 
         return v;
     }
+
 
     private void initViews() {
         edBio = v.findViewById(R.id.Edit_Education);
@@ -91,34 +95,42 @@ public class EditProfile extends Fragment {
         });
     }
 
+    private void updateProfile() {
+        if (user1 != null) {
+            // Cập nhật thông tin mới từ EditText vào user1
+            user1.setBio(edBio.getText().toString());
+
+            // Lưu user1 vào Firestore
+            documentReference.set(user1)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getActivity(), "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        // Xử lý lỗi khi thất bại trong việc cập nhật profile lên Firestore
+                        Log.e("EditProfile", "Error updating profile", e);
+                        Toast.makeText(getActivity(), "Failed to update profile", Toast.LENGTH_SHORT).show();
+                    });
+//        } else {
+//            Toast.makeText(getActivity(), "User data is null", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void loadData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
-            documentReference = db.collection("user").document(uid);
+            documentReference = db.collection("users").document(uid);
             documentReference.get().addOnSuccessListener(documentSnapshot -> {
                 user1 = documentSnapshot.toObject(User.class);
             });
         }
     }
+    private void loadDataIntoViews() {
+        if (user1 != null) {
+            // Load dữ liệu từ user1 vào các EditText
+            edBio.setText(user1.getBio());
+        }
 
-    private void updateProfile() {
-
-
-       String bio = edBio.getText().toString();
-//        String prof = edProfession.getText().toString();
-//
-//        //CollectionReference cities = db.collection("cities");
-//
-////        Map<String, Object> data1 = new HashMap<>();
-////        data1.put("bio", "San Francisco");
-////        data1.put("profession", "Đã học tại THCS Tân Kiên");
-////        data1.put("sexual", Arrays.asList("Nam","Nu","khác"));
-//        //cities.document("SF").set(data1);
-      user1.setBio(bio);
-//        user1.setBio(prof);
-        UserService.saveUser(user1);
     }
-
 }
 
