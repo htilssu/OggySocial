@@ -20,9 +20,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     List<Comment> comments;
     OnCreatedCommentListener onCreatedCommentListener;
     OnUserAvatarClickListener onUserAvatarClickListener;
+    OnDeletedCommentListener onDeletedCommentListener;
 
     public CommentAdapter(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public void setOnDeletedCommentListener(OnDeletedCommentListener onDeletedCommentListener) {
+        this.onDeletedCommentListener = onDeletedCommentListener;
     }
 
     public void setComments(List<Comment> comments) {
@@ -56,12 +61,27 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         return 0;
     }
 
+    public void deleteComment(int position) {
+        comments.remove(position);
+        notifyItemRemoved(position);
+        new Thread(() -> {
+            if (onDeletedCommentListener != null) {
+                onDeletedCommentListener.onDeletedComment(position);
+            }
+        }).start();
+    }
+
+
     public interface OnCreatedCommentListener {
         void onCreatedComment(Comment comment);
     }
 
     public interface OnUserAvatarClickListener {
         void onUserAvatarClick(User user);
+    }
+
+    public interface OnDeletedCommentListener {
+        void onDeletedComment(int position);
     }
 
     public class CommentHolder extends RecyclerView.ViewHolder {
