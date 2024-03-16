@@ -2,7 +2,6 @@ package com.oggysocial.oggysocial.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -12,14 +11,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.oggysocial.oggysocial.R;
-import com.oggysocial.oggysocial.fragments.auth.ForgotPasswordFragment;
 import com.oggysocial.oggysocial.fragments.auth.LoginFragment;
 import com.oggysocial.oggysocial.fragments.auth.RegisterFragment;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.oggysocial.oggysocial.services.UserService;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -36,6 +33,12 @@ public class AuthActivity extends AppCompatActivity {
         instance = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+        EdgeToEdge.enable(this);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.auth_container), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
     }
 
 
