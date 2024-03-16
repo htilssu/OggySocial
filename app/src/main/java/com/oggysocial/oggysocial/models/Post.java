@@ -1,7 +1,5 @@
 package com.oggysocial.oggysocial.models;
 
-import com.google.firebase.firestore.Exclude;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

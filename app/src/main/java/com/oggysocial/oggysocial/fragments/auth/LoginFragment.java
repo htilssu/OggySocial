@@ -2,6 +2,7 @@ package com.oggysocial.oggysocial.fragments.auth;
 
 import static android.content.ContentValues.TAG;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +13,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.AuthActivity;
-import com.oggysocial.oggysocial.databinding.FragmentLoginBinding;
 import com.oggysocial.oggysocial.services.UserService;
 
 import java.util.Objects;
@@ -32,6 +34,9 @@ public class LoginFragment extends Fragment {
     View rootView;
     TextView tvForgotPassword;
     Button btnLogin, btnRegister;
+    LottieAnimationView lottieAnimationView;
+
+    ConstraintLayout constraintLayout;
 
 
     public LoginFragment() {
@@ -40,6 +45,8 @@ public class LoginFragment extends Fragment {
 
     public void loginSuccess() {
         authActivity.navigateMain();
+        requireView().findViewById(R.id.loadingLayout).setBackgroundColor(Color.TRANSPARENT);
+        lottieAnimationView.cancelAnimation();
         authActivity.finish();
     }
 
@@ -65,6 +72,8 @@ public class LoginFragment extends Fragment {
         tvForgotPassword = requireView().findViewById(R.id.tvForgotPassword);
         btnLogin = requireView().findViewById(R.id.btnLogin);
         btnRegister = requireView().findViewById(R.id.btnRegister);
+        lottieAnimationView = requireView().findViewById(R.id.animation_view);
+        lottieAnimationView.setMinAndMaxFrame(0, 320);
     }
 
     private void initListeners() {
@@ -88,6 +97,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void onLoginClick() {
+        showLoading();
         if (validateInput()) {
             login(email, password);
         } else {
@@ -138,6 +148,11 @@ public class LoginFragment extends Fragment {
         }
 
         return true;
+    }
+
+    private void showLoading() {
+        lottieAnimationView.playAnimation();
+        requireView().findViewById(R.id.loadingLayout).setBackgroundColor(requireContext().getResources().getColor(R.color.placeholder, null));
     }
 
 }

@@ -86,6 +86,7 @@
                     android:paddingHorizontal="@dimen/small_padding">
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCreatePost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/small_padding"

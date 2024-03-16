@@ -131,7 +131,9 @@ public class UpdatePostFragment extends Fragment {
     private void bidingData() {
         etPostContent.setText(post.getContent());
         tvAuthorName.setText(post.getUser().getFullName());
-        Glide.with(requireContext()).load(post.getImages().values().iterator().next()).into(ivPostImage);
+        if (!post.getImages().isEmpty()) {
+            post.getImages().forEach((s, uri) -> Glide.with(requireView()).load(uri).into(ivPostImage));
+        }
     }
 
     public interface OnUpdatedPost {

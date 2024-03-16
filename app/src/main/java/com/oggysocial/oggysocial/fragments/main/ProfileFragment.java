@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
@@ -38,7 +40,7 @@ public class ProfileFragment extends Fragment {
     CircleImageView civAvatar;
     ImageView ivBack;
     List<Post> postList;
-    MaterialButton btnEditProfile, btnAddFriend;
+    MaterialButton btnEditProfile, btnAddFriend, btnCreatePost;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     AppBarLayout appBarLayout;
@@ -98,13 +100,16 @@ public class ProfileFragment extends Fragment {
         }
         ivBack = v.findViewById(R.id.ivBack);
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
+        btnCreatePost = v.findViewById(R.id.btnCreatePost);
+
 
         //Hide add friend
         if (isMyProfile) {
             btnEditProfile.setVisibility(View.VISIBLE);
-
+            btnCreatePost.setVisibility(View.VISIBLE);
         } else {
             btnEditProfile.setVisibility(View.GONE);
+            btnCreatePost.setVisibility(View.GONE);
         }
 
         initData();
@@ -115,8 +120,12 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     private void initData() {
         tvUsername.setText(user.getFullName());
-//        Glide.with(this).load(user.getAvatar()).into(civAvatar);
-        //TODO: load avatar
+
+        if (user.getAvatar() != null) {
+            Glide.with(this).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(civAvatar);
+        } else {
+            Glide.with(this).load(R.drawable.default_avatar).into(civAvatar);
+        }
 
 
         if (postList == null) {

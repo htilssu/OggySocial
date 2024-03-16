@@ -45,4 +45,6 @@
     <string name="reset_password">Đặt lại mật khẩu</string>
     <string name="reset_password_success">Đã gửi đường dẫn đặt lại mật khẩu vào email</string>
     <string name="email_not_exist">Email này không được đăng ký với người dùng nào</string>
+    <string name="add_comment">Thêm bình luận</string>
+    <string name="add_comment_hint">Thêm bình luận</string>
 </resources>

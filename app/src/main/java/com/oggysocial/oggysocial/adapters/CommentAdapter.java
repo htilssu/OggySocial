@@ -3,11 +3,13 @@ package com.oggysocial.oggysocial.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Comment;
 import com.oggysocial.oggysocial.models.User;
@@ -20,9 +22,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     List<Comment> comments;
     OnCreatedCommentListener onCreatedCommentListener;
     OnUserAvatarClickListener onUserAvatarClickListener;
+    OnDeletedCommentListener onDeletedCommentListener;
 
     public CommentAdapter(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public void setOnDeletedCommentListener(OnDeletedCommentListener onDeletedCommentListener) {
+        this.onDeletedCommentListener = onDeletedCommentListener;
     }
 
     public void setComments(List<Comment> comments) {
@@ -46,7 +53,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentHolder holder, int position) {
-
+        Comment comment = comments.get(position);
+        holder.tvCommentAuthor.setText(comment.getAuthor().getFullName());
+        holder.tvCommentContent.setText(comment.getContent());
+        String avatar = comment.getAuthor().getAvatar();
+        if (avatar != null) {
+            Glide.with(holder.itemView).load(avatar).into(holder.civAvatar);
+        } else {
+            holder.civAvatar.setImageResource(R.drawable.default_avatar);
+        }
     }
 
     @Override
@@ -54,6 +69,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         if (comments != null)
             return comments.size();
         return 0;
+    }
+
+    public void deleteComment(int position) {
+        comments.remove(position);
+        notifyItemRemoved(position);
+        if (onDeletedCommentListener != null) {
+            Thread thread = new Thread(() -> {
+                onDeletedCommentListener.onDeletedComment(position);
+            });
+
+            thread.start();
+        }
     }
 
     public interface OnCreatedCommentListener {
@@ -64,9 +91,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         void onUserAvatarClick(User user);
     }
 
+    public interface OnDeletedCommentListener {
+        void onDeletedComment(int position);
+    }
+
+
     public class CommentHolder extends RecyclerView.ViewHolder {
-        TextView tvCommentContent;
+        TextView tvCommentContent, tvCommentAuthor;
         CircleImageView civAvatar;
+        LinearLayout llCommentContent;
 
         public CommentHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,6 +110,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         private void initView() {
             tvCommentContent = itemView.findViewById(R.id.tvCommentContent);
             civAvatar = itemView.findViewById(R.id.civAvatar);
+            tvCommentAuthor = itemView.findViewById(R.id.tvCommentAuthor);
+            llCommentContent = itemView.findViewById(R.id.llCommentContent);
         }
 
         private void initListener() {
@@ -85,6 +120,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
                     onUserAvatarClickListener.onUserAvatarClick(comments.get(getAbsoluteAdapterPosition()).getAuthor());
                 }
             });
+
+            llCommentContent.setOnLongClickListener(v -> {
+                return true;
+            });
+
+
         }
     }
 }

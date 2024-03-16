@@ -65,6 +65,7 @@ public class UserService {
                 listener.onUserLoaded(user);
             });
         }
+
     }
 
     /**
