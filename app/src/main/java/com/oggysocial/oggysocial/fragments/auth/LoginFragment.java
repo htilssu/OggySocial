@@ -97,12 +97,11 @@ public class LoginFragment extends Fragment {
     }
 
     private void onLoginClick() {
-        showLoading();
         if (validateInput()) {
+            showLoading();
             login(email, password);
         } else {
             Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_LONG).show();
-
         }
 
     }
