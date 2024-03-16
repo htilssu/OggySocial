@@ -10,4 +10,6 @@
     <color name="red_heart">#BC0B0B</color>
     <color name="background_holder">#E1F3F6</color>
     <color name="windowBackground">#F5F5F5</color>
+    <color name="blue">#034B83</color>
+    <color name="whiteblue">#1D5783</color>
 </resources>
