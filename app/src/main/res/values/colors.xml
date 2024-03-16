@@ -5,9 +5,11 @@
     <color name="colorPrimary">#037EDC</color>
     <color name="primaryHintTextColor">#78909C</color>
     <color name="error_stroke">#EF5C5C</color>
+    <color name="bg_delete">#EF5C5C</color>
     <color name="inactive">#686868</color>
     <color name="background_primary">#FEF7FF</color>
     <color name="red_heart">#BC0B0B</color>
     <color name="background_holder">#E1F3F6</color>
     <color name="windowBackground">#F5F5F5</color>
+    <color name="placeholder">#3A4141</color>
 </resources>

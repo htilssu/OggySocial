@@ -20,7 +20,7 @@
     <string name="profile">Hồ sơ</string>
     <string name="setting">Cài đặt</string>
     <string name="author_avatar">author avatar</string>
-    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consetetur pariatur nihil accumsan reprehenderit eirmod luptatum labore elit quis cillum aliquyam placerat. Sunt nihil dignissim id. Sanctus ea ex exercitation lorem sadipscing tempor. Elit dolores pariatur. Nobis accumsan labore.</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipisLorem ipsum dolor sit amet, consectetur adipiscing elit. Consetetur pariatur nihil accumsan reprehenderit eirmod luptatum labore elit quis cillum aliquyam placerat. Sunt nihil dignissim id. Sanctus ea ex exercitation lorem sadipscing tempor. Elit dolores pariatur. Nobis accumsan labore.</string>
     <string name="todo">TODO</string>
     <string name="thinking">Bạn đang nghĩ gì?</string>
     <string name="like">Thích</string>
@@ -45,4 +45,6 @@
     <string name="reset_password">Đặt lại mật khẩu</string>
     <string name="reset_password_success">Đã gửi đường dẫn đặt lại mật khẩu vào email</string>
     <string name="email_not_exist">Email này không được đăng ký với người dùng nào</string>
+    <string name="add_comment">Thêm bình luận</string>
+    <string name="add_comment_hint">Thêm bình luận</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
@@ -37,7 +40,7 @@ public class ProfileFragment extends Fragment {
     CircleImageView civAvatar;
     ImageView ivBack;
     List<Post> postList;
-    MaterialButton btnEditProfile, btnAddFriend;
+    MaterialButton btnEditProfile, btnAddFriend, btnCreatePost;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     AppBarLayout appBarLayout;
@@ -97,13 +100,16 @@ public class ProfileFragment extends Fragment {
         }
         ivBack = v.findViewById(R.id.ivBack);
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
+        btnCreatePost = v.findViewById(R.id.btnCreatePost);
+
 
         //Hide add friend
         if (isMyProfile) {
             btnEditProfile.setVisibility(View.VISIBLE);
-
+            btnCreatePost.setVisibility(View.VISIBLE);
         } else {
             btnEditProfile.setVisibility(View.GONE);
+            btnCreatePost.setVisibility(View.GONE);
         }
 
         initData();
@@ -114,8 +120,12 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     private void initData() {
         tvUsername.setText(user.getFullName());
-//        Glide.with(this).load(user.getAvatar()).into(civAvatar);
-        //TODO: load avatar
+
+        if (user.getAvatar() != null) {
+            Glide.with(this).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(civAvatar);
+        } else {
+            Glide.with(this).load(R.drawable.default_avatar).into(civAvatar);
+        }
 
 
         if (postList == null) {
@@ -147,7 +157,20 @@ public class ProfileFragment extends Fragment {
         });
 
         btnEditProfile.setOnClickListener(v -> {
+            EditProfile editProfileFragment = new EditProfile();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("userId", user.getId());
+
+            editProfileFragment.setArguments(bundle);
+
+            FragmentManager fragmentManager = getParentFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragmentContainerView, editProfileFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
+
     }
 
 
