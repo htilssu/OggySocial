@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Comment;
 import com.oggysocial.oggysocial.models.User;
@@ -51,7 +52,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentHolder holder, int position) {
-
+        User user = comments.get(position).getAuthor();
+        holder.tvCommentContent.setText(comments.get(position).getContent());
+        holder.tvCommentAuthor.setText(user.getFullName());
+        if (user.getAvatar() != null) {
+            Glide.with(holder.itemView).load(user.getAvatar()).into(holder.civAvatar);
+        }
     }
 
     @Override
@@ -85,7 +91,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     }
 
     public class CommentHolder extends RecyclerView.ViewHolder {
-        TextView tvCommentContent;
+        TextView tvCommentContent, tvCommentAuthor;
         CircleImageView civAvatar;
 
         public CommentHolder(@NonNull View itemView) {
@@ -97,6 +103,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         private void initView() {
             tvCommentContent = itemView.findViewById(R.id.tvCommentContent);
             civAvatar = itemView.findViewById(R.id.civAvatar);
+            tvCommentAuthor = itemView.findViewById(R.id.tvCommentAuthor);
         }
 
         private void initListener() {
