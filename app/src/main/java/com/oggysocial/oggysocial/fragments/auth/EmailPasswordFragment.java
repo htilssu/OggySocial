@@ -15,17 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.Firebase;
-import com.google.firebase.auth.FirebaseAuth;
-import com.oggysocial.oggysocial.R;
-import com.oggysocial.oggysocial.activities.MainActivity;
-import com.oggysocial.oggysocial.controllers.UserController;
-import com.oggysocial.oggysocial.models.Status;
-import com.oggysocial.oggysocial.models.User;
-import com.oggysocial.oggysocial.services.EmailService;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.oggysocial.oggysocial.R;
+import com.oggysocial.oggysocial.Utils.AuthUtil;
+import com.oggysocial.oggysocial.activities.MainActivity;
+import com.oggysocial.oggysocial.models.User;
+import com.oggysocial.oggysocial.services.EmailService;
 import com.oggysocial.oggysocial.services.UserService;
 
 import java.util.Objects;
@@ -45,8 +42,7 @@ public class EmailPasswordFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_email_password, container, false);
     }
 
@@ -119,16 +115,23 @@ public class EmailPasswordFragment extends Fragment {
         String birthday = sharedPreferences.getString("birthday", "");
         User user = new User(firstName, lastName, email, birthday);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(v -> {
-                    UserService.saveUser(user);
-                    UserService.getUser(user1 -> {
-                        UserService.user = user1;
-                    });
-                    Intent intent = new Intent(requireContext(), MainActivity.class);
-                    startActivity(intent);
-                    requireActivity().finish();
-                })
-                .addOnFailureListener(e -> Toast.makeText(requireContext(), "Email này đã được sử dụng", Toast.LENGTH_LONG).show());
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(v -> {
+            UserService.saveUser(user);
+            UserService.getUser(user1 -> {
+                UserService.user = user1;
+            });
+
+            if (AuthUtil.isUserVerified()) {
+                Intent intent = new Intent(requireContext(), MainActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
+                return;
+            }
+            Objects.requireNonNull(firebaseAuth.getCurrentUser()).sendEmailVerification().addOnSuccessListener(v1 -> {
+                Toast.makeText(requireContext(), "Vui lòng kiểm tra email để xác minh tài khoản", Toast.LENGTH_LONG).show();
+            }).addOnFailureListener(e -> Toast.makeText(requireContext(), "Email này đã được sử dụng", Toast.LENGTH_LONG).show());
+
+        }).addOnFailureListener(e -> Toast.makeText(requireContext(), "Email này đã được sử dụng", Toast.LENGTH_LONG).show());
     }
+
 }

@@ -12,9 +12,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.oggysocial.oggysocial.R;
+import com.oggysocial.oggysocial.Utils.AuthUtil;
 import com.oggysocial.oggysocial.fragments.auth.LoginFragment;
 import com.oggysocial.oggysocial.fragments.auth.RegisterFragment;
 
@@ -59,9 +61,7 @@ public class AuthActivity extends AppCompatActivity {
 
     public void navigateLogin() {
         getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.auth_fragment_container, new LoginFragment())
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.auth_fragment_container, new LoginFragment()).commit();
     }
 
     public void navigateMain() {
@@ -71,11 +71,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     public void navigateRegister() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.auth_fragment_container, new RegisterFragment())
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.auth_fragment_container, new RegisterFragment()).setReorderingAllowed(true).addToBackStack(null).commit();
     }
 
 
@@ -83,7 +79,14 @@ public class AuthActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         boolean isLoggedIn = user != null;
         if (isLoggedIn) {
-            navigateMain();
+            if (AuthUtil.isUserVerified()) {
+                navigateMain();
+            } else {
+                Snackbar.make(findViewById(R.id.auth_container), "Hãy xác thực mail", Snackbar.LENGTH_LONG).setAction("Gửi mail", v -> {
+                    AuthUtil.sendVerificationEmail();
+                }).show();
+
+            }
         } else {
             navigateLogin();
         }

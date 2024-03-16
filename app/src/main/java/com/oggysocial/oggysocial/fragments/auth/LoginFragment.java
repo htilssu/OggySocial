@@ -2,12 +2,14 @@ package com.oggysocial.oggysocial.fragments.auth;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,15 +90,15 @@ public class LoginFragment extends Fragment {
 
     private void navigateToForgotPassword() {
 
-        getParentFragmentManager()
-                .beginTransaction()
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
-                .replace(R.id.auth_fragment_container, new ForgotPasswordFragment())
-                .commit();
+        getParentFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.auth_fragment_container, new ForgotPasswordFragment()).commit();
     }
 
     private void onLoginClick() {
+
+        //Hide keyboard
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
+
         if (validateInput()) {
             showLoading();
             login(email, password);
@@ -107,21 +109,19 @@ public class LoginFragment extends Fragment {
     }
 
     private void login(String email, String password) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(v -> {
-                    UserService.getUser(user -> {
-                        UserService.user = user;
-                    });
-                    loginSuccess();
-                })
-                .addOnFailureListener(e -> {
-                    Log.i(TAG, "login: " + e.getMessage());
-                    Toast.makeText(getContext(), "Tài khoản hoặc mật khẩu không đúng", Toast.LENGTH_LONG).show();
-                }).addOnCompleteListener(task -> {
-                    Log.i(TAG, "login: " + task.isSuccessful());
-                }).addOnCanceledListener(() -> {
-                    Log.i(TAG, "login: " + "canceled");
-                });
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnSuccessListener(v -> {
+            UserService.getUser(user -> {
+                UserService.user = user;
+            });
+            loginSuccess();
+        }).addOnFailureListener(e -> {
+            Log.i(TAG, "login: " + e.getMessage());
+            Toast.makeText(getContext(), "Tài khoản hoặc mật khẩu không đúng", Toast.LENGTH_LONG).show();
+        }).addOnCompleteListener(task -> {
+            Log.i(TAG, "login: " + task.isSuccessful());
+        }).addOnCanceledListener(() -> {
+            Log.i(TAG, "login: " + "canceled");
+        });
     }
 
     private boolean validateInput() {
