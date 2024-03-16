@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/small_padding"
+    android:paddingHorizontal="@dimen/small_padding"
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="5dp"
     app:strokeWidth="0dp">
@@ -11,8 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/small_padding">
+        android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civAvatar"

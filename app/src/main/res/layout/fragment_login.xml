@@ -46,10 +46,7 @@
                 android:hint="@string/username_hint"
                 android:inputType="text"
                 android:maxLength="@integer/username_max_length"
-                android:minHeight="48dp"
-                android:textColor="@color/black" />
-
-
+                android:minHeight="48dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -71,7 +68,6 @@
                 android:inputType="textPassword"
                 android:maxLength="@integer/password_max_length"
                 android:minHeight="48dp"
-                android:textColor="@color/black"
                 tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,5 +129,4 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading" />
     </FrameLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

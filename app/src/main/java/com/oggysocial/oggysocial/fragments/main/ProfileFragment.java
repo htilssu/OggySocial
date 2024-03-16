@@ -1,40 +1,49 @@
 package com.oggysocial.oggysocial.fragments.main;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Post;
-import com.oggysocial.oggysocial.services.EditProfile;
+import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment {
 
     WeakReference<ProfileFragment> instance;
     PostAdapter postAdapter;
+    CircleImageView civAvatar;
+    ImageView ivBack;
     List<Post> postList;
     MaterialButton btnEditProfile, btnAddFriend, btnCreatePost;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
+    AppBarLayout appBarLayout;
     TextView tvUsername;
     View v;
     User user;
@@ -78,20 +87,10 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void initViews() {
         postRecyclerView = v.findViewById(R.id.rvPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        if (postList == null) {
-            PostService.getUserPosts(posts -> {
-                postAdapter = new PostAdapter(posts);
-                postRecyclerView.setAdapter(postAdapter);
-                postList = posts;
-            });
-        } else {
-            postAdapter = new PostAdapter(postList);
-            postRecyclerView.setAdapter(postAdapter);
-        }
-
         swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
         tvUsername = v.findViewById(R.id.tvUsername);
         civAvatar = v.findViewById(R.id.civAvatar);
@@ -101,16 +100,16 @@ public class ProfileFragment extends Fragment {
         }
         ivBack = v.findViewById(R.id.ivBack);
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
+        btnCreatePost = v.findViewById(R.id.btnCreatePost);
+
 
         //Hide add friend
         if (isMyProfile) {
             btnEditProfile.setVisibility(View.VISIBLE);
             btnCreatePost.setVisibility(View.VISIBLE);
-            btnAddFriend.setVisibility(View.GONE);
         } else {
             btnEditProfile.setVisibility(View.GONE);
             btnCreatePost.setVisibility(View.GONE);
-            btnAddFriend.setVisibility(View.VISIBLE);
         }
 
         initData();
@@ -121,8 +120,12 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     private void initData() {
         tvUsername.setText(user.getFullName());
-//        Glide.with(this).load(user.getAvatar()).into(civAvatar);
-        //TODO: load avatar
+
+        if (user.getAvatar() != null) {
+            Glide.with(this).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(civAvatar);
+        } else {
+            Glide.with(this).load(R.drawable.default_avatar).into(civAvatar);
+        }
 
 
         if (postList == null) {
@@ -167,6 +170,7 @@ public class ProfileFragment extends Fragment {
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         });
+
     }
 
 
@@ -182,6 +186,5 @@ public class ProfileFragment extends Fragment {
         }
         postList.add(0, post);
     }
-
 
 }

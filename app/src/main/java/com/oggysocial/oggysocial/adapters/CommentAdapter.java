@@ -3,6 +3,7 @@ package com.oggysocial.oggysocial.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,11 +53,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentHolder holder, int position) {
-        User user = comments.get(position).getAuthor();
-        holder.tvCommentContent.setText(comments.get(position).getContent());
-        holder.tvCommentAuthor.setText(user.getFullName());
-        if (user.getAvatar() != null) {
-            Glide.with(holder.itemView).load(user.getAvatar()).into(holder.civAvatar);
+        Comment comment = comments.get(position);
+        holder.tvCommentAuthor.setText(comment.getAuthor().getFullName());
+        holder.tvCommentContent.setText(comment.getContent());
+        String avatar = comment.getAuthor().getAvatar();
+        if (avatar != null) {
+            Glide.with(holder.itemView).load(avatar).into(holder.civAvatar);
+        } else {
+            holder.civAvatar.setImageResource(R.drawable.default_avatar);
         }
     }
 
@@ -70,13 +74,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     public void deleteComment(int position) {
         comments.remove(position);
         notifyItemRemoved(position);
-        new Thread(() -> {
-            if (onDeletedCommentListener != null) {
+        if (onDeletedCommentListener != null) {
+            Thread thread = new Thread(() -> {
                 onDeletedCommentListener.onDeletedComment(position);
-            }
-        }).start();
-    }
+            });
 
+            thread.start();
+        }
+    }
 
     public interface OnCreatedCommentListener {
         void onCreatedComment(Comment comment);
@@ -90,9 +95,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         void onDeletedComment(int position);
     }
 
+
     public class CommentHolder extends RecyclerView.ViewHolder {
         TextView tvCommentContent, tvCommentAuthor;
         CircleImageView civAvatar;
+        LinearLayout llCommentContent;
 
         public CommentHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,6 +111,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
             tvCommentContent = itemView.findViewById(R.id.tvCommentContent);
             civAvatar = itemView.findViewById(R.id.civAvatar);
             tvCommentAuthor = itemView.findViewById(R.id.tvCommentAuthor);
+            llCommentContent = itemView.findViewById(R.id.llCommentContent);
         }
 
         private void initListener() {
@@ -112,6 +120,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
                     onUserAvatarClickListener.onUserAvatarClick(comments.get(getAbsoluteAdapterPosition()).getAuthor());
                 }
             });
+
+            llCommentContent.setOnLongClickListener(v -> {
+                return true;
+            });
+
+
         }
     }
 }

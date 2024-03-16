@@ -1,25 +1,22 @@
 package com.oggysocial.oggysocial.services;
 
-import static com.google.firebase.firestore.Filter.and;
 import static com.google.firebase.firestore.Filter.equalTo;
-import static com.google.firebase.firestore.Filter.greaterThan;
-import static com.google.firebase.firestore.Filter.lessThan;
 import static com.google.firebase.firestore.Filter.or;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.oggysocial.oggysocial.models.Post;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class PostService {
     static FirebaseStorage storage = FirebaseDB.getStorage();
+    static Source source = Source.CACHE;
 
 
     public static List<Post> getPosts(String userId) {
@@ -34,7 +31,7 @@ public class PostService {
     public static void savePost(Post newPost, OnPostSavedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         newPost.setAuthor(FirebaseAuth.getInstance().getUid());
-        newPost.setDate(new Date());
+        newPost.setDate(LocalDateTime.now().toString());
         db.collection("posts").add(newPost).addOnSuccessListener(command -> {
             newPost.setId(command.getId());
             UserService.getUser(user -> {
@@ -157,7 +154,6 @@ public class PostService {
     public static void getNewFeeds(OnListPostLoadedListener listener) {
 
         getAllPost(listener);
-        //TODO get post from friends
        /* FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<Post> newFeedPost = new ArrayList<>();
         UserService.getUser(user -> {
@@ -176,20 +172,6 @@ public class PostService {
                 listener.onListPostLoaded(newFeedPost);
             });
         });*/
-    }
-
-    public static void getPostByMonth() {
-
-    }
-
-    public static void getPostByMonth(int month) {
-        if (month < 1 || month > 12) {
-            throw new IllegalArgumentException("Month must be between 1 and 12");
-        }
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Date start = Date.from(LocalDateTime.of(LocalDateTime.now().getYear(), month, 1, 0, 0).toInstant(ZoneOffset.UTC));
-        Date end = Date.from(LocalDateTime.of(LocalDateTime.now().getYear(), month + 1, 1, 0, 0).toInstant(ZoneOffset.UTC));
-        db.collection("posts").where(and(lessThan("date", end), greaterThan("date", start))).get();
     }
 
     public interface OnListPostLoadedListener {
