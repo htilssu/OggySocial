@@ -16,9 +16,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.oggysocial.oggysocial.R;
-import com.oggysocial.oggysocial.Utils.AuthUtil;
 import com.oggysocial.oggysocial.fragments.auth.LoginFragment;
 import com.oggysocial.oggysocial.fragments.auth.RegisterFragment;
+import com.oggysocial.oggysocial.utils.AuthUtil;
 
 public class AuthActivity extends AppCompatActivity {
 

@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
-import com.oggysocial.oggysocial.Utils.AuthUtil;
+import com.oggysocial.oggysocial.utils.AuthUtil;
 import com.oggysocial.oggysocial.activities.MainActivity;
 import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.EmailService;

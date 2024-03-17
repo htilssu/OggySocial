@@ -22,6 +22,7 @@ import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class CommentBottomSheetModel extends BottomSheetDialog {
 
@@ -36,7 +37,6 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
         this.post = post;
         commentAdapter = new CommentAdapter(post.getComments());
         commentAdapter.setOnDeletedCommentListener(i -> PostService.updatePost(this.post));
-
         BottomSheetBehavior<FrameLayout> behavior = getBehavior();
         setContentView(R.layout.comment_bottom_sheet);
 
@@ -57,7 +57,7 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
                 Comment comment = new Comment();
                 comment.setContent(commentContent);
                 comment.setAuthor(UserService.user);
-                comment.setDate(String.valueOf(LocalDateTime.now()));
+                comment.setDate(new Date());
                 post.addComment(comment);
                 commentAdapter.setComments(post.getComments());
                 commentAdapter.notifyItemInserted(post.getComments().size() - 1);
@@ -72,15 +72,17 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
         rvComment = findViewById(R.id.rvComment);
         assert rvComment != null;
         rvComment.setLayoutManager(new LinearLayoutManager(getContext()));
+
         CommentTouchHelper commentTouchHelper = new CommentTouchHelper(0, ItemTouchHelper.LEFT);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(commentTouchHelper);
         itemTouchHelper.attachToRecyclerView(rvComment);
+
         rvComment.setAdapter(commentAdapter);
         etComment = findViewById(R.id.etComment);
         ivSend = findViewById(R.id.ivSendComment);
         ConstraintLayout clComment = findViewById(R.id.bottomSheetComment);
         assert clComment != null;
-        clComment.setMinHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        clComment.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, Resources.getSystem().getDisplayMetrics().heightPixels));
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -1,4 +1,4 @@
-package com.oggysocial.oggysocial.Utils;
+package com.oggysocial.oggysocial.utils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

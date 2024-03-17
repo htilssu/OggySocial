@@ -1,7 +1,11 @@
 package com.oggysocial.oggysocial.models;
 
+import com.google.type.DateTime;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +16,7 @@ public class Post implements Serializable {
     String content;
     String author;
     User user;
-    String date;
+    Date date;
     List<String> likes;
     List<Comment> comments;
     Map<String, String> images;
@@ -21,6 +25,14 @@ public class Post implements Serializable {
         likes = new ArrayList<>();
         comments = new ArrayList<>();
         images = new HashMap<>();
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public User getUser() {
@@ -71,13 +83,6 @@ public class Post implements Serializable {
         this.content = content;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public List<Comment> getComments() {
         return comments;
