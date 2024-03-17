@@ -20,6 +20,9 @@
         android:theme="@style/Theme.OggySocial"
         tools:targetApi="s">
         <activity
+            android:name=".activities.AdminActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.PopupActivity"
             android:exported="false" />
         <activity

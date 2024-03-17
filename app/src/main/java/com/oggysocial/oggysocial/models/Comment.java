@@ -2,12 +2,22 @@ package com.oggysocial.oggysocial.models;
 
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Comment implements Serializable {
     String content;
     User author;
     String image;
-    String date;
+    Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public String getContent() {
         return content;
@@ -33,11 +43,4 @@ public class Comment implements Serializable {
         this.image = image;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

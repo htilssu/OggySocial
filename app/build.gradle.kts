@@ -69,6 +69,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
+    implementation("androidx.activity:activity:1.8.0")
     testImplementation("org.mockito:mockito-core:5.11.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")

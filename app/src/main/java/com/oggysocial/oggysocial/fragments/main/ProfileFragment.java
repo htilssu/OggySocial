@@ -101,15 +101,18 @@ public class ProfileFragment extends Fragment {
         ivBack = v.findViewById(R.id.ivBack);
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
         btnCreatePost = v.findViewById(R.id.btnCreatePost);
+        btnAddFriend = v.findViewById(R.id.btnAddFriend);
 
 
         //Hide add friend
         if (isMyProfile) {
             btnEditProfile.setVisibility(View.VISIBLE);
             btnCreatePost.setVisibility(View.VISIBLE);
+            btnAddFriend.setVisibility(View.GONE);
         } else {
             btnEditProfile.setVisibility(View.GONE);
             btnCreatePost.setVisibility(View.GONE);
+            btnAddFriend.setVisibility(View.VISIBLE);
         }
 
         initData();
