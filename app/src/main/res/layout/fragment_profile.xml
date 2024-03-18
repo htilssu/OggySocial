@@ -56,7 +56,8 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/bia"
                     android:visibility="visible"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    android:layout_centerHorizontal="true"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/civAvatar"
@@ -66,7 +67,16 @@
                     android:layout_marginTop="-80dp"
                     android:src="@drawable/default_avatar"
                     app:civ_border_color="@color/windowBackground"
-                    app:civ_border_width="3dp" />
+                    app:civ_border_width="3dp"
+                    />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="235dp"
+                    android:layout_marginTop="-35dp"
+                    android:src="@drawable/camera" />
 
                 <TextView
                     android:id="@+id/tvUsername"
@@ -114,19 +124,28 @@
 
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnAddFriend"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/small_padding"
-                    android:layout_marginEnd="@dimen/small_padding"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:drawableLeft="@drawable/plus"
-                    android:paddingHorizontal="@dimen/xlarge_padding"
-                    android:text="@string/add_friend"
-                    android:textColor="@color/white"
-                    app:cornerRadius="5dp" />
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/small_padding">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAddFriend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_padding"
+                        android:layout_marginEnd="@dimen/small_padding"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:drawableLeft="@drawable/plus"
+                        android:paddingHorizontal="@dimen/large_padding"
+                        android:text="Thêm bạn"
+                        android:textColor="@color/white"
+                        app:cornerRadius="5dp" />
+                </LinearLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
