@@ -72,7 +72,7 @@ public class UpdatePostFragment extends Fragment {
                 ivPostImage.setImageURI(imageUri);
             } catch (Exception ignored) {
             }
-        });
+        }, null);
         initListener();
     }
 

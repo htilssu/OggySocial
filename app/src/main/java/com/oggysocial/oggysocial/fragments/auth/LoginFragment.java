@@ -19,12 +19,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.AuthActivity;
 import com.oggysocial.oggysocial.services.UserService;
+import com.oggysocial.oggysocial.utils.AuthUtil;
 
 import java.util.Objects;
 
@@ -47,8 +49,7 @@ public class LoginFragment extends Fragment {
 
     public void loginSuccess() {
         authActivity.navigateMain();
-        requireView().findViewById(R.id.loadingLayout).setBackgroundColor(Color.TRANSPARENT);
-        lottieAnimationView.cancelAnimation();
+
         authActivity.finish();
     }
 
@@ -93,6 +94,12 @@ public class LoginFragment extends Fragment {
         getParentFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.auth_fragment_container, new ForgotPasswordFragment()).commit();
     }
 
+    private void hideLoading() {
+        requireView().findViewById(R.id.loadingLayout).setBackgroundColor(Color.TRANSPARENT);
+        lottieAnimationView.cancelAnimation();
+        lottieAnimationView.setVisibility(View.GONE);
+    }
+
     private void onLoginClick() {
 
         //Hide keyboard
@@ -102,6 +109,8 @@ public class LoginFragment extends Fragment {
         if (validateInput()) {
             showLoading();
             login(email, password);
+
+
         } else {
             Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_LONG).show();
         }
@@ -113,7 +122,16 @@ public class LoginFragment extends Fragment {
             UserService.getUser(user -> {
                 UserService.user = user;
             });
-            loginSuccess();
+            if (AuthUtil.isUserVerified()) {
+                loginSuccess();
+                hideLoading();
+            } else {
+                hideLoading();
+                Snackbar.make(requireView(), "Hãy xác thực mail", Snackbar.LENGTH_LONG).setAction("Gửi mail", l -> {
+                    AuthUtil.sendVerificationEmail();
+                }).show();
+            }
+
         }).addOnFailureListener(e -> {
             Log.i(TAG, "login: " + e.getMessage());
             Toast.makeText(getContext(), "Tài khoản hoặc mật khẩu không đúng", Toast.LENGTH_LONG).show();
@@ -150,6 +168,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void showLoading() {
+        lottieAnimationView.setVisibility(View.VISIBLE);
         lottieAnimationView.playAnimation();
         requireView().findViewById(R.id.loadingLayout).setBackgroundColor(requireContext().getResources().getColor(R.color.placeholder, null));
     }

@@ -3,21 +3,25 @@ package com.oggysocial.oggysocial.activities;
 import android.os.Bundle;
 import android.transition.Fade;
 
-import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.main.HomeFragment;
 import com.oggysocial.oggysocial.fragments.main.ProfileFragment;
 import com.oggysocial.oggysocial.fragments.main.SettingFragment;
+import com.oggysocial.oggysocial.services.ImageService;
+import com.oggysocial.oggysocial.services.UserService;
 
 import java.lang.ref.WeakReference;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     Fragment homeFragment;
     Fragment profileFragment;
     Fragment settingFragment;
+
+    ActivityResultLauncher<PickVisualMediaRequest> pickImage;
 
     public static WeakReference<MainActivity> getInstance() {
         return instance;
@@ -47,10 +53,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         instance = new WeakReference<>(this);
 
         setContentView(R.layout.activity_main);
+
+        pickImage = ImageService.getPickMedia(this, result -> {
+            if (result != null) {
+                ImageService.uploadImage(result, uri -> {
+                    if (uri != null) {
+                        CircleImageView civAvatar = findViewById(R.id.civAvatar);
+                        Glide.with(this).load(uri).into(civAvatar);
+                        ImageService.uploadImage(result, ref -> {
+                            UserService.getUser(user -> {
+                                ref.getDownloadUrl().addOnSuccessListener(uri1 -> {
+                                    user.setAvatar(uri1.toString());
+                                    UserService.saveUser(user);
+                                });
+                            });
+                        });
+                    }
+                });
+            }
+        }, null);
 
         initTransition();
         initVariables();
@@ -100,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
         Fade fade = new Fade();
         fade.setDuration(1000);
         getWindow().setEnterTransition(fade);
+    }
+
+    public void showPickAvatarImage() {
+        pickImage.launch(new PickVisualMediaRequest.Builder().setMediaType(new ActivityResultContracts.PickVisualMedia.SingleMimeType("image/*")).build());
     }
 
 }

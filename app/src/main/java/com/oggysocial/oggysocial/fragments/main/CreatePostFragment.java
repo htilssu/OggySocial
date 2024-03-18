@@ -70,7 +70,7 @@ public class CreatePostFragment extends Fragment {
                 Glide.with(requireContext()).load(imageUri).into(ivPostImage);
             } catch (Exception ignored) {
             }
-        });
+        }, null);
         initListener();
         return v;
     }
