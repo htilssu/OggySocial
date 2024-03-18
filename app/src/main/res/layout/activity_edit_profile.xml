@@ -11,16 +11,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="307dp"
+        android:layout_height="280dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
+            android:drawableRight="@drawable/oggyedit48"
             android:gravity="center_horizontal"
             android:text="Chỉnh sửa hồ sơ"
-            android:drawableRight="@drawable/oggyedit48"
             android:textAlignment="center"
             android:textColor="@color/blue"
             android:textSize="40sp"
@@ -47,8 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="76dp"
             android:layout_margin="4dp"
-            android:drawableRight="@drawable/baseline_edit_24"
             android:drawableLeft="@drawable/chat"
+            android:drawableRight="@drawable/baseline_edit_24"
             android:drawablePadding="7dp"
             android:hint="Chỉnh sửa thông tin"
             android:paddingLeft="10dp"
@@ -85,7 +85,7 @@
             android:layout_marginLeft="10dp"
             android:drawablePadding="7dp"
             android:text="Nam"
-            android:textColor="@color/whiteblue"
+            android:textColor="@color/colorPrimary"
             android:textSize="15dp"
             android:textStyle="bold" />
 
@@ -96,7 +96,7 @@
             android:layout_margin="4dp"
             android:drawablePadding="7dp"
             android:text="Nữ"
-            android:textColor="@color/whiteblue"
+            android:textColor="@color/colorPrimary"
             android:textSize="15dp"
             android:textStyle="bold" />
 
@@ -107,7 +107,7 @@
             android:layout_margin="4dp"
             android:drawablePadding="7dp"
             android:text="Khác"
-            android:textColor="@color/whiteblue"
+            android:textColor="@color/colorPrimary"
             android:textStyle="bold" />
     </RadioGroup>
 
