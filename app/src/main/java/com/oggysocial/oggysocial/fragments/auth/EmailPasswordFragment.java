@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
+import com.oggysocial.oggysocial.activities.AuthActivity;
 import com.oggysocial.oggysocial.utils.AuthUtil;
 import com.oggysocial.oggysocial.activities.MainActivity;
 import com.oggysocial.oggysocial.models.User;
@@ -129,6 +130,7 @@ public class EmailPasswordFragment extends Fragment {
             }
             Objects.requireNonNull(firebaseAuth.getCurrentUser()).sendEmailVerification().addOnSuccessListener(v1 -> {
                 Toast.makeText(requireContext(), "Vui lòng kiểm tra email để xác minh tài khoản", Toast.LENGTH_LONG).show();
+                AuthActivity.getInstance().navigateLogin();
             }).addOnFailureListener(e -> Toast.makeText(requireContext(), "Email này đã được sử dụng", Toast.LENGTH_LONG).show());
 
         }).addOnFailureListener(e -> Toast.makeText(requireContext(), "Email này đã được sử dụng", Toast.LENGTH_LONG).show());
