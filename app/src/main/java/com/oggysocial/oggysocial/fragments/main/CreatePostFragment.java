@@ -1,5 +1,6 @@
 package com.oggysocial.oggysocial.fragments.main;
 
+import android.animation.Animator;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -13,9 +14,12 @@ import android.widget.LinearLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.transition.Slide;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
@@ -36,6 +40,7 @@ public class CreatePostFragment extends Fragment {
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
 
     EditText etPostContent;
+    LottieAnimationView lottieAnimationView;
 
     String mime = "image/*";
     Uri imageUri;
@@ -65,7 +70,7 @@ public class CreatePostFragment extends Fragment {
                 Glide.with(requireContext()).load(imageUri).into(ivPostImage);
             } catch (Exception ignored) {
             }
-        });
+        }, null);
         initListener();
         return v;
     }
@@ -79,6 +84,7 @@ public class CreatePostFragment extends Fragment {
         btnPickImage = v.findViewById(R.id.btnPickImage);
         ivPostImage = v.findViewById(R.id.ivPostImage);
         etPostContent = v.findViewById(R.id.etPostContent);
+        lottieAnimationView = v.findViewById(R.id.animation_view);
     }
 
 
@@ -86,6 +92,7 @@ public class CreatePostFragment extends Fragment {
         btnClose.setOnClickListener(v -> requireActivity().finish());
         btnPickImage.setOnClickListener(v -> pickMedia.launch(new PickVisualMediaRequest.Builder().setMediaType(new ActivityResultContracts.PickVisualMedia.SingleMimeType(mime)).build()));
         btnPostIt.setOnClickListener(v -> {
+            showLoading();
             Post newPost = new Post();
             newPost.setContent(etPostContent.getEditableText().toString());
             if (imageUri != null) {
@@ -93,15 +100,13 @@ public class CreatePostFragment extends Fragment {
                     String name = ref.getName();
                     ref.getDownloadUrl().addOnSuccessListener(uri -> {
                         newPost.getImages().put(name, uri.toString());
-                        PostService.savePost(newPost, p -> {
-                        });
+                        PostService.savePost(newPost, p -> showSuccess());
                         imageUri = null;
 
                     });
                 });
             } else {
-                PostService.savePost(newPost, post -> {
-                });
+                PostService.savePost(newPost, post -> showSuccess());
             }
         });
     }
@@ -111,5 +116,49 @@ public class CreatePostFragment extends Fragment {
         bottomSheetBehavior.setHideable(false);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         bottomSheetBehavior.setPeekHeight(80);
+    }
+
+    private void loadAnimation() {
+        lottieAnimationView.setAnimation("loading.json");
+
+    }
+
+    private void showLoading() {
+        lottieAnimationView.setRepeatMode(LottieDrawable.RESTART);
+        lottieAnimationView.playAnimation();
+        lottieAnimationView.setMinAndMaxFrame(0, 320);
+    }
+
+    private void showSuccess() {
+        lottieAnimationView.setRepeatCount(0);
+        lottieAnimationView.setMinAndMaxFrame(320, 416);
+        lottieAnimationView.playAnimation();
+        lottieAnimationView.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(@NonNull Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(@NonNull Animator animation) {
+                requireActivity().finish();
+            }
+
+            @Override
+            public void onAnimationCancel(@NonNull Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(@NonNull Animator animation) {
+
+            }
+        });
+    }
+
+    private void showFailure() {
+        lottieAnimationView.setRepeatCount(1);
+        lottieAnimationView.setMinAndMaxFrame(736, 841);
+        lottieAnimationView.playAnimation();
     }
 }

@@ -2,7 +2,6 @@ package com.oggysocial.oggysocial.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -12,13 +11,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.auth.LoginFragment;
 import com.oggysocial.oggysocial.fragments.auth.RegisterFragment;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.oggysocial.oggysocial.services.UserService;
+import com.oggysocial.oggysocial.utils.AuthUtil;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -34,19 +34,15 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         instance = this;
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_auth);
+        EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.auth_container), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     protected void onStart() {
@@ -65,9 +61,7 @@ public class AuthActivity extends AppCompatActivity {
 
     public void navigateLogin() {
         getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.auth_fragment_container, new LoginFragment())
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.auth_fragment_container, new LoginFragment()).commit();
     }
 
     public void navigateMain() {
@@ -77,11 +71,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     public void navigateRegister() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.auth_fragment_container, new RegisterFragment())
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.auth_fragment_container, new RegisterFragment()).setReorderingAllowed(true).addToBackStack(null).commit();
     }
 
 
@@ -89,7 +79,14 @@ public class AuthActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         boolean isLoggedIn = user != null;
         if (isLoggedIn) {
-            navigateMain();
+            if (AuthUtil.isUserVerified()) {
+                navigateMain();
+            } else {
+                Snackbar.make(findViewById(R.id.auth_container), "Hãy xác thực mail", Snackbar.LENGTH_LONG).setAction("Gửi mail", v -> {
+                    AuthUtil.sendVerificationEmail();
+                }).show();
+
+            }
         } else {
             navigateLogin();
         }
@@ -106,7 +103,7 @@ public class AuthActivity extends AppCompatActivity {
     private void initListeners() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.addOnBackStackChangedListener(() -> {
-            if (fragmentManager.getBackStackEntryCount() > 0 && getSupportActionBar() == null) {
+            if (fragmentManager.getBackStackEntryCount() > 0) {
                 showActionBar();
             } else {
                 hideActionBar();

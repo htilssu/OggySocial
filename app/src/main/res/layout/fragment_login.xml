@@ -7,102 +7,131 @@
     android:layout_height="match_parent"
     tools:context=".fragments.auth.LoginFragment">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="146dp"
-        android:layout_marginTop="132dp"
-        android:layout_marginEnd="147dp"
-        android:layout_marginBottom="486dp"
-        android:contentDescription="@string/login_logo_description"
-        android:src="@drawable/oggy"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/teEmailLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:layout_editor_absoluteX="5dp">
+        android:layout_height="match_parent"
+        android:padding="@dimen/medium_padding">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="146dp"
+            android:layout_marginTop="132dp"
+            android:layout_marginEnd="147dp"
+            android:layout_marginBottom="486dp"
+            android:contentDescription="@string/login_logo_description"
+            android:src="@drawable/oggy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/teEmail"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/teEmailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="phone, username, email"
-            android:ems="10"
-            android:hint="@string/username_hint"
-            android:inputType="text"
-            android:maxLength="@integer/username_max_length"
-            android:minHeight="48dp"
-            android:textColorHint="#546E7A"
-            tools:ignore="VisualLintTextFieldSize,TextContrastCheck" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="48dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            tools:layout_editor_absoluteX="5dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tePasswordLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/teEmailLayout"
-        app:passwordToggleEnabled="true"
-        tools:layout_editor_absoluteX="20dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tePassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/teEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="phone, username, email"
+                android:ems="10"
+                android:hint="@string/username_hint"
+                android:inputType="text"
+                android:maxLength="@integer/username_max_length"
+                android:minHeight="48dp"
+                android:textColor="@color/black" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tePasswordLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="password"
-            android:ems="10"
-            android:hint="@string/password_hint"
-            android:inputType="textPassword"
-            android:maxLength="@integer/password_max_length"
-            android:minHeight="48dp"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/teEmailLayout"
+            app:passwordToggleEnabled="true"
+            tools:layout_editor_absoluteX="20dp">
 
-    <Button
-        android:id="@+id/btnLogin"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="password"
+                android:ems="10"
+                android:hint="@string/password_hint"
+                android:inputType="textPassword"
+                android:maxLength="@integer/password_max_length"
+                android:minHeight="48dp"
+                android:textColor="@color/black"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/login_button"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/tePasswordLayout"
+            tools:ignore="VisualLintButtonSize,TextContrastCheck"
+            tools:layout_editor_absoluteX="20dp" />
+
+        <TextView
+            android:id="@+id/tvForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/forgot_password"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRegister"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/create_account"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:strokeColor="@color/colorPrimary"
+            tools:ignore="TextContrastCheck,VisualLintButtonSize"
+            tools:layout_editor_absoluteX="20dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/loadingLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="@string/login_button"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/tePasswordLayout"
-        tools:ignore="VisualLintButtonSize,TextContrastCheck"
-        tools:layout_editor_absoluteX="20dp" />
+        android:layout_height="match_parent"
+        android:translationZ="10dp">
 
-    <TextView
-        android:id="@+id/tvForgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/forgot_password"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading" />
+    </FrameLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnRegister"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="@string/create_account"
-        android:textAllCaps="false"
-        android:textColor="@color/colorPrimary"
-        app:cornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:strokeColor="@color/colorPrimary"
-        tools:ignore="TextContrastCheck,VisualLintButtonSize"
-        tools:layout_editor_absoluteX="20dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

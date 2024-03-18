@@ -1,6 +1,6 @@
 package com.oggysocial.oggysocial.fragments.main;
 
-import android.app.ActivityOptions;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,7 +23,6 @@ import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.services.PostService;
 
 import java.util.List;
-import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,17 +51,19 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        postRecyclerView = view.findViewById(R.id.rvPosts);
-        postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 //        postRecyclerView.setAdapter(postAdapter);
     }
 
 
     private void initView() {
         postRecyclerView = v.findViewById(R.id.rvPosts);
+        postAdapter = new PostAdapter(null);
         tvCreatePost = v.findViewById(R.id.tvCreatePost);
         toolbar = v.findViewById(R.id.toolbar);
         civAvatar = v.findViewById(R.id.civAvatar);
+        postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        postRecyclerView.setAdapter(postAdapter);
 
         loadData();
         initListener();
@@ -90,21 +91,24 @@ public class HomeFragment extends Fragment {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadData() {
-        PostService.getNewFeeds(posts -> {
-            postAdapter = new PostAdapter(posts);
-            if (postRecyclerView != null) {
-                postRecyclerView.setAdapter(postAdapter);
-            }
-            postList = posts;
-        });
+        if (postList == null) {
+            PostService.getNewFeeds(posts -> {
+                if (postAdapter != null) {
+                    postAdapter.setPosts(posts);
+                    postList = posts;
+                    postAdapter.notifyDataSetChanged();
+                }
+            });
+        } else {
+            postAdapter.setPosts(postList);
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        postAdapter = null;
-        postRecyclerView = null;
     }
 
     private void showSearch() {

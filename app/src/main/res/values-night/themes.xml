@@ -3,9 +3,17 @@
     <style name="Base.Theme.OggySocial" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorPrimaryInverse">@color/white</item>
+        <item name="errorTextColor">@color/bg_delete</item>
+        <item name="android:textSize">13sp</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="actionBarTheme">@color/white</item>
+        <item name="android:textColorTertiaryInverse">@color/placeholder</item>
+        <item name="colorOnSurface">@color/black</item>
+        <item name="colorError">@color/bg_delete</item>
+        <item name="colorOnSurfaceVariant">@color/placeholder</item>
     </style>
+
+    <style name="Theme.OggySocial" parent="Base.Theme.OggySocial" />
 
 
 </resources>

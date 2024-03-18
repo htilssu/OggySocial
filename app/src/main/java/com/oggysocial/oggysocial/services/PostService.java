@@ -1,24 +1,25 @@
 package com.oggysocial.oggysocial.services;
 
+import static com.google.firebase.firestore.Filter.and;
 import static com.google.firebase.firestore.Filter.equalTo;
+import static com.google.firebase.firestore.Filter.greaterThan;
+import static com.google.firebase.firestore.Filter.lessThan;
 import static com.google.firebase.firestore.Filter.or;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.oggysocial.oggysocial.models.Post;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class PostService {
-    private static final String USA = "USA";
     static FirebaseStorage storage = FirebaseDB.getStorage();
-    static Source source = Source.CACHE;
 
 
     public static List<Post> getPosts(String userId) {
@@ -33,7 +34,7 @@ public class PostService {
     public static void savePost(Post newPost, OnPostSavedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         newPost.setAuthor(FirebaseAuth.getInstance().getUid());
-        newPost.setDate(LocalDateTime.now().toString());
+        newPost.setDate(new Date());
         db.collection("posts").add(newPost).addOnSuccessListener(command -> {
             newPost.setId(command.getId());
             UserService.getUser(user -> {
@@ -49,6 +50,15 @@ public class PostService {
     public static void getPost(String postId, OnPostLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("posts").document(postId).get().addOnSuccessListener(documentSnapshot -> listener.onPostLoaded(documentSnapshot.toObject(Post.class)));
+    }
+
+    public static void getPostRealTime(String postId, OnPostLoadedListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("posts").document(postId).addSnapshotListener((documentSnapshot, e) -> {
+            if (documentSnapshot != null) {
+                listener.onPostLoaded(documentSnapshot.toObject(Post.class));
+            }
+        });
     }
 
     /**
@@ -102,9 +112,7 @@ public class PostService {
     public static void getUserPosts(String userId, OnListPostLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Query query = db.collection("posts")
-                .where(or(equalTo("author", userId)))
-                .orderBy("date", Query.Direction.DESCENDING);
+        Query query = db.collection("posts").where(or(equalTo("author", userId))).orderBy("date", Query.Direction.DESCENDING);
 
         query.get().addOnSuccessListener(snapshot -> {
             List<Post> posts = snapshot.toObjects(Post.class);
@@ -129,13 +137,28 @@ public class PostService {
         getUserPosts(FirebaseAuth.getInstance().getUid(), listener);
     }
 
+    public static void getAllPost(OnListPostLoadedListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("posts").orderBy("date", Query.Direction.DESCENDING).addSnapshotListener((value, error) -> {
+            if (error != null) {
+                return;
+            }
+            assert value != null;
+            List<Post> posts = value.toObjects(Post.class);
+            listener.onListPostLoaded(posts);
+        });
+    }
+
     /**
      * Lấy thông tin bài viết mới của bạn bè
      *
      * @param listener listener
      */
     public static void getNewFeeds(OnListPostLoadedListener listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        getAllPost(listener);
+        //TODO get post from friends
+       /* FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<Post> newFeedPost = new ArrayList<>();
         UserService.getUser(user -> {
             UserService.getFriends(FirebaseAuth.getInstance().getUid(), friends -> {
@@ -152,7 +175,21 @@ public class PostService {
 
                 listener.onListPostLoaded(newFeedPost);
             });
-        });
+        });*/
+    }
+
+    public static void getPostByMonth() {
+
+    }
+
+    public static void getPostByMonth(int month) {
+        if (month < 1 || month > 12) {
+            throw new IllegalArgumentException("Month must be between 1 and 12");
+        }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Date start = Date.from(LocalDateTime.of(LocalDateTime.now().getYear(), month, 1, 0, 0).toInstant(ZoneOffset.UTC));
+        Date end = Date.from(LocalDateTime.of(LocalDateTime.now().getYear(), month + 1, 1, 0, 0).toInstant(ZoneOffset.UTC));
+        db.collection("posts").where(and(lessThan("date", end), greaterThan("date", start))).get();
     }
 
     public interface OnListPostLoadedListener {

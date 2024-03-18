@@ -20,6 +20,8 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 public class ImageService {
 
     /**
@@ -80,8 +82,12 @@ public class ImageService {
      * @throws ClassCastException Nếu context không phải là AppCompatActivity
      * @apiNote Phải gọi trước khi state của activity chuyển sang resumed
      */
-    public static ActivityResultLauncher<PickVisualMediaRequest> getPickMedia(Context context, OnImageSelectedListener callback) throws ClassCastException {
+    public static ActivityResultLauncher<PickVisualMediaRequest> getPickMedia(Context context, OnImageSelectedListener callback, @Nullable OnSetSelectedCallbackListener onSetSelectedCallbackListener) throws ClassCastException {
         AppCompatActivity activity = (AppCompatActivity) context;
+
+        if (onSetSelectedCallbackListener != null) {
+            onSetSelectedCallbackListener.onSetSelectedCallback(callback);
+        }
 
         return activity.registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), callback::onImageSelected);
     }
@@ -111,5 +117,9 @@ public class ImageService {
      */
     public interface OnUploadImageListener {
         void onUploadImage(StorageReference ref);
+    }
+
+    public interface OnSetSelectedCallbackListener {
+        void onSetSelectedCallback(OnImageSelectedListener callback);
     }
 }

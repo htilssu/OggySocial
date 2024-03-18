@@ -23,6 +23,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
+                android:contentDescription="@null"
                 android:paddingHorizontal="@dimen/smaller_padding"
                 android:src="@drawable/baseline_chevron_left_24" />
         </LinearLayout>
@@ -67,7 +68,6 @@
                     app:civ_border_color="@color/windowBackground"
                     app:civ_border_width="3dp" />
 
-
                 <TextView
                     android:id="@+id/tvUsername"
                     android:layout_width="wrap_content"
@@ -86,6 +86,7 @@
                     android:paddingHorizontal="@dimen/small_padding">
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCreatePost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/small_padding"
@@ -98,11 +99,11 @@
                         app:cornerRadius="5dp" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEditProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/small_padding"
                         android:layout_marginTop="@dimen/small_padding"
-                        android:id="@+id/btnEditProfile"
                         android:backgroundTint="@color/colorPrimary"
                         android:drawableLeft="@drawable/feather"
                         android:paddingHorizontal="@dimen/large_padding"
@@ -114,6 +115,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddFriend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"

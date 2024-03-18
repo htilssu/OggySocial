@@ -1,6 +1,7 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +55,11 @@ public class UpdatePostFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         assert getArguments() != null;
-        post = getArguments().getSerializable("post", Post.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            post = getArguments().getSerializable("post", Post.class);
+        } else {
+            post = (Post) getArguments().getSerializable("post");
+        }
     }
 
     @Override
@@ -67,7 +72,7 @@ public class UpdatePostFragment extends Fragment {
                 ivPostImage.setImageURI(imageUri);
             } catch (Exception ignored) {
             }
-        });
+        }, null);
         initListener();
     }
 
@@ -126,7 +131,9 @@ public class UpdatePostFragment extends Fragment {
     private void bidingData() {
         etPostContent.setText(post.getContent());
         tvAuthorName.setText(post.getUser().getFullName());
-        Glide.with(requireContext()).load(post.getImages().values().iterator().next()).into(ivPostImage);
+        if (!post.getImages().isEmpty()) {
+            post.getImages().forEach((s, uri) -> Glide.with(requireView()).load(uri).into(ivPostImage));
+        }
     }
 
     public interface OnUpdatedPost {

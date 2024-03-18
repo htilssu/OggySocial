@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.oggysocial.oggysocial.R
+import java.time.LocalDate
 
 
 class RegisterBirthday : Fragment() {
@@ -75,8 +77,21 @@ class RegisterBirthday : Fragment() {
 
         datePickerDialog = DatePickerDialog(
             requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
-                birthday = "${selectedDay}/${selectedMonth + 1}/$selectedYear"
-                teBirthday.setText(birthday)
+                val currentDate = LocalDate.now()
+                val selectedDate = LocalDate.of(selectedYear, selectedMonth + 1, selectedDay)
+
+                val age = LocalDate.from(selectedDate).until(currentDate).years
+
+                if (age >= 18) {
+                    birthday = "${selectedDay}/${selectedMonth + 1}/$selectedYear"
+                    teBirthday.setText(birthday)
+                } else {
+                    teBirthday.error = getString(R.string.must_enough_age)
+                    Toast.makeText(context, getString(R.string.must_enough_age), Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+
             }, year, month, day
         )
 

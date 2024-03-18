@@ -1,15 +1,23 @@
 package com.oggysocial.oggysocial.models;
 
-import com.google.firebase.firestore.Exclude;
 
-public class Comment {
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
+
+public class Comment implements Serializable {
     String content;
-    String author;
-
-    @Exclude
-    User user;
+    User author;
     String image;
-    String date;
+    Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public String getContent() {
         return content;
@@ -19,11 +27,11 @@ public class Comment {
         this.content = content;
     }
 
-    public String getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
@@ -35,11 +43,4 @@ public class Comment {
         this.image = image;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }
