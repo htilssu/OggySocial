@@ -47,7 +47,8 @@
     <string name="email_not_exist">Email này không được đăng ký với người dùng nào</string>
     <string name="add_comment">Thêm bình luận</string>
     <string name="add_comment_hint">Thêm bình luận</string>
-
+    <string name="newname">Tên bạn muốn thay đổi là gì</string>
+    <string name="newbirth">Ngày sinh bạn muốn thay đổi</string>
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus

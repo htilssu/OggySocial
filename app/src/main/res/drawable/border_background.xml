@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <stroke android:width="2dp" android:color="@color/whiteblue" /> <!-- Độ rộng và màu của border -->
+    <corners android:radius="20dp" /> <!-- Độ cong của góc -->
+</shape>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/medium_padding"
+    tools:context=".fragments.auth.RegisterName"
+    android:layout_marginTop="30dp">
+
+    <TextView
+        android:id="@+id/tvWhatIsYourName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/newname"
+        android:textStyle="bold"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/medium_heading_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTypeRealName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:text="Nhập tên mới của bạn"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="@+id/tvWhatIsYourName"
+        app:layout_constraintTop_toBottomOf="@+id/tvWhatIsYourName" />
+
+
+    <LinearLayout
+        android:id="@+id/llName"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginTop="12dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTypeRealName">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/teLastNameLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:hint="@string/last_name_hint"
+            app:boxStrokeErrorColor="@color/error_stroke"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/teLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:background="@drawable/border_background"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/teFirstNameLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:hint="@string/first_name_hint"
+            app:boxStrokeErrorColor="@color/error_stroke"
+            app:errorEnabled="true"
+            app:cardCornerRadius="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/teFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:background="@drawable/border_background"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:text="@string/newbirth"
+        android:textColor="@color/blue"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/llName"
+        app:layout_constraintTop_toBottomOf="@+id/llName" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/teBirthdayLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="16dp">
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/teBirthday"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:hint="@string/your_birthday"
+        android:inputType="date"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:background="@drawable/border_background"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/next"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/teBirthday"
+        tools:layout_editor_absoluteX="35dp" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
