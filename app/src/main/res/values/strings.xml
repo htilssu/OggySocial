@@ -101,4 +101,5 @@
     <string name="number_post">Số bài post</string>
     <string name="total_users">Tổng số người dùng</string>
     <string name="total_posts">Tống số bài đăng</string>
+    <string name="notification">Thông báo</string>
 </resources>
