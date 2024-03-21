@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OggySocial"
         tools:targetApi="s">
+
         <activity
             android:name=".activities.PopupActivity"
             android:exported="false" />

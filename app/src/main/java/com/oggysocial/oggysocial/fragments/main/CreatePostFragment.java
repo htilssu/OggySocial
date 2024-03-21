@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -27,6 +28,9 @@ import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.PostService;
+import com.oggysocial.oggysocial.services.UserService;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class CreatePostFragment extends Fragment {
@@ -36,9 +40,11 @@ public class CreatePostFragment extends Fragment {
     BottomSheetBehavior<LinearLayout> bottomSheetBehavior;
 
     ImageView ivPostImage;
+    CircleImageView ivAuthorImage;
 
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
 
+    TextView tvAuthorName;
     EditText etPostContent;
     LottieAnimationView lottieAnimationView;
 
@@ -70,7 +76,8 @@ public class CreatePostFragment extends Fragment {
                 Glide.with(requireContext()).load(imageUri).into(ivPostImage);
             } catch (Exception ignored) {
             }
-        });
+        }, null);
+        loadData();
         initListener();
         return v;
     }
@@ -85,6 +92,8 @@ public class CreatePostFragment extends Fragment {
         ivPostImage = v.findViewById(R.id.ivPostImage);
         etPostContent = v.findViewById(R.id.etPostContent);
         lottieAnimationView = v.findViewById(R.id.animation_view);
+        tvAuthorName = v.findViewById(R.id.tvAuthorName);
+        ivAuthorImage = v.findViewById(R.id.ivAuthorImage);
     }
 
 
@@ -106,9 +115,7 @@ public class CreatePostFragment extends Fragment {
                     });
                 });
             } else {
-                PostService.savePost(newPost, post -> {
-                    showSuccess();
-                });
+                PostService.savePost(newPost, post -> showSuccess());
             }
         });
     }
@@ -162,5 +169,15 @@ public class CreatePostFragment extends Fragment {
         lottieAnimationView.setRepeatCount(1);
         lottieAnimationView.setMinAndMaxFrame(736, 841);
         lottieAnimationView.playAnimation();
+    }
+
+    private void loadData() {
+        UserService.getUser(user -> {
+            tvAuthorName.setText(user.getFullName());
+            if (user.getAvatar() != null) {
+                Glide.with(requireContext()).load(user.getAvatar()).into(ivAuthorImage);
+            }
+        });
+
     }
 }

@@ -2,12 +2,15 @@ package com.oggysocial.oggysocial.fragments.auth;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,12 +20,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.AuthActivity;
+import com.oggysocial.oggysocial.activities.PopupActivity;
+import com.oggysocial.oggysocial.models.Popup;
 import com.oggysocial.oggysocial.services.UserService;
+import com.oggysocial.oggysocial.utils.AuthUtil;
 
 import java.util.Objects;
 
@@ -45,8 +53,7 @@ public class LoginFragment extends Fragment {
 
     public void loginSuccess() {
         authActivity.navigateMain();
-        requireView().findViewById(R.id.loadingLayout).setBackgroundColor(Color.TRANSPARENT);
-        lottieAnimationView.cancelAnimation();
+
         authActivity.finish();
     }
 
@@ -74,6 +81,7 @@ public class LoginFragment extends Fragment {
         btnRegister = requireView().findViewById(R.id.btnRegister);
         lottieAnimationView = requireView().findViewById(R.id.animation_view);
         lottieAnimationView.setMinAndMaxFrame(0, 320);
+
     }
 
     private void initListeners() {
@@ -84,45 +92,62 @@ public class LoginFragment extends Fragment {
         btnRegister.setOnClickListener(v -> authActivity.navigateRegister());
 
         tvForgotPassword.setOnClickListener(v -> navigateToForgotPassword());
+
     }
 
     private void navigateToForgotPassword() {
 
-        getParentFragmentManager()
-                .beginTransaction()
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
-                .replace(R.id.auth_fragment_container, new ForgotPasswordFragment())
-                .commit();
+        getParentFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.auth_fragment_container, new ForgotPasswordFragment()).commit();
     }
 
+    private void hideLoading() {
+        requireView().findViewById(R.id.loadingLayout).setBackgroundColor(Color.TRANSPARENT);
+        lottieAnimationView.cancelAnimation();
+        lottieAnimationView.setVisibility(View.GONE);
+    }
+
+
     private void onLoginClick() {
-        showLoading();
+
+        //Hide keyboard
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
+
         if (validateInput()) {
+            showLoading();
             login(email, password);
+
+
         } else {
             Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_LONG).show();
-
         }
 
     }
 
     private void login(String email, String password) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(v -> {
-                    UserService.getUser(user -> {
-                        UserService.user = user;
-                    });
-                    loginSuccess();
-                })
-                .addOnFailureListener(e -> {
-                    Log.i(TAG, "login: " + e.getMessage());
-                    Toast.makeText(getContext(), "Tài khoản hoặc mật khẩu không đúng", Toast.LENGTH_LONG).show();
-                }).addOnCompleteListener(task -> {
-                    Log.i(TAG, "login: " + task.isSuccessful());
-                }).addOnCanceledListener(() -> {
-                    Log.i(TAG, "login: " + "canceled");
-                });
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnSuccessListener(v -> {
+            UserService.getUser(user -> {
+                UserService.user = user;
+            });
+            if (AuthUtil.isUserVerified()) {
+                loginSuccess();
+                hideLoading();
+            } else {
+                hideLoading();
+                Snackbar.make(requireView(), "Hãy xác thực mail", Snackbar.LENGTH_LONG).setAction("Gửi mail", l -> {
+                    AuthUtil.sendVerificationEmail();
+                }).show();
+            }
+
+        }).addOnFailureListener(e -> {
+            Log.i(TAG, "login: " + e.getMessage());
+            hideLoading();
+            Toast.makeText(getContext(), "Tài khoản hoặc mật khẩu không đúng", Toast.LENGTH_LONG).show();
+        }).addOnCompleteListener(task -> {
+            Log.i(TAG, "login: " + task.isSuccessful());
+        }).addOnCanceledListener(() -> {
+            Log.i(TAG, "login: " + "canceled");
+        });
     }
 
     private boolean validateInput() {
@@ -151,6 +176,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void showLoading() {
+        lottieAnimationView.setVisibility(View.VISIBLE);
         lottieAnimationView.playAnimation();
         requireView().findViewById(R.id.loadingLayout).setBackgroundColor(requireContext().getResources().getColor(R.color.placeholder, null));
     }

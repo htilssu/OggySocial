@@ -1,13 +1,17 @@
 package com.oggysocial.oggysocial.fragments.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,9 +24,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
+import com.oggysocial.oggysocial.activities.MainActivity;
+import com.oggysocial.oggysocial.activities.PopupActivity;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
+import com.oggysocial.oggysocial.models.Popup;
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.models.User;
+import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
@@ -45,6 +53,7 @@ public class ProfileFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     AppBarLayout appBarLayout;
     TextView tvUsername;
+    ActivityResultLauncher<PickVisualMediaRequest> pickImage;
     View v;
     User user;
     boolean isMyProfile = false;
@@ -76,6 +85,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         instance = new WeakReference<>(this);
     }
 
@@ -101,15 +111,18 @@ public class ProfileFragment extends Fragment {
         ivBack = v.findViewById(R.id.ivBack);
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
         btnCreatePost = v.findViewById(R.id.btnCreatePost);
+        btnAddFriend = v.findViewById(R.id.btnAddFriend);
 
 
         //Hide add friend
         if (isMyProfile) {
             btnEditProfile.setVisibility(View.VISIBLE);
             btnCreatePost.setVisibility(View.VISIBLE);
+            btnAddFriend.setVisibility(View.GONE);
         } else {
             btnEditProfile.setVisibility(View.GONE);
             btnCreatePost.setVisibility(View.GONE);
+            btnAddFriend.setVisibility(View.VISIBLE);
         }
 
         initData();
@@ -171,6 +184,16 @@ public class ProfileFragment extends Fragment {
             fragmentTransaction.commit();
         });
 
+        civAvatar.setOnClickListener(v -> {
+            MainActivity main = (MainActivity) getActivity();
+            assert main != null;
+            main.showPickAvatarImage();
+        });
+
+        btnCreatePost.setOnClickListener(v -> {
+            showCreatePost();
+        });
+
     }
 
 
@@ -185,6 +208,12 @@ public class ProfileFragment extends Fragment {
             postList = new ArrayList<>();
         }
         postList.add(0, post);
+    }
+
+    private void showCreatePost() {
+        Intent intent = new Intent(getContext(), PopupActivity.class);
+        intent.putExtra("popup", Popup.CREATE_POST);
+        startActivity(intent);
     }
 
 }

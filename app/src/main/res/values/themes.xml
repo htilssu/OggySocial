@@ -10,5 +10,14 @@
 
     <style name="Theme.OggySocial" parent="Base.Theme.OggySocial" />
 
+    <style name="Theme.OggySocial.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.OggySocial.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.OggySocial.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

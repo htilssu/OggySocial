@@ -2,34 +2,58 @@ package com.oggysocial.oggysocial.activities;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentContainerView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationView;
 import com.oggysocial.oggysocial.R;
+import com.oggysocial.oggysocial.databinding.ActivityAdminBinding;
 import com.oggysocial.oggysocial.fragments.admin.HomeAdminFragment;
 
 public class AdminActivity extends AppCompatActivity {
 
+    MaterialToolbar toolbar;
+
+    AppBarConfiguration mAppBarConfiguration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+
+        toolbar = findViewById(R.id.adminToolbar);
+        setSupportActionBar(toolbar);
+
+        NavigationView navigationView = findViewById(R.id.navigationView);
+
+        NavController navController = Navigation.findNavController(this, R.id.fragment_content_admin);
+        NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.nav_admin);
+
+        mAppBarConfiguration = new AppBarConfiguration.Builder(navGraph).setOpenableLayout(drawerLayout).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
 
         initView();
     }
 
     private void initView() {
-        FragmentContainerView fragmentContainerView = findViewById(R.id.fragmentContainerView);
-        getSupportFragmentManager().beginTransaction().replace(fragmentContainerView.getId(), new HomeAdminFragment()).commit();
     }
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.fragment_content_admin);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+
 }

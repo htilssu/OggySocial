@@ -1,36 +1,30 @@
 package com.oggysocial.oggysocial.fragments.admin
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.anychart.AnyChart
 import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.DataEntry
 import com.anychart.chart.common.dataentry.ValueDataEntry
-import com.anychart.charts.Cartesian
-import com.anychart.core.cartesian.series.Line
-import com.anychart.data.Mapping
-import com.anychart.enums.Anchor
-import com.anychart.enums.MarkerType
-import com.anychart.enums.TooltipPositionMode
-import com.anychart.graphics.vector.Stroke
+import com.google.firebase.firestore.ListenerRegistration
 import com.oggysocial.oggysocial.R
-import com.oggysocial.oggysocial.services.PostService
 import com.oggysocial.oggysocial.utils.PostUtil
-import java.time.LocalDate
+import com.oggysocial.oggysocial.utils.UserUtil
+import java.time.LocalDateTime
 
 
 class HomeAdminFragment : Fragment() {
-
-    private lateinit var anyChartView: AnyChartView
+    private var tvTotalUsers: TextView? = null
+    private var tvTotalPosts: TextView? = null
+    private var listenerRegistration: ListenerRegistration? = null
+    private var chartView: AnyChartView? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_home_admin, container, false)
     }
@@ -42,7 +36,12 @@ class HomeAdminFragment : Fragment() {
     }
 
     private fun initViews() {
-        anyChartView = requireView().findViewById(R.id.any_chart_view)
+        tvTotalUsers = view?.findViewById(R.id.tvTotalUsers)!!
+        tvTotalPosts = view?.findViewById(R.id.tvTotalPosts)!!
+        chartView = view?.findViewById(R.id.any_chart_view)!!
+
+
+        initListeners()
     }
 
     private fun initListeners() {
@@ -50,64 +49,56 @@ class HomeAdminFragment : Fragment() {
     }
 
     private fun initData() {
-        val cartesian: Cartesian = AnyChart.line()
+        tvTotalPosts?.text = "_"
+        tvTotalUsers?.text = "_"
 
-        cartesian.animation(true)
+        PostUtil.getTotalPostCount { count ->
+            tvTotalPosts?.text = count.toString()
+        }
 
-        cartesian.padding(10.0, 20.0, 5.0, 20.0)
-
-        cartesian.crosshair().enabled(true)
-        cartesian.crosshair()
-            .yLabel(true) // TODO ystroke
-            .yStroke(null as Stroke?, null, null, null as String?, null as String?)
-
-        cartesian.tooltip().positionMode(TooltipPositionMode.FLOAT)
-
-        cartesian.title(resources.getString(R.string.monthly_post_analysis))
+        UserUtil.getTotalUserCount { count ->
+            tvTotalUsers?.text = count.toString()
+        }
 
 
-        cartesian.yAxis(0).title("Số bài đăng")
-        cartesian.xAxis(0).labels().padding(5.0, 5.0, 5.0, 5.0)
-
-        val seriesData: MutableList<DataEntry> = MutableList(31) { ValueDataEntry(0, 0) }
-        PostUtil.getPostCountForDayOfMonth(
-            LocalDate.now().month,
-            object : PostUtil.OnPostCountListener {
-                override fun onPostCountReceived(postCountList: List<Int>) {
-                    for (i in 1..postCountList.size) {
-                        seriesData[i - 1] = ValueDataEntry(i, postCountList[i - 1])
-                        Handler(Looper.getMainLooper()).post {
-                            val set = com.anychart.data.Set.instantiate()
-                            set.data(seriesData)
-                            val postMapping: Mapping = set.mapAs("{ x: 'x', value: 'value' }")
-
-                            val series1: Line = cartesian.line(postMapping)
-                            series1.name("Post")
-                            series1.hovered().markers().enabled(true)
-                            series1.hovered().markers()
-                                .type(MarkerType.CIRCLE)
-                                .size(4.0)
-                            series1.tooltip()
-                                .position("right")
-                                .anchor(Anchor.LEFT_CENTER)
-                                .offsetX(5.0)
-                                .offsetY(5.0)
-
-
-                            cartesian.legend().enabled(true)
-                            cartesian.legend().fontSize(13.0)
-                            cartesian.legend().padding(0.0, 0.0, 10.0, 0.0)
-                            anyChartView.setChart(cartesian)
-                        }
-                    }
-                }
-
-            })
-
-
-
-        anyChartView.setChart(cartesian)
+        getPostChartData()
     }
 
+    private fun getPostChartData() {
+        val currentMonth = LocalDateTime.now().month
+        PostUtil.getPostCountForDayOfMonth(currentMonth, {
+            initPostChartData(it)
+        }, {
+            listenerRegistration = it
+        })
 
+    }
+
+    private fun initPostChartData(postCountList: List<Int>) {
+
+        val chartType = AnyChart.line()
+        val data = mutableListOf<DataEntry>()
+        postCountList.forEachIndexed { index, count ->
+            data.add(ValueDataEntry(index + 1, count))
+        }
+
+        chartType.data(data)
+        chartType.animation(true)
+        chartType.title("Thống kê bài đăng")
+        chartType.yAxis(0).title("Số bài đăng");
+        chartType.xAxis(0).title("Ngày")
+        chartType.getSeries(0).name("Bài đăng")
+        chartType.padding(10, 10, 10, 10)
+
+        chartView?.setChart(chartType)
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        listenerRegistration?.remove()
+        listenerRegistration = null
+        tvTotalUsers = null
+        tvTotalPosts = null
+    }
 }

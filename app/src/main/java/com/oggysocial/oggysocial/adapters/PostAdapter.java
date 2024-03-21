@@ -23,6 +23,7 @@ import com.oggysocial.oggysocial.models.PostBottomSheetModel;
 import com.oggysocial.oggysocial.services.PostService;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,6 +50,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     public void onBindViewHolder(@NonNull PostHolder holder, int position) {
 
         Post currentPost = posts.get(position);
+
+        if (!Objects.equals(currentPost.getAuthor(), FirebaseAuth.getInstance().getUid())) {
+            holder.btnPostMenu.setVisibility(View.GONE);
+        }
 
         if (!currentPost.getImages().isEmpty()) {
             holder.ivPostImage.setVisibility(View.VISIBLE);

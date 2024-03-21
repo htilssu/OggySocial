@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
         postRecyclerView = v.findViewById(R.id.rvPosts);
         postAdapter = new PostAdapter(null);
         tvCreatePost = v.findViewById(R.id.tvCreatePost);
-        toolbar = v.findViewById(R.id.toolbar);
+        toolbar = v.findViewById(R.id.adminoToolbar);
         civAvatar = v.findViewById(R.id.civAvatar);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postRecyclerView.setAdapter(postAdapter);

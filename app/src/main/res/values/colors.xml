@@ -12,4 +12,5 @@
     <color name="background_holder">#E1F3F6</color>
     <color name="windowBackground">#F5F5F5</color>
     <color name="placeholder">#3A4141</color>
+    <color name="colorLightBlue">#3A9BF0</color>
 </resources>
