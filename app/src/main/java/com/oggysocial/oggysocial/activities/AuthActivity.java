@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.auth.LoginFragment;
 import com.oggysocial.oggysocial.fragments.auth.RegisterFragment;
+import com.oggysocial.oggysocial.services.UserService;
 import com.oggysocial.oggysocial.utils.AuthUtil;
 
 public class AuthActivity extends AppCompatActivity {
@@ -80,6 +81,8 @@ public class AuthActivity extends AppCompatActivity {
         boolean isLoggedIn = user != null;
         if (isLoggedIn) {
             if (AuthUtil.isUserVerified()) {
+                UserService.getUser(user1 -> {
+                });
                 navigateMain();
             } else {
                 Snackbar.make(findViewById(R.id.auth_container), "Hãy xác thực mail", Snackbar.LENGTH_LONG).setAction("Gửi mail", v -> {

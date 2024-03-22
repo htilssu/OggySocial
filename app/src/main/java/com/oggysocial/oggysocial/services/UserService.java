@@ -97,6 +97,14 @@ public class UserService {
     public static void updateUser(User user) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(user.getId()).set(user);
+        new Thread(() -> {
+            PostService.getUserPosts(posts -> {
+                posts.forEach(post -> {
+                    post.setUser(user);
+                    PostService.updatePost(post);
+                });
+            });
+        }).start();
     }
 
     /**

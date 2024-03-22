@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.oggysocial.oggysocial.R;
@@ -83,6 +84,12 @@ public class HomeFragment extends Fragment {
         tvCreatePost = v.findViewById(R.id.tvCreatePost);
         toolbar = v.findViewById(R.id.adminoToolbar);
         civAvatar = v.findViewById(R.id.civAvatar);
+        UserService.getUser(user -> {
+            if (user.getAvatar() != null) {
+                Glide.with(requireContext()).load(user.getAvatar()).into(civAvatar);
+            }
+
+        });
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postRecyclerView.setAdapter(postAdapter);
         //goi y ket ban

@@ -13,6 +13,7 @@ public class FriendRequest extends Notify {
     public FriendRequest(String senderId, String receiverId, Date date) {
         this.senderId = senderId;
         this.receiverId = receiverId;
+        this.date = date;
     }
 
     public String getSenderId() {

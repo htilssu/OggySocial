@@ -96,6 +96,7 @@ public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.user
                             FriendService.sendRequest(FirebaseAuth.getInstance().getUid(), user.getId());
                             btnAddFriend.setText("Hủy lời mời");
                         }
+                        flag = !flag;
                     }
                 }
             });

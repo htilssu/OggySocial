@@ -69,15 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
         pickImage = ImageService.getPickMedia(this, result -> {
             if (result != null) {
+                CircleImageView civAvatar = findViewById(R.id.civAvatar);
+                Glide.with(this).load(result).into(civAvatar);
                 ImageService.uploadImage(result, uri -> {
                     if (uri != null) {
-                        CircleImageView civAvatar = findViewById(R.id.civAvatar);
-                        Glide.with(this).load(uri).into(civAvatar);
                         ImageService.uploadImage(result, ref -> {
                             UserService.getUser(user -> {
                                 ref.getDownloadUrl().addOnSuccessListener(uri1 -> {
                                     user.setAvatar(uri1.toString());
-                                    UserService.saveUser(user);
+                                    UserService.updateUser(user);
                                 });
                             });
                         });
