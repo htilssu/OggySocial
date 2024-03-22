@@ -29,9 +29,8 @@ public class MainActivity extends AppCompatActivity {
     static WeakReference<MainActivity> instance;
     AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigationView;
-    Fragment homeFragment;
-    Fragment profileFragment;
-    Fragment settingFragment;
+    Fragment homeFragment,profileFragment,settingFragment,notifyFragment;
+
 
     ActivityResultLauncher<PickVisualMediaRequest> pickImage;
 
@@ -89,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         homeFragment = new HomeFragment();
         profileFragment = new ProfileFragment();
         settingFragment = new SettingFragment();
+        notifyFragment = new NotifyFragment();
     }
 
     private void initVariables() {
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 showFragment(profileFragment);
 
             } else if (itemId == R.id.notification_item) {
-                showFragment(new NotifyFragment());
+                showFragment(notifyFragment);
 
             } else if (itemId == R.id.setting_item) {
                 showFragment(settingFragment);

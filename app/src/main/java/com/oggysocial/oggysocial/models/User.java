@@ -121,6 +121,7 @@ public class User implements Serializable {
         return lastName + " " + firstName;
     }
 
+
     public void addFriend(String friendId) {
         friends.add(friendId);
     }

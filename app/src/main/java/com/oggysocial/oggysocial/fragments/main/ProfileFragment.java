@@ -25,9 +25,13 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.MainActivity;
+<<<<<<< HEAD
 import com.oggysocial.oggysocial.activities.PopupActivity;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Popup;
+=======
+import com.oggysocial.oggysocial.adapters.PostAdapter;
+>>>>>>> ed48f73 (init project)
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.ImageService;

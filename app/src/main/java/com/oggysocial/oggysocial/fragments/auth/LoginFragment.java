@@ -3,7 +3,6 @@ package com.oggysocial.oggysocial.fragments.auth;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,15 +19,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.AuthActivity;
-import com.oggysocial.oggysocial.activities.PopupActivity;
-import com.oggysocial.oggysocial.models.Popup;
 import com.oggysocial.oggysocial.services.UserService;
 import com.oggysocial.oggysocial.utils.AuthUtil;
 

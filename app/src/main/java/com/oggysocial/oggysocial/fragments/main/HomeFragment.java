@@ -17,27 +17,35 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.MainActivity;
 import com.oggysocial.oggysocial.activities.PopupActivity;
+import com.oggysocial.oggysocial.adapters.AddFriendAdapter;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Popup;
 import com.oggysocial.oggysocial.models.Post;
+import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.PostService;
+import com.oggysocial.oggysocial.services.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment {
-    PostAdapter postAdapter;
-    View v;
+    //goi ý kết bạn
+    private RecyclerView rcViewAddFriend;
     TextView tvCreatePost;
-
     CircleImageView civAvatar;
     MaterialToolbar toolbar;
     List<Post> postList;
-    private RecyclerView postRecyclerView;
+    //goi ý kết bạn
+    private RecyclerView rcViewAddFriend;
+    private List<User> userList;
+    private AddFriendAdapter addfrAdapter;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,73 +65,119 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
 //        postRecyclerView.setAdapter(postAdapter);
-    }
+        }
 
 
-    private void initView() {
-        postRecyclerView = v.findViewById(R.id.rvPosts);
-        postAdapter = new PostAdapter(null);
-        tvCreatePost = v.findViewById(R.id.tvCreatePost);
-        toolbar = v.findViewById(R.id.adminoToolbar);
-        civAvatar = v.findViewById(R.id.civAvatar);
-        postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        postRecyclerView.setAdapter(postAdapter);
+        private void initView () {
+            postRecyclerView = v.findViewById(R.id.rvPosts);
+            postAdapter = new PostAdapter(null);
+            tvCreatePost = v.findViewById(R.id.tvCreatePost);
+            toolbar = v.findViewById(R.id.adminoToolbar);
+            civAvatar = v.findViewById(R.id.civAvatar);
+            postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            postRecyclerView.setAdapter(postAdapter);
+        //goi y ket ban
+        rcViewAddFriend = v.findViewById(R.id.rcViewAddFriend);
+        rcViewAddFriend.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)); // Đổi LinearLayoutManager thành chiều ngan
 
-        loadData();
-        initListener();
-    }
+        if (userList == null) {
+            userList = new ArrayList<>();
+        }
+        // Tạo một implementation của interface OnItemClickListener
+        AddFriendAdapter.OnItemClickListener itemClickListener = position -> {
+            // Xử lý sự kiện click user để xem profile
+            User user = userList.get(position);
+            ProfileFragment profileFragment = new ProfileFragment(user);
+            getParentFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .replace(R.id.fragmentContainerView, profileFragment).commit();
+        };
+        // Khởi tạo adapter và thiết lập listener
+        if (addfrAdapter == null) {
+            addfrAdapter = new AddFriendAdapter(userList, itemClickListener);
+        }
+        rcViewAddFriend.setAdapter(addfrAdapter);
+            loadData();
+            initListener();
+        }
 
-    private void initListener() {
-        //show create post fragment
-        tvCreatePost.setOnClickListener(v -> {
-            showCreatePost();
-        });
-        //Onclick on avatar
-        civAvatar.setOnClickListener(v -> {
-            MainActivity main = (MainActivity) getActivity();
-            assert main != null;
-            main.showProfile();
-        });
-
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.search_item) {
-                showSearch();
-            }
-            return true;
-        });
-
-
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private void loadData() {
-        if (postList == null) {
-            PostService.getNewFeeds(posts -> {
-                if (postAdapter != null) {
-                   new Handler(Looper.getMainLooper()).post(() -> {
-                       postAdapter.setPosts(posts);
-                       postList = posts;
-                       postAdapter.notifyDataSetChanged();
-                   });
-                }
+        private void initListener () {
+            //show create post fragment
+            tvCreatePost.setOnClickListener(v -> {
+                showCreatePost();
             });
-        } else {
-            postAdapter.setPosts(postList);
+            //Onclick on avatar
+            civAvatar.setOnClickListener(v -> {
+                MainActivity main = (MainActivity) getActivity();
+                assert main != null;
+                main.showProfile();
+            });
+
+            toolbar.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.search_item) {
+                    showSearch();
+                }
+                return true;
+            });
+
+
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        private void loadData () {
+            if (postList == null) {
+                PostService.getNewFeeds(posts -> {
+                    if (postAdapter != null) {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        postAdapter.setPosts(posts);
+                        postList = posts;
+                        postAdapter.notifyDataSetChanged();
+                    });
+                    }
+                });
+            } else {
+                postAdapter.setPosts(postList);
+            }
+        // Lấy tham chiếu đến Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Lấy tất cả các user từ Firestore
+        db.collection("users")
+                .addSnapshotListener((value, error) -> {
+                    assert value != null;
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        List<User> listUser = value.toObjects(User.class);
+                        List<User> usersToRemove = new ArrayList<>();
+                        for (User user : listUser)
+                        {
+                            UserService.getUser(user1 -> {
+                                if (user.getId().equals(user1.getId()) || user1.getFriends().contains(user.getId()))
+                                {
+                                    usersToRemove.add(user);
+                                }
+                            });
+                        }
+                        listUser.removeAll(usersToRemove);
+                        userList = listUser;
+                        addfrAdapter.setUserList(listUser);
+                        addfrAdapter.notifyDataSetChanged();
+                    });
+                });
+        }
+
+        @Override
+        public void onDestroy () {
+            super.onDestroy();
+        }
+
+        private void showSearch () {
+            getParentFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.fragmentContainerView, new SearchFragment()).commit();
+        }
+
+        private void showCreatePost () {
+            Intent intent = new Intent(getContext(), PopupActivity.class);
+            intent.putExtra("popup", Popup.CREATE_POST);
+            startActivity(intent);
         }
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    private void showSearch() {
-        getParentFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.fragmentContainerView, new SearchFragment()).commit();
-    }
-
-    private void showCreatePost() {
-        Intent intent = new Intent(getContext(), PopupActivity.class);
-        intent.putExtra("popup", Popup.CREATE_POST);
-        startActivity(intent);
-    }
-}
