@@ -6,48 +6,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.UserService;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 public class EditProfile extends Fragment {
 
-    EditText edBio,edProfession;
+    EditText edBio, edProfession;
     Button button;
     DocumentReference documentReference;
     User user1;
     View v;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,17 +35,17 @@ public class EditProfile extends Fragment {
 //        setContentView(R.layout.activity_edit_profile);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
+        if (user != null) {
             String uid = user.getUid();
 
-        documentReference = db.collection("users").document(uid);
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user1 = documentSnapshot.toObject(User.class);
-                loadDataIntoViews();
-            }
-        });
+            documentReference = db.collection("users").document(uid);
+            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    user1 = documentSnapshot.toObject(User.class);
+                    loadDataIntoViews();
+                }
+            });
         }
 
     }
@@ -92,7 +72,6 @@ public class EditProfile extends Fragment {
             updateProfile();
         });
     }
-
 
 
     private void loadData() {
@@ -123,11 +102,13 @@ public class EditProfile extends Fragment {
 //        user1.setBio(prof);
         UserService.saveUser(user1);
     }
+
     private void loadDataIntoViews() {
         if (user1 != null) {
             // Load dữ liệu từ user1 vào các EditText
             edBio.setText(user1.getBio());
         }
 
+    }
 }
 
