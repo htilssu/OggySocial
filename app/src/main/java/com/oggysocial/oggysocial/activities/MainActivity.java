@@ -14,6 +14,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.main.HomeFragment;
+import com.oggysocial.oggysocial.fragments.main.NotifyFragment;
 import com.oggysocial.oggysocial.fragments.main.ProfileFragment;
 import com.oggysocial.oggysocial.fragments.main.SettingFragment;
 import com.oggysocial.oggysocial.services.ImageService;
@@ -103,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.profile_item) {
                 ((ProfileFragment) profileFragment).setShowAppBar(false);
                 showFragment(profileFragment);
+
+            } else if (itemId == R.id.notification_item) {
+                showFragment(new NotifyFragment());
+
             } else if (itemId == R.id.setting_item) {
                 showFragment(settingFragment);
             }

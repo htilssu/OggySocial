@@ -102,4 +102,7 @@
     <string name="total_users">Tổng số người dùng</string>
     <string name="total_posts">Tống số bài đăng</string>
     <string name="notification">Thông báo</string>
+    <string name="accept">Chấp nhận</string>
+    <string name="reject">Từ chối</string>
+    <string name="sent_request_to_you">đã gửi cho bạn lời mời kết bạn</string>
 </resources>

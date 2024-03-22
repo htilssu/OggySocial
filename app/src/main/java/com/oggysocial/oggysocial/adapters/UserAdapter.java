@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.main.ProfileFragment;
 import com.oggysocial.oggysocial.models.User;
@@ -19,6 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     List<User> userList;
     OnUserClickListener onUserClickListener;
+
     public UserAdapter(List<User> userList) {
         this.userList = userList;
     }
@@ -45,9 +47,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         //TODO handle avatar
         if (user.getAvatar() != null) {
-            //load avatar
-        } else {
-            //load default avatar
+            Glide.with(holder.itemView).load(user.getAvatar()).into(holder.civAvatar);
         }
     }
 
@@ -80,7 +80,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
 
         private void initListeners() {
-            //register for item click events open user profile
             itemView.setOnClickListener(v -> {
                 onUserClickListener.onUserClick(userList.get(getBindingAdapterPosition()));
             });

@@ -94,6 +94,11 @@ public class UserService {
         db.collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).set(user);
     }
 
+    public static void updateUser(User user) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document(user.getId()).set(user);
+    }
+
     /**
      * Lấy danh sách bạn bè của user
      *

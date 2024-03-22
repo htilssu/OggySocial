@@ -121,6 +121,14 @@ public class User implements Serializable {
         return lastName + " " + firstName;
     }
 
+    public void addFriend(String friendId) {
+        friends.add(friendId);
+    }
+
+    public void removeFriend(String friendId) {
+        friends.remove(friendId);
+    }
+
     @NonNull
     @Override
     public String toString() {
