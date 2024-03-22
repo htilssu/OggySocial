@@ -1,45 +1,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="130dp"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
     android:orientation="vertical"
-    android:padding="5dp"
-    android:gravity="center">
+    android:padding="5dp">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="1dp"
-        app:cardCornerRadius="1000dp"
-        android:backgroundTint="#C7DBE4">
-        <ImageView
-            android:id="@+id/avatarFriend"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:contentDescription="todo"
-            android:src="@drawable/oggy" />
-    </androidx.cardview.widget.CardView>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatarFriend"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/default_avatar" />
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
-        android:layout_marginTop="5dp">
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/tvNameFriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tên"
-            android:textSize="15dp"
             android:textColor="@color/black"
-            android:textStyle="bold"/>
-        <Button
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddFriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thêm bạn bè"
-            android:textSize="10dp"
             android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/white"/>
+            android:text="@string/add_friend"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
     </LinearLayout>
 </LinearLayout>

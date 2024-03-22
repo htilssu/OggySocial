@@ -11,6 +11,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.oggysocial.oggysocial.models.Post;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class PostService {
     public static void savePost(Post newPost, OnPostSavedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         newPost.setAuthor(FirebaseAuth.getInstance().getUid());
-        newPost.setDate(LocalDateTime.now().toString());
+        newPost.setDate(new Date());
         db.collection("posts").add(newPost).addOnSuccessListener(command -> {
             newPost.setId(command.getId());
             UserService.getUser(user -> {

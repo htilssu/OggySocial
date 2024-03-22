@@ -3,39 +3,52 @@ package com.oggysocial.oggysocial.services;
 import static com.google.firebase.firestore.Filter.and;
 import static com.google.firebase.firestore.Filter.equalTo;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.FriendRequest;
+
 import java.util.Date;
 import java.util.List;
 
 public class FriendService {
-    public static void getRequest(OnRequestLoadedListener listener) {
+    public static void getRequest(Context context, OnRequestLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = FirebaseAuth.getInstance().getUid();
 
         CollectionReference friendReference = db.collection("friend_request");
 
-        friendReference.whereEqualTo("receiverId", userId)
-                .addSnapshotListener((snapshot, err) -> {
-                    if (err != null) {
-                        return;
-                    }
-                    assert snapshot != null;
-                    List<FriendRequest> requests = snapshot.toObjects(FriendRequest.class);
-                    listener.onRequestLoaded(requests);
-                });
+        friendReference.whereEqualTo("receiverId", userId).addSnapshotListener((snapshot, err) -> {
+            if (err != null) {
+                return;
+            }
+            assert snapshot != null;
+            List<FriendRequest> requests = snapshot.toObjects(FriendRequest.class);
+            snapshot.getDocumentChanges().forEach(documentChange -> {
+                if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                    FriendRequest request = documentChange.getDocument().toObject(FriendRequest.class);
+                    UserService.getUserById(request.getSenderId(), user -> {
+                        Toast.makeText(context, user.getFullName() + context.getResources().getString(R.string.sent_request_to_you), Toast.LENGTH_SHORT).show();
+
+                    });
+                }
+
+            });
+            listener.onRequestLoaded(requests);
+        });
     }
 
     public static void acceptRequest(FriendRequest request) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference friendReference = db.collection("friend_request");
-        friendReference.where(and(equalTo("receiverId", request.getReceiverId()), equalTo("senderId", request.getSenderId())))
-                .get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    queryDocumentSnapshots.getDocuments().get(0).getReference().delete();
-                });
+        friendReference.where(and(equalTo("receiverId", request.getReceiverId()), equalTo("senderId", request.getSenderId()))).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            queryDocumentSnapshots.getDocuments().get(0).getReference().delete();
+        });
 
         addFriend(request.getSenderId());
     }
@@ -60,7 +73,7 @@ public class FriendService {
     }
 
     public static void sendRequest(String userId, String friendId) {
-        checkRequestExists(userId , friendId , exists -> {
+        checkRequestExists(userId, friendId, exists -> {
             if (!exists) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 CollectionReference friendReference = db.collection("friend_request");
@@ -68,9 +81,11 @@ public class FriendService {
             }
         });
     }
+
     public static void rejectRequest(FriendRequest request) {
         rejectRequest(request.getSenderId(), request.getReceiverId());
     }
+
     public static void rejectRequest(String userId, String friendId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference friendReference = db.collection("friend_request");
@@ -85,21 +100,14 @@ public class FriendService {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference friendReference = db.collection("friend_request");
 
-        friendReference.whereEqualTo("senderId", senderId)
-                .whereEqualTo("receiverId", receiverId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        boolean exists = !task.getResult().isEmpty();
-                        listener.onRequestExistChecked(exists);
-                    } else {
-                        // Handle any errors
-                    }
-                });
-    }
-
-    public interface OnRequestExistListener {
-        void onRequestExistChecked(boolean exists);
+        friendReference.whereEqualTo("senderId", senderId).whereEqualTo("receiverId", receiverId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                boolean exists = !task.getResult().isEmpty();
+                listener.onRequestExistChecked(exists);
+            } else {
+                // Handle any errors
+            }
+        });
     }
 
     public static void removeFriend(String friendId) {
@@ -114,6 +122,10 @@ public class FriendService {
             UserService.saveUser(user);
         });
 
+    }
+
+    public interface OnRequestExistListener {
+        void onRequestExistChecked(boolean exists);
     }
 
 

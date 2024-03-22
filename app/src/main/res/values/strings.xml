@@ -45,15 +45,11 @@
     <string name="reset_password">Đặt lại mật khẩu</string>
     <string name="reset_password_success">Đã gửi đường dẫn đặt lại mật khẩu vào email</string>
     <string name="email_not_exist">Email này không được đăng ký với người dùng nào</string>
+    <string name="newname">Tên bạn muốn thay đổi là gì</string>
+    <string name="newbirth">Ngày sinh bạn muốn thay đổi</string>
     <string name="add_comment">Thêm bình luận</string>
     <string name="add_comment_hint">Thêm bình luận</string>
-<<<<<<< HEAD
-=======
-    <string name="notification">Thông báo</string>
-    <string name="accept">Chấp nhận</string>
-    <string name="reject">Từ chối</string>
-    <string name="sent_request_to_you">đã gửi cho bạn lời mời kết bạn</string>
->>>>>>> ed48f73 (init project)
+
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -112,4 +108,6 @@
     <string name="accept">Chấp nhận</string>
     <string name="reject">Từ chối</string>
     <string name="sent_request_to_you">đã gửi cho bạn lời mời kết bạn</string>
+    <string name="channel_name">oggy</string>
+    <string name="channel_description">oggy</string>
 </resources>

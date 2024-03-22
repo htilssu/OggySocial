@@ -22,6 +22,7 @@ import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class CommentBottomSheetModel extends BottomSheetDialog {
 
@@ -57,7 +58,7 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
                 Comment comment = new Comment();
                 comment.setContent(commentContent);
                 comment.setAuthor(UserService.user);
-                comment.setDate(String.valueOf(LocalDateTime.now()));
+                comment.setDate(new Date());
                 post.addComment(comment);
                 PostService.updatePost(post);
                 etComment.setText("");

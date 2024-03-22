@@ -6,31 +6,31 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.FriendService;
+
 import java.util.List;
 
-public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.userViewHolder>{
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.userViewHolder> {
     private List<User> userList;
     private OnItemClickListener listener;
-
-    // Interface định nghĩa phương thức xử lý sự kiện click xem profile
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
 
     public AddFriendAdapter(List<User> userList, OnItemClickListener listener) {
         this.userList = userList;
         this.listener = listener;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
     @NonNull
@@ -51,11 +51,16 @@ public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.user
         return userList.size();
     }
 
+    // Interface định nghĩa phương thức xử lý sự kiện click xem profile
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
     public class userViewHolder extends RecyclerView.ViewHolder {
-        private ImageView avatarFriend;
+        boolean flag = false;
+        private CircleImageView avatarFriend;
         private TextView tvNameFriend;
         private Button btnAddFriend;
-        boolean flag = false;
 
         public userViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,7 +81,7 @@ public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.user
                     }
                 }
             });
-            
+
             // Trong AddFriendAdapter, trong phương thức onClick của nút "Kết Bạn"
             btnAddFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,12 +89,10 @@ public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.user
                     int position = getAbsoluteAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         User user = userList.get(position);
-                        if (flag)
-                        {
+                        if (flag) {
                             FriendService.rejectRequest(FirebaseAuth.getInstance().getUid(), user.getId());
                             btnAddFriend.setText("Thêm bạn bè");
-                        }
-                        else {
+                        } else {
                             FriendService.sendRequest(FirebaseAuth.getInstance().getUid(), user.getId());
                             btnAddFriend.setText("Hủy lời mời");
                         }
@@ -100,24 +103,21 @@ public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.user
 
         public void bind(User user) {
             // Set dữ liệu của friend thành phần giao diện
-            if (user.getAvatar() != null)
-            {
+            if (user.getAvatar() != null) {
                 Glide.with(itemView).load(user.getAvatar()).into(avatarFriend);
             }
             tvNameFriend.setText(user.getFullName());
             FriendService.checkRequestExists(FirebaseAuth.getInstance().getUid(), user.getId(),
                     exists ->
-                {
-                if (!exists)
                     {
-                        btnAddFriend.setText("Thêm bạn bè");
-                        flag = false;
-                    }
-                else {
-                    btnAddFriend.setText("Hủy lời mời");
-                    flag = true;
-                }
-                });
+                        if (!exists) {
+                            btnAddFriend.setText("Thêm bạn bè");
+                            flag = false;
+                        } else {
+                            btnAddFriend.setText("Hủy lời mời");
+                            flag = true;
+                        }
+                    });
         }
     }
 }

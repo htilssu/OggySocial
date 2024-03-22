@@ -3,11 +3,12 @@ package com.oggysocial.oggysocial.fragments.main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,20 +22,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.MainActivity;
-<<<<<<< HEAD
 import com.oggysocial.oggysocial.activities.PopupActivity;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Popup;
-=======
-import com.oggysocial.oggysocial.adapters.PostAdapter;
->>>>>>> ed48f73 (init project)
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.models.User;
-import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
@@ -55,7 +50,7 @@ public class ProfileFragment extends Fragment {
     MaterialButton btnEditProfile, btnAddFriend, btnCreatePost;
     RecyclerView postRecyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
-    AppBarLayout appBarLayout;
+    LinearLayout appBarLayout;
     TextView tvUsername;
     ActivityResultLauncher<PickVisualMediaRequest> pickImage;
     View v;
@@ -108,7 +103,7 @@ public class ProfileFragment extends Fragment {
         swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
         tvUsername = v.findViewById(R.id.tvUsername);
         civAvatar = v.findViewById(R.id.civAvatar);
-        appBarLayout = v.findViewById(R.id.appBarLayout);
+        appBarLayout = v.findViewById(R.id.action_bar);
         if (!showAppBar) {
             appBarLayout.setVisibility(View.GONE);
         }
@@ -140,8 +135,6 @@ public class ProfileFragment extends Fragment {
 
         if (user.getAvatar() != null) {
             Glide.with(this).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(civAvatar);
-        } else {
-            Glide.with(this).load(R.drawable.default_avatar).into(civAvatar);
         }
 
 

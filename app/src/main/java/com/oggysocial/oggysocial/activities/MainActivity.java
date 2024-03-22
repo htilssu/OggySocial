@@ -1,12 +1,20 @@
 package com.oggysocial.oggysocial.activities;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.transition.Fade;
+import android.widget.FrameLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -26,10 +34,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String CHANNEL_ID = "OGGY_SOCIAL";
     static WeakReference<MainActivity> instance;
-    AppBarLayout appBarLayout;
+    FrameLayout appBarLayout;
     BottomNavigationView bottomNavigationView;
-    Fragment homeFragment,profileFragment,settingFragment,notifyFragment;
+    Fragment homeFragment, profileFragment, settingFragment, notifyFragment;
 
 
     ActivityResultLauncher<PickVisualMediaRequest> pickImage;
@@ -56,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         instance = new WeakReference<>(this);
 
         setContentView(R.layout.activity_main);
+        createNotificationChannel();
 
         pickImage = ImageService.getPickMedia(this, result -> {
             if (result != null) {
@@ -133,6 +143,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void showPickAvatarImage() {
         pickImage.launch(new PickVisualMediaRequest.Builder().setMediaType(new ActivityResultContracts.PickVisualMedia.SingleMimeType("image/*")).build());
+    }
+
+    private void createNotificationChannel() {
+
+        CharSequence name = getString(R.string.channel_name);
+        String description = getString(R.string.channel_description);
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+            }
+        }
     }
 
 }
