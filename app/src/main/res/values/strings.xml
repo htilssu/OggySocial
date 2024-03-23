@@ -110,4 +110,10 @@
     <string name="sent_request_to_you">đã gửi cho bạn lời mời kết bạn</string>
     <string name="channel_name">oggy</string>
     <string name="channel_description">oggy</string>
+    <string name="change_pass">Đổi mật khẩu</string>
+    <string name="edit_infomation">Chỉnh sửa thông tin</string>
+    <string name="old_password">Mật khẩu cũ</string>
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="required_info">Bạn phải điền đầy đủ thông tin</string>
+    <string name="change_pass_success">Đổi mật khẩu thành công</string>
 </resources>

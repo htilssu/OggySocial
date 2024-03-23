@@ -7,6 +7,7 @@ import com.oggysocial.oggysocial.models.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class UserService {
 
@@ -126,6 +127,15 @@ public class UserService {
         });
     }
 
+    public static void checkPassword(String password, Consumer<Boolean> callback) {
+
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(user.getEmail(), password)
+                .addOnSuccessListener(authResult -> {
+                    callback.accept(true);
+                }).addOnFailureListener(e -> {
+                    callback.accept(false);
+                });
+    }
 
     /**
      * Callback khi thông tin user được load
