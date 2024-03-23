@@ -9,6 +9,7 @@
         android:id="@+id/rvNotify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        tools:listitem="@layout/item_friend_request" />
 
 </FrameLayout>

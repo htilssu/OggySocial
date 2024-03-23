@@ -2,26 +2,29 @@ package com.oggysocial.oggysocial.fragments.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.textclassifier.TextClassification;
+import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButton;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.AuthActivity;
 import com.oggysocial.oggysocial.services.UserService;
 
-import java.util.Objects;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class SettingFragment extends Fragment {
 
-    MaterialButton btnLogout;
+    CardView btnLogout, btnChangePass, btnEditInfo;
+    CircleImageView civAvatar;
+    TextView tvUsername;
     View v;
 
     public SettingFragment() {
@@ -45,11 +48,38 @@ public class SettingFragment extends Fragment {
 
     private void initViews() {
         btnLogout = v.findViewById(R.id.btnLogout);
+        btnEditInfo = v.findViewById(R.id.btnEditInfo);
+        btnChangePass = v.findViewById(R.id.btnChangePassword);
+        civAvatar = v.findViewById(R.id.civAvatar);
+        tvUsername = v.findViewById(R.id.tvUsername);
+
+        UserService.getUser(user -> {
+            if (user.getAvatar() != null) {
+                Glide.with(requireContext()).load(user.getAvatar()).into(civAvatar);
+                tvUsername.setText(user.getFullName());
+            }
+        });
+
     }
 
     private void initListeners() {
         btnLogout.setOnClickListener(v -> {
             logout();
+        });
+        btnEditInfo.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .replace(R.id.fragmentContainerView, BasicInfo.class, null)
+                    .commit();
+        });
+
+        btnChangePass.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .replace(R.id.fragmentContainerView, ChangePasswordFragment.class, null)
+                    .commit();
         });
     }
 
