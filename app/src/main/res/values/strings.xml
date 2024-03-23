@@ -110,4 +110,6 @@
     <string name="sent_request_to_you">đã gửi cho bạn lời mời kết bạn</string>
     <string name="channel_name">oggy</string>
     <string name="channel_description">oggy</string>
+    <string name="remove_friend">Hủy kết bạn</string>
+    <string name="cancel_request">Hủy lời mời</string>
 </resources>
