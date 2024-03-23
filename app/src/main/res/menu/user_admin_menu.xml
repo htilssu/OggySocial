@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="bottom_navigation_view">
+
+    <item
+        android:id="@+id/nav_list_user"
+        android:icon="@drawable/profile_bold"
+        android:title="@string/user" />
+    <item
+        android:id="@+id/nav_block_user"
+        android:icon="@drawable/block_user"
+        android:title="@string/blocked_users" />
+</menu>

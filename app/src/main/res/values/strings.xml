@@ -118,4 +118,5 @@
     <string name="change_pass_success">Đổi mật khẩu thành công</string>
     <string name="remove_friend">Hủy kết bạn</string>
     <string name="cancel_request">Hủy lời mời</string>
+    <string name="blocked_users">Đã chặn</string>
 </resources>
