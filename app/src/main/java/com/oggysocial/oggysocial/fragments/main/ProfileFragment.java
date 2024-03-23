@@ -22,6 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.MainActivity;
 import com.oggysocial.oggysocial.activities.PopupActivity;
@@ -29,6 +30,7 @@ import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Popup;
 import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.models.User;
+import com.oggysocial.oggysocial.services.FriendService;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
@@ -56,6 +58,8 @@ public class ProfileFragment extends Fragment {
     User user;
     boolean isMyProfile = false;
     boolean showAppBar = true;
+    boolean isFriend = false;
+    boolean isRequest = false;
 
     public ProfileFragment() {
         UserService.getUser(user -> {
@@ -66,6 +70,10 @@ public class ProfileFragment extends Fragment {
 
     public ProfileFragment(User user) {
         this.user = user;
+        isFriend = user.getFriends().contains(FirebaseAuth.getInstance().getUid());
+        FriendService.checkRequestExists(FirebaseAuth.getInstance().getUid(), user.getId(), exists -> {
+            isRequest = exists;
+        });
     }
 
     public void setShowAppBar(boolean showAppBar) {
@@ -152,6 +160,16 @@ public class ProfileFragment extends Fragment {
             postAdapter = new PostAdapter(postList);
             postRecyclerView.setAdapter(postAdapter);
         }
+
+        if (isFriend) {
+            btnAddFriend.setText(R.string.remove_friend);
+        } else {
+            if (isRequest) {
+                btnAddFriend.setText(R.string.cancel_request);
+            } else {
+                btnAddFriend.setText(R.string.add_friend);
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -190,6 +208,34 @@ public class ProfileFragment extends Fragment {
             showCreatePost();
         });
 
+        btnAddFriend.setOnClickListener(v -> {
+            if (isFriend) {
+                FriendService.removeFriend(user.getId());
+                isFriend = false;
+            } else {
+                if (isRequest) {
+                    FriendService.rejectRequest(FirebaseAuth.getInstance().getUid(), user.getId());
+                    isRequest = false;
+                } else {
+                    FriendService.sendRequest(FirebaseAuth.getInstance().getUid(), user.getId());
+                    isRequest = true;
+                }
+            }
+
+            updateAddFriendButton();
+        });
+    }
+
+    private void updateAddFriendButton() {
+        if (isFriend) {
+            btnAddFriend.setText(R.string.remove_friend);
+        } else {
+            if (isRequest) {
+                btnAddFriend.setText(R.string.cancel_request);
+            } else {
+                btnAddFriend.setText(R.string.add_friend);
+            }
+        }
     }
 
 
