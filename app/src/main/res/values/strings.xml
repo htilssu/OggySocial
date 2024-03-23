@@ -116,4 +116,6 @@
     <string name="new_password">Mật khẩu mới</string>
     <string name="required_info">Bạn phải điền đầy đủ thông tin</string>
     <string name="change_pass_success">Đổi mật khẩu thành công</string>
+    <string name="remove_friend">Hủy kết bạn</string>
+    <string name="cancel_request">Hủy lời mời</string>
 </resources>
