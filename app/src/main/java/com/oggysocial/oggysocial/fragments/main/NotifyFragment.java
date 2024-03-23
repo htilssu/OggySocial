@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.NotifyAdapter;
-import com.oggysocial.oggysocial.models.FriendRequest;
 import com.oggysocial.oggysocial.models.Notify;
 import com.oggysocial.oggysocial.services.FriendService;
 
@@ -56,6 +54,7 @@ public class NotifyFragment extends Fragment {
     private void initViews() {
         rvNotify = requireView().findViewById(R.id.rvNotify);
         rvNotify.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvNotify.setAdapter(notifyAdapter);
     }
 
     private void loadRequests() {
@@ -66,6 +65,7 @@ public class NotifyFragment extends Fragment {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private void setupAdapter() {
         new Handler(Looper.getMainLooper()).post(() -> {
             if (notifyAdapter == null) {
@@ -73,9 +73,7 @@ public class NotifyFragment extends Fragment {
                 rvNotify.setAdapter(notifyAdapter);
             } else {
                 notifyAdapter.setNotifyList(friendRequests);
-                for (int i = 0; i < friendRequests.size(); i++) {
-                    notifyAdapter.notifyItemChanged(i);
-                }
+                notifyAdapter.notifyDataSetChanged();
             }
         });
     }

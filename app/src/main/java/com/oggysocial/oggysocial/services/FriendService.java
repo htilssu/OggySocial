@@ -33,7 +33,7 @@ public class FriendService {
                 if (documentChange.getType() == DocumentChange.Type.ADDED) {
                     FriendRequest request = documentChange.getDocument().toObject(FriendRequest.class);
                     UserService.getUserById(request.getSenderId(), user -> {
-                        Toast.makeText(context, user.getFullName() + context.getResources().getString(R.string.sent_request_to_you), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, user.getFullName() + " " + context.getResources().getString(R.string.sent_request_to_you), Toast.LENGTH_SHORT).show();
 
                     });
                 }
