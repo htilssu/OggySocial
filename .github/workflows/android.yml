@@ -1,6 +1,6 @@
 name: Android CI
 permissions: 
-    repository-projects: write
+    contents: write
 
 on:
   push:
