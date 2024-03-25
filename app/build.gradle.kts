@@ -10,6 +10,10 @@ android {
     namespace = "com.oggysocial.oggysocial"
     compileSdk = 34
 
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+
     defaultConfig {
         applicationId = "com.oggysocial.oggysocial"
         minSdk = 28
