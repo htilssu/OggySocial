@@ -15,6 +15,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set Permissions
+      run: chmod -R 777 /app
     - name: download google-service
       run: wget -P /app ${{secrets.GOOGLE_SERVICE}}
     - name: set up JDK 21
