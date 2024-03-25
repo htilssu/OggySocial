@@ -29,7 +29,8 @@
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".activities.AuthActivity"

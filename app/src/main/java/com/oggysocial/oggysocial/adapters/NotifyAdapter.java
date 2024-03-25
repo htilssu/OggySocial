@@ -1,5 +1,6 @@
 package com.oggysocial.oggysocial.adapters;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -30,12 +31,9 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.NotifyView
     @NonNull
     @Override
     public NotifyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (notifyList.get(0) instanceof FriendRequest) {
-            View view = View.inflate(parent.getContext(), R.layout.item_friend_request, null);
-            return new NotifyViewHolder(view);
-        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend_request, parent, false);
+        return new NotifyViewHolder(view);
 
-        return null;
     }
 
     @Override

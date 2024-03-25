@@ -81,9 +81,12 @@ public class AuthActivity extends AppCompatActivity {
         boolean isLoggedIn = user != null;
         if (isLoggedIn) {
             if (AuthUtil.isUserVerified()) {
-                UserService.getUser(user1 -> {
-                });
                 navigateMain();
+                UserService.getUser(user1 -> {
+                    if (user1.getRole().equals("admin") && !user1.getBlocked()) {
+                        navigateAdmin();
+                    }
+                });
             } else {
                 Snackbar.make(findViewById(R.id.auth_container), "Hãy xác thực mail", Snackbar.LENGTH_LONG).setAction("Gửi mail", v -> {
                     AuthUtil.sendVerificationEmail();
@@ -93,6 +96,12 @@ public class AuthActivity extends AppCompatActivity {
         } else {
             navigateLogin();
         }
+    }
+
+    private void navigateAdmin() {
+        Intent adminIntent = new Intent(this, AdminActivity.class);
+        startActivity(adminIntent);
+        this.finish();
     }
 
     public void showActionBar() {

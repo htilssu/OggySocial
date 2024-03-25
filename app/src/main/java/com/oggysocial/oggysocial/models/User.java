@@ -12,13 +12,15 @@ public class User implements Serializable {
     String id;
     String firstName;
     String lastName;
+    String fullName;
     String email;
+    String role = "user";
     String bio;
     String avatar;
     String birthday;
+    Boolean isBlocked = false;
     List<String> posts = new ArrayList<>();
     List<String> friends = new ArrayList<>();
-
     public User(String firstName, String lastName, String email, String birthday) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,6 +31,22 @@ public class User implements Serializable {
     public User() {
         posts = new ArrayList<>();
         friends = new ArrayList<>();
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Boolean getBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        isBlocked = blocked;
     }
 
     public String getId() {
@@ -112,7 +130,6 @@ public class User implements Serializable {
         this.birthday = birthday;
     }
 
-
     public void removePost(String postId) {
         posts.remove(postId);
     }
@@ -121,6 +138,9 @@ public class User implements Serializable {
         return lastName + " " + firstName;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
     public void addFriend(String friendId) {
         friends.add(friendId);
@@ -135,4 +155,6 @@ public class User implements Serializable {
     public String toString() {
         return id;
     }
+
+
 }

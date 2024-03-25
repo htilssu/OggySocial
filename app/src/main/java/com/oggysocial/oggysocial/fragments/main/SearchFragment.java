@@ -23,6 +23,7 @@ import androidx.transition.Slide;
 
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.UserAdapter;
+import com.oggysocial.oggysocial.adapters.UserAdapterType;
 import com.oggysocial.oggysocial.models.User;
 import com.oggysocial.oggysocial.services.UserService;
 
@@ -31,7 +32,7 @@ import java.util.Objects;
 
 public class SearchFragment extends Fragment {
 
-    static List<User> userList;
+    List<User> userList;
     EditText etSearch;
     String searchQuery;
     ImageView ivBack;
@@ -86,6 +87,7 @@ public class SearchFragment extends Fragment {
         });
 
         etSearch.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Do nothing
@@ -101,7 +103,7 @@ public class SearchFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 searchQuery = s.toString();
                 UserService.getUserByName(searchQuery, users -> {
-                    SearchFragment.userList = users;
+                    userList = users;
                     userAdapter.setUserList(userList);
                     userAdapter.notifyDataSetChanged();
                 });
@@ -115,9 +117,9 @@ public class SearchFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void initData() {
-        userAdapter = new UserAdapter(userList);
+        userAdapter = new UserAdapter(userList, UserAdapterType.SEARCH);
         userAdapter.setOnUserClickListener(user -> {
-            ProfileFragment profileFragment = new ProfileFragment(user);
+            ProfileFragment profileFragment = new ProfileFragment(user, true);
             getParentFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .addToBackStack(null)
