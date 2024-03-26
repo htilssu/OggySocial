@@ -40,7 +40,7 @@ public class UserService {
         if (userList == null) {
             getAllUser(users -> {
                 List<User> result = new ArrayList<>(userList);
-                result.removeIf(user -> !user.getFullName().toLowerCase().contains(name.toLowerCase()) || user.getId().equals(FirebaseAuth.getInstance().getUid()));
+                result.removeIf(user -> !user.getFullName().toLowerCase(Locale.ROOT).contains(name.toLowerCase(Locale.ROOT)) || user.getId().equals(FirebaseAuth.getInstance().getUid()));
                 listener.onListUserLoaded(result);
             });
         } else {
