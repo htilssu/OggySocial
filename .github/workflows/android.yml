@@ -35,14 +35,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "app/release/oggysocial.apk"
+          name: "OggySocial"
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew build
-      - name: rename release apk
-        run: mv app/release/app-release.apk oggysocial.apk
-      - name: create release
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "app/release/oggysocial.apk"
+        run: echo "Release successfully!"
