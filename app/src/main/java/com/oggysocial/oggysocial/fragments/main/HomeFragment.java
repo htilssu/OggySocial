@@ -150,13 +150,17 @@ public class HomeFragment extends Fragment {
             new Handler(Looper.getMainLooper()).post(() -> {
                 List<User> listUser = value.toObjects(User.class);
                 List<User> usersToRemove = new ArrayList<>();
-                for (User user : listUser) {
-                    UserService.getUser(user1 -> {
-                        if (user.getId().equals(user1.getId()) || user1.getFriends().contains(user.getId())) {
+
+                UserService.getUser(user -> {
+                    List<String> friendList = new ArrayList<>(UserService.user.getFriends());
+                    friendList.add(UserService.user.getId());
+
+                    for (User user1 : listUser) {
+                        if (user.getId().equals(user1.getId()) || friendList.contains(user1.getId())) {
                             usersToRemove.add(user);
                         }
-                    });
-                }
+                    }
+                });
                 listUser.removeAll(usersToRemove);
                 userList = listUser;
                 addfrAdapter.setUserList(listUser);

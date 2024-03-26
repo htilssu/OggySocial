@@ -10,6 +10,7 @@ import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.oggysocial.oggysocial.models.Post;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -155,11 +156,10 @@ public class PostService {
      */
     public static void getNewFeeds(OnListPostLoadedListener listener) {
 
-        getAllPost(listener);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         UserService.getUser(user -> {
-            List<String> friendList = user.getFriends();
+            List<String> friendList = new ArrayList<>(user.getFriends());
             friendList.add(user.getId());
             db.collection("posts").whereIn("author", friendList).orderBy("date", Query.Direction.DESCENDING).addSnapshotListener((value, error) -> {
                 if (error != null) {

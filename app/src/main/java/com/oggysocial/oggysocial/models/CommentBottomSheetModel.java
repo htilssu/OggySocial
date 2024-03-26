@@ -18,11 +18,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.adapters.CommentAdapter;
 import com.oggysocial.oggysocial.adapters.CommentTouchHelper;
+import com.oggysocial.oggysocial.services.CommentService;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 public class CommentBottomSheetModel extends BottomSheetDialog {
 
@@ -35,8 +36,11 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
     public CommentBottomSheetModel(@NonNull Context context, Post post) {
         super(context);
         this.post = post;
-        commentAdapter = new CommentAdapter(post.getComments());
-        commentAdapter.setOnDeletedCommentListener(i -> PostService.updatePost(this.post));
+        commentAdapter = new CommentAdapter(this.post.getComments());
+        commentAdapter.setOnDeletedCommentListener(i -> {
+            this.post.setCommentCount(this.post.getCommentCount() - 1);
+            PostService.updatePost(this.post);
+        });
 
         BottomSheetBehavior<FrameLayout> behavior = getBehavior();
         setContentView(R.layout.comment_bottom_sheet);
@@ -56,9 +60,12 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
             String commentContent = etComment.getText().toString();
             if (!commentContent.isEmpty()) {
                 Comment comment = new Comment();
+                comment.setId(UUID.randomUUID().toString());
                 comment.setContent(commentContent);
-                comment.setAuthor(UserService.user);
+                comment.setAuthorId(UserService.user.getId());
                 comment.setDate(new Date());
+                comment.setPostId(post.getId());
+                CommentService.addComment(comment);
                 post.addComment(comment);
                 PostService.updatePost(post);
                 etComment.setText("");
@@ -71,7 +78,7 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
         rvComment = findViewById(R.id.rvComment);
         assert rvComment != null;
         rvComment.setLayoutManager(new LinearLayoutManager(getContext()));
-        CommentTouchHelper commentTouchHelper = new CommentTouchHelper(0, ItemTouchHelper.LEFT);
+        CommentTouchHelper commentTouchHelper = new CommentTouchHelper(0, ItemTouchHelper.LEFT, commentAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(commentTouchHelper);
         itemTouchHelper.attachToRecyclerView(rvComment);
         rvComment.setAdapter(commentAdapter);
@@ -88,7 +95,20 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
         PostService.getPostRealTime(post.getId(), post -> {
             this.post = post;
             if (commentAdapter != null) {
-                commentAdapter.setComments(post.getComments());
+                CommentService.getPostComment(post, comments -> {
+                    post.setComments(comments);
+                    PostService.updatePost(post);
+                    commentAdapter.setComments(comments);
+                    commentAdapter.notifyDataSetChanged();
+                    for (int i = 0; i < comments.size(); i++) {
+                        int finalI = i;
+                        UserService.getUserById(comments.get(i).getAuthorId(), user -> {
+                            comments.get(finalI).setAuthor(user);
+                            commentAdapter.notifyItemChanged(finalI);
+                        });
+
+                    }
+                });
                 commentAdapter.notifyDataSetChanged();
             }
         });
