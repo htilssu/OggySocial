@@ -1,8 +1,9 @@
 # OGGYSocial
 
-<div style="text-align: center;">
+<div align="center">
 
-![oggysocial](./image/image.png)</div>
+![oggysocial](./image/image.png)
+</div>
 
 <br>
 
