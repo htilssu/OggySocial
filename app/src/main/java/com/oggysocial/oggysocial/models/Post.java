@@ -1,5 +1,7 @@
 package com.oggysocial.oggysocial.models;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +17,9 @@ public class Post implements Serializable {
     String author;
     User user;
     Date date;
+    int commentCount;
     List<String> likes;
+    @Exclude
     List<Comment> comments;
     Map<String, String> images;
 
@@ -81,11 +85,13 @@ public class Post implements Serializable {
         this.date = date;
     }
 
+    @Exclude
     public List<Comment> getComments() {
         return comments;
     }
 
     public void setComments(List<Comment> comments) {
+        commentCount = comments.size();
         this.comments = comments;
     }
 
@@ -95,6 +101,14 @@ public class Post implements Serializable {
 
     public void removeComment(Comment comment) {
         comments.remove(comment);
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 
     @Override

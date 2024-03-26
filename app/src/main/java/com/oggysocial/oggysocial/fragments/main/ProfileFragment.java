@@ -68,10 +68,7 @@ public class ProfileFragment extends Fragment {
     boolean isRequest = false;
 
     public ProfileFragment() {
-        UserService.getUser(user -> {
-            this.user = user;
-            isMyProfile = true;
-        });
+
     }
 
     public ProfileFragment(User user, boolean showAppBar) {
@@ -100,6 +97,12 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (this.user == null) {
+            UserService.getUser(user -> {
+                this.user = user;
+                isMyProfile = true;
+            });
+        }
 
         instance = new WeakReference<>(this);
     }

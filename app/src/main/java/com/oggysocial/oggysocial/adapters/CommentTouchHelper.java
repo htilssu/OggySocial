@@ -17,7 +17,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class CommentTouchHelper extends ItemTouchHelper.SimpleCallback {
 
-    public CommentTouchHelper(int dragDirs, int swipeDirs) {
+    public CommentTouchHelper(int dragDirs, int swipeDirs, CommentAdapter commentAdapter) {
         super(dragDirs, swipeDirs);
     }
 
@@ -46,6 +46,10 @@ public class CommentTouchHelper extends ItemTouchHelper.SimpleCallback {
         assert adapter != null;
         Comment comment = adapter.comments.get(viewHolder.getAbsoluteAdapterPosition());
 
+        if (comment.getAuthor() == null) {
+            return 0;
+        }
+
         if (!comment.getAuthor().getId().equals(FirebaseAuth.getInstance().getUid())) {
             return 0;
         }
@@ -58,6 +62,9 @@ public class CommentTouchHelper extends ItemTouchHelper.SimpleCallback {
         CommentAdapter adapter = (CommentAdapter) viewHolder.getBindingAdapter();
         assert adapter != null;
         Comment comment = adapter.comments.get(viewHolder.getAbsoluteAdapterPosition());
+        if (comment.getAuthor() == null) {
+            return;
+        }
         if (direction == ItemTouchHelper.LEFT && Objects.equals(comment.getAuthor().getId(), FirebaseAuth.getInstance().getUid())) {
             int position = viewHolder.getAbsoluteAdapterPosition();
             adapter.deleteComment(position);

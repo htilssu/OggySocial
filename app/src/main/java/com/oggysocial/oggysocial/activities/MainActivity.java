@@ -29,6 +29,7 @@ import com.oggysocial.oggysocial.services.DialogService;
 import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.UserService;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -75,20 +76,23 @@ public class MainActivity extends AppCompatActivity {
             if (result != null) {
                 CircleImageView civAvatar = findViewById(R.id.civAvatar);
                 Glide.with(this).load(result).into(civAvatar);
-                ImageService.uploadImage(result, uri -> {
-                    if (uri != null) {
-                        ImageService.uploadImage(result, ref -> {
-                            UserService.getUser(user -> {
-                                ref.getDownloadUrl().addOnSuccessListener(uri1 -> {
-                                    user.setAvatar(uri1.toString());
-                                    UserService.updateUser(user);
-                                });
+
+                try {
+                    ImageService.uploadImage(this, result, ref -> {
+                        UserService.getUser(user -> {
+                            ref.getDownloadUrl().addOnSuccessListener(uri1 -> {
+                                user.setAvatar(uri1.toString());
+                                UserService.updateUser(user);
                             });
                         });
-                    }
-                });
+                    });
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
-        }, null);
+        });
+
 
         initTransition();
         initVariables();

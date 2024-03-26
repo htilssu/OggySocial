@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Comment;
 import com.oggysocial.oggysocial.models.User;
+import com.oggysocial.oggysocial.services.CommentService;
 
 import java.util.List;
 
@@ -54,29 +55,36 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentHolder holder, int position) {
         Comment comment = comments.get(position);
-        holder.tvCommentAuthor.setText(comment.getAuthor().getFullName());
-        holder.tvCommentContent.setText(comment.getContent());
-        String avatar = comment.getAuthor().getAvatar();
-        if (avatar != null) {
-            Glide.with(holder.itemView).load(avatar).into(holder.civAvatar);
+        if (comment.getAuthor() != null) {
+            holder.tvCommentAuthor.setText(comment.getAuthor().getFullName());
         } else {
-            holder.civAvatar.setImageResource(R.drawable.default_avatar);
+            holder.tvCommentAuthor.setText("...");
+        }
+        holder.tvCommentContent.setText(comment.getContent());
+
+        if (comment.getAuthor() != null) {
+            String avatar = comment.getAuthor().getAvatar();
+            if (avatar != null) {
+                Glide.with(holder.itemView).load(avatar).into(holder.civAvatar);
+            } else {
+                holder.civAvatar.setImageResource(R.drawable.default_avatar);
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        if (comments != null)
-            return comments.size();
+        if (comments != null) return comments.size();
         return 0;
     }
 
     public void deleteComment(int position) {
+        Comment comment = comments.get(position);
         comments.remove(position);
         notifyItemRemoved(position);
         if (onDeletedCommentListener != null) {
             Thread thread = new Thread(() -> {
-                onDeletedCommentListener.onDeletedComment(position);
+                CommentService.deleteComment(comment.getId());
             });
 
             thread.start();

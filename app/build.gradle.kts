@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.android")
+    id("com.google.firebase.crashlytics")
 }
 
 
@@ -23,7 +24,7 @@ android {
         minSdk = 28
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -77,7 +78,8 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
-    implementation("androidx.activity:activity:1.8.2")
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("com.google.firebase:firebase-crashlytics:18.6.3")
     testImplementation("org.mockito:mockito-core:5.11.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")

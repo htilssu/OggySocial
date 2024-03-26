@@ -85,8 +85,6 @@ public class FriendService {
             if (task.isSuccessful()) {
                 boolean exists = !task.getResult().isEmpty();
                 listener.onRequestExistChecked(exists);
-            } else {
-                // Handle any errors
             }
         });
     }

@@ -67,7 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
         holder.tvPostContent.setText(posts.get(position).getContent());
         holder.tvLikeCount.setText(String.valueOf(posts.get(position).getLikes().size()));
-        String commentCount = posts.get(position).getComments().size() + " " + holder.itemView.getResources().getString(R.string.comment);
+        String commentCount = posts.get(position).getCommentCount() + " " + holder.itemView.getResources().getString(R.string.comment);
         holder.tvCommentCount.setText(commentCount);
 
         if (currentPost.getUser() != null) {
