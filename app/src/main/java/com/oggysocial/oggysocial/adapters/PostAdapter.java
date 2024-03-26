@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.CommentBottomSheetModel;
@@ -93,7 +94,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         TextView tvAuthorName, tvPostContent, tvLikeCount, tvCommentCount;
         CircleImageView ivAuthorAvatar;
         ImageView ivPostImage, btnPostMenu;
-        Button btnLike, btnComment;
+        MaterialButton btnLike, btnComment;
         boolean isLiked = false;
 
         public PostHolder(@NonNull View itemView) {
@@ -164,6 +165,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 assert drawable != null;
                 drawable.setBounds(0, 0, iconSize, iconSize);
                 btnLike.setCompoundDrawables(drawable, null, null, null);
+                btnLike.setIcon(drawable);
+
             } else {
                 btnLike.setTextColor(itemView.getResources().getColor(R.color.colorPrimary, null));
                 Drawable drawable = ResourcesCompat.getDrawable(itemView.getContext().getResources(), R.drawable.heart_solid, null);
@@ -171,6 +174,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 drawable.setColorFilter(itemView.getResources().getColor(R.color.red_heart, null), PorterDuff.Mode.SRC_IN);
                 drawable.setBounds(0, 0, iconSize, iconSize);
                 btnLike.setCompoundDrawables(drawable, null, null, null);
+                btnLike.setIcon(drawable);
             }
         }
 

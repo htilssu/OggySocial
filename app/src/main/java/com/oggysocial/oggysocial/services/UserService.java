@@ -126,8 +126,18 @@ public class UserService {
      */
     public static void getFriends(String userId, OnListUserLoadedListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document(userId).collection("friends").get().addOnSuccessListener(queryDocumentSnapshots -> {
-            listener.onListUserLoaded(queryDocumentSnapshots.toObjects(User.class));
+        db.collection("users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            User user = documentSnapshot.toObject(User.class);
+            assert user != null;
+            List<String> listFriendId = user.getFriends();
+            if (listFriendId.isEmpty()) {
+                listener.onListUserLoaded(null);
+            } else {
+                db.collection("users").whereIn("id", listFriendId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<User> friends = queryDocumentSnapshots.toObjects(User.class);
+                    listener.onListUserLoaded(friends);
+                });
+            }
         });
     }
 
