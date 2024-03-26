@@ -10,8 +10,6 @@ import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.oggysocial.oggysocial.models.Post;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +40,7 @@ public class PostService {
                 user.addPost(newPost.getId());
                 newPost.setUser(user);
                 listener.onPostSaved(newPost);
-                UserService.saveUser(user);
+                UserService.updateUser(user);
                 updatePost(newPost);
             });
         });
@@ -72,7 +70,7 @@ public class PostService {
         getPost(postId, post -> {
             db.collection("posts").document(postId).delete().addOnSuccessListener(command -> UserService.getUser(user -> {
                 user.removePost(postId);
-                UserService.saveUser(user);
+                UserService.updateUser(user);
             }));
             Map<String, String> images = post.getImages();
             if (images != null) {
@@ -85,7 +83,7 @@ public class PostService {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("posts").document(post.getId()).delete().addOnSuccessListener(command -> UserService.getUser(user -> {
             user.removePost(post.getId());
-            UserService.saveUser(user);
+            UserService.updateUser(user);
         }));
         Map<String, String> images = post.getImages();
         if (images != null) {

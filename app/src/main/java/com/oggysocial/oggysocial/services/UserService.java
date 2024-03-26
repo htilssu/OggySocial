@@ -59,7 +59,7 @@ public class UserService {
      */
     public static void getUser(OnUserLoadedListener listener) {
 
-        if (user != null) {
+        if (user != null && Objects.equals(user.getId(), FirebaseAuth.getInstance().getUid())) {
             listener.onUserLoaded(user);
         } else {
             getUserById(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()), user -> {
@@ -99,7 +99,7 @@ public class UserService {
      *
      * @param user {@link User} cần lưu
      */
-    public static void saveUser(User user) {
+    public static void createUser(User user) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         user.setId(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
         db.collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).set(user);
@@ -109,7 +109,7 @@ public class UserService {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(user.getId()).set(user);
         new Thread(() -> {
-            PostService.getUserPosts(posts -> {
+            PostService.getUserPosts(user.getId(), posts -> {
                 posts.forEach(post -> {
                     post.setUser(user);
                     PostService.updatePost(post);
