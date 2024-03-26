@@ -68,12 +68,15 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public ProfileFragment(User user) {
+    public ProfileFragment(User user, boolean showAppBar) {
         this.user = user;
         isFriend = user.getFriends().contains(FirebaseAuth.getInstance().getUid());
         FriendService.checkRequestExists(FirebaseAuth.getInstance().getUid(), user.getId(), exists -> {
             isRequest = exists;
         });
+
+        this.showAppBar = showAppBar;
+
     }
 
     public void setShowAppBar(boolean showAppBar) {

@@ -103,7 +103,7 @@ public class HomeFragment extends Fragment {
         AddFriendAdapter.OnItemClickListener itemClickListener = position -> {
             // Xử lý sự kiện click user để xem profile
             User user = userList.get(position);
-            ProfileFragment profileFragment = new ProfileFragment(user);
+            ProfileFragment profileFragment = new ProfileFragment(user, true);
             getParentFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .addToBackStack(null)

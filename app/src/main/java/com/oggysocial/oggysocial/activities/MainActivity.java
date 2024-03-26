@@ -3,7 +3,7 @@ package com.oggysocial.oggysocial.activities;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,13 +18,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.main.HomeFragment;
 import com.oggysocial.oggysocial.fragments.main.NotifyFragment;
 import com.oggysocial.oggysocial.fragments.main.ProfileFragment;
 import com.oggysocial.oggysocial.fragments.main.SettingFragment;
+import com.oggysocial.oggysocial.services.DialogService;
 import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.UserService;
 
@@ -64,7 +65,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = new WeakReference<>(this);
 
+
         setContentView(R.layout.activity_main);
+        checkBlock();
+
         createNotificationChannel();
 
         pickImage = ImageService.getPickMedia(this, result -> {
@@ -160,6 +164,20 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
             }
         }
+    }
+
+    private void checkBlock() {
+        UserService.getUserRealTime(user -> {
+            if (user.getBlocked()) {
+                DialogService.showDialog(this, "Tài khoản của bạn đã bị khóa", "Vui lòng liên hệ với quản trị viên để biết thêm chi tiết", "Đóng", (dialog, which) -> {
+                    dialog.dismiss();
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(this, AuthActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
+            }
+        });
     }
 
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/small_padding"
+    android:layout_marginBottom="@dimen/smaller_padding"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/small_padding"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/small_padding">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civAvatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/default_avatar" />
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/small_padding"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:textSize="16sp"
+            tools:text="Username" />
+
+        <ImageView
+            android:id="@+id/ivBlockUser"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end|center_vertical"
+            android:contentDescription="@null"
+            android:src="@drawable/block_user" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.OggySocial" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="colorPrimaryVariant">@color/colorLightBlue</item>
+        <item name="colorPrimaryDark">@color/colorLightBlue</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textColorHint">@color/black</item>
@@ -9,15 +12,6 @@
     </style>
 
     <style name="Theme.OggySocial" parent="Base.Theme.OggySocial" />
-
-    <style name="Theme.OggySocial.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.OggySocial.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.OggySocial.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

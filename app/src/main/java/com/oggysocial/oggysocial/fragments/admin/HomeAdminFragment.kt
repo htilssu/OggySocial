@@ -94,11 +94,9 @@ class HomeAdminFragment : Fragment() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
         listenerRegistration?.remove()
-        listenerRegistration = null
-        tvTotalUsers = null
-        tvTotalPosts = null
+        super.onStop()
+
     }
 }

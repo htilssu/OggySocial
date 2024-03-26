@@ -89,27 +89,17 @@
     </string>
     <string name="monthly_post_analysis">Thống kê bài đăng theo tháng</string>
     <string name="must_enough_age">Bạn phải đủ 18 tuổi</string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
     <string name="user">Người dùng</string>
     <string name="number_post">Số bài post</string>
     <string name="total_users">Tổng số người dùng</string>
-    <string name="total_posts">Tống số bài đăng</string>
+    <string name="total_posts">Tổng số bài đăng</string>
     <string name="notification">Thông báo</string>
     <string name="accept">Chấp nhận</string>
     <string name="reject">Từ chối</string>
     <string name="sent_request_to_you">đã gửi cho bạn lời mời kết bạn</string>
     <string name="channel_name">oggy</string>
     <string name="channel_description">oggy</string>
+    <string name="menu_home">Home</string>
     <string name="change_pass">Đổi mật khẩu</string>
     <string name="edit_infomation">Chỉnh sửa thông tin</string>
     <string name="old_password">Mật khẩu cũ</string>
@@ -118,4 +108,5 @@
     <string name="change_pass_success">Đổi mật khẩu thành công</string>
     <string name="remove_friend">Hủy kết bạn</string>
     <string name="cancel_request">Hủy lời mời</string>
+    <string name="blocked_users">Đã chặn</string>
 </resources>

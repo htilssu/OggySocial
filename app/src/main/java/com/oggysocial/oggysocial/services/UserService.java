@@ -39,12 +39,12 @@ public class UserService {
         if (userList == null) {
             getAllUser(users -> {
                 List<User> result = new ArrayList<>(userList);
-                result.removeIf(user -> !user.getFullName().toLowerCase().contains(name.toLowerCase()));
+                result.removeIf(user -> !user.getFullName().toLowerCase().contains(name.toLowerCase()) || user.getId().equals(FirebaseAuth.getInstance().getUid()));
                 listener.onListUserLoaded(result);
             });
         } else {
             List<User> result = new ArrayList<>(userList);
-            result.removeIf(user -> !user.getFullName().toLowerCase().contains(name.toLowerCase()));
+            result.removeIf(user -> !user.getFullName().toLowerCase().contains(name.toLowerCase()) || user.getId().equals(FirebaseAuth.getInstance().getUid()));
             listener.onListUserLoaded(result);
         }
 
@@ -67,6 +67,15 @@ public class UserService {
             });
         }
 
+    }
+
+    public static void getUserRealTime(Consumer<User> user) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).addSnapshotListener((documentSnapshot, e) -> {
+            assert documentSnapshot != null;
+            User u = documentSnapshot.toObject(User.class);
+            user.accept(u);
+        });
     }
 
     /**
