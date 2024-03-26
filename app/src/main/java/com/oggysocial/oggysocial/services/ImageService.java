@@ -15,12 +15,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.UUID;
-
-import javax.annotation.Nullable;
 
 public class ImageService {
 
@@ -35,14 +35,46 @@ public class ImageService {
      * @param listener Hàm callback sẽ được gọi khi upload thành công, trả về StorageReference của file đã upload
      * @throws RuntimeException Nếu upload thất bại
      */
-    public static void uploadImage(Uri imageUri, OnUploadImageListener listener) throws RuntimeException {
+    public static void uploadImage(Context context, Uri imageUri, OnUploadImageListener listener) throws RuntimeException, IOException {
+        Bitmap bitmap = getBitmapFromUri(context, imageUri);
+        bitmap = resizeToSquare(bitmap, 500, 500);
         String userId = FirebaseAuth.getInstance().getUid();
         if (userId != null) {
             StorageReference imageRef = storage.getReference().child(imageRefPath.replace("%userId%", userId)).child(UUID.randomUUID().toString());
 
-            imageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> listener.onUploadImage(imageRef)
-            );
+            imageRef.putStream(bitmapToInputStream(bitmap)).addOnSuccessListener(taskSnapshot -> listener.onUploadImage(imageRef));
         }
+    }
+
+    public static InputStream bitmapToInputStream(Bitmap bitmap) {
+        byte[] byteArray = bitmapToByteArray(bitmap);
+        return new ByteArrayInputStream(byteArray);
+    }
+
+    /**
+     * @param context Context của activity hoặc fragment
+     * @param uri     Uri của file ảnh
+     * @return Bitmap của file ảnh
+     * @throws IOException Nếu không thể mở file ảnh
+     */
+    public static Bitmap getBitmapFromUri(Context context, Uri uri) throws IOException {
+        InputStream inputStream = context.getContentResolver().openInputStream(uri);
+        return BitmapFactory.decodeStream(inputStream);
+    }
+
+    /**
+     * @param source Ảnh cần resize
+     * @param width  Chiều rộng mới
+     * @param height Chiều cao mới
+     * @return Ảnh đã resize
+     */
+    public static Bitmap resizeToSquare(Bitmap source, int width, int height) {
+        int size = Math.min(source.getWidth(), source.getHeight());
+
+        int x = (source.getWidth() - size) / 2;
+        int y = (source.getHeight() - size) / 2;
+
+        return Bitmap.createBitmap(source, x, y, size, size);
     }
 
     /**
@@ -82,12 +114,9 @@ public class ImageService {
      * @throws ClassCastException Nếu context không phải là AppCompatActivity
      * @apiNote Phải gọi trước khi state của activity chuyển sang resumed
      */
-    public static ActivityResultLauncher<PickVisualMediaRequest> getPickMedia(Context context, OnImageSelectedListener callback, @Nullable OnSetSelectedCallbackListener onSetSelectedCallbackListener) throws ClassCastException {
+    public static ActivityResultLauncher<PickVisualMediaRequest> getPickMedia(Context context, OnImageSelectedListener callback) throws ClassCastException {
         AppCompatActivity activity = (AppCompatActivity) context;
 
-        if (onSetSelectedCallbackListener != null) {
-            onSetSelectedCallbackListener.onSetSelectedCallback(callback);
-        }
 
         return activity.registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), callback::onImageSelected);
     }
@@ -102,6 +131,12 @@ public class ImageService {
         } catch (IOException ignored) {
         }
         return bitmap;
+    }
+
+    public static byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
     }
 
     public interface OnDeletedImageListener {
