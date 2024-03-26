@@ -39,3 +39,4 @@ jobs:
         with:
           files: oggysocial.apk
           make_latest: true
+          tag_name: ${{inputs.version}}
