@@ -1,7 +1,5 @@
 name: Android CI
-permissions:
-  contents: write
-
+run-name: Android CI
 on:
   push:
     branches: [ "main" ]
