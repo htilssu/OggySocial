@@ -1,6 +1,8 @@
 # OGGYSocial
 
-![oggysocial](./image/image.png)
+<div style="text-align: center;">
+
+![oggysocial](./image/image.png)</div>
 
 <br>
 
