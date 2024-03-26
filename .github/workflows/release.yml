@@ -28,6 +28,8 @@ jobs:
         run: chmod +x gradlew
       - name: build release apk
         run: ./gradlew assembleRelease
+      - name: list file
+        run: ls -la ./app/release | grep apk
       - name: rename release apk
         run: mv ./app/release/app-release.apk ./app/release/oggysocial.apk
       - name: create release
