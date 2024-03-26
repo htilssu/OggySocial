@@ -96,11 +96,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/medium_padding"
-            android:drawableLeft="@drawable/heart_solid"
             android:drawablePadding="@dimen/medium_padding"
             android:drawableTint="@color/inactive"
             android:text="@string/like"
-            android:textColor="@color/inactive" />
+            android:textColor="@color/inactive"
+            app:icon="@drawable/heart_solid"
+            app:iconTint="@color/inactive" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -109,11 +110,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/medium_padding"
-            android:drawableLeft="@drawable/sending_new_mail_bold"
             android:drawablePadding="@dimen/medium_padding"
             android:drawableTint="@color/inactive"
             android:text="@string/comment"
-            android:textColor="@color/inactive" />
+            android:textColor="@color/inactive"
+            app:icon="@drawable/sending_new_mail_bold" />
 
 
     </LinearLayout>

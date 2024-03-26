@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -37,9 +38,13 @@ public class AdminActivity extends AppCompatActivity implements NavigationView.O
 
         toolbar = findViewById(R.id.adminToolbar);
         setSupportActionBar(toolbar);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.fragment_content_admin);
+        assert navHostFragment != null;
+        navController = navHostFragment.getNavController();
 
         navigationView = findViewById(R.id.navigationView);
-        navController = Navigation.findNavController(this, R.id.fragment_content_admin);
 
         NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.nav_admin);
 

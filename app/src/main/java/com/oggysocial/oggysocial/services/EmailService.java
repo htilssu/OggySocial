@@ -5,7 +5,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class EmailService {
 
     public static boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_.]+[+]?[a-zA-Z0-9]+@[a-z0-9]+[.][a-z]+$";
+        String emailRegex = "^[A-Za-z0-9+_.-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,}$";
+        
         return email.matches(emailRegex);
     }
 
