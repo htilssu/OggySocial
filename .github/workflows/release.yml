@@ -1,0 +1,40 @@
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        default: '1.0.0'
+        deprecationMessage: 'Please provide a version number'
+        description: 'The version number for the release'
+        type: string
+        required: true
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set Permissions
+        run: chmod -R 777 app
+      - name: download google-service
+        run: wget -P app ${{secret.GOOGLE_SERVICE}}
+      - name: set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: build release apk
+        run: ./gradlew assembleRelease
+      - name: list file
+        run: ls -la ./app/release | grep apk
+      - name: rename release apk
+        run: mv ./app/release/app-release.apk ./app/release/oggysocial.apk
+      - name: create release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "./app/release/oggysocial.apk"
+          name: "OggySocial"
+          tag: ${{inputs.version}}
