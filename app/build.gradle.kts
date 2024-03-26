@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.LintOptions
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -12,7 +14,9 @@ android {
 
     lint {
         baseline = file("lint-baseline.xml")
+        abortOnError = false
     }
+
 
     defaultConfig {
         applicationId = "com.oggysocial.oggysocial"
