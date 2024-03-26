@@ -5,7 +5,7 @@
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/windowBackground">
+    android:background="@color/white">
 
 
     <LinearLayout
@@ -31,6 +31,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,6 +67,18 @@
                     android:text="oggy"
                     android:textSize="20sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/small_padding"
+                    android:layout_marginBottom="@dimen/small_padding"
+                    tools:text="Day la bio" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -134,13 +147,15 @@
                         android:textSize="@dimen/medium_heading_text_size" />
 
                     <TextView
+                        android:id="@+id/tvBirthday"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/small_padding"
                         android:gravity="center_vertical"
                         android:paddingVertical="@dimen/smaller_padding"
-                        android:text="Đã học tại THPT An Lạc"
-                        app:drawableLeftCompat="@drawable/education" />
+                        app:drawableLeftCompat="@drawable/profile_bold"
+                        app:drawableTint="@color/inactive"
+                        tools:text="Sinh ngày 08/08/2004" />
 
                     <TextView
                         android:layout_width="300dp"
@@ -148,9 +163,10 @@
                         android:drawablePadding="@dimen/small_padding"
                         android:gravity="center_vertical"
                         android:paddingVertical="@dimen/smaller_padding"
-                        android:text="Đã học tại THCS Tân Kiên"
                         android:textAlignment="gravity"
-                        app:drawableLeftCompat="@drawable/education" />
+                        android:visibility="gone"
+                        app:drawableLeftCompat="@drawable/education"
+                        tools:text="Đã học tại THCS Tân Kiên" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -158,9 +174,10 @@
                         android:drawablePadding="@dimen/small_padding"
                         android:gravity="center_vertical"
                         android:paddingVertical="@dimen/smaller_padding"
-                        android:text="Sống tại Bình Chánh"
+                        android:visibility="gone"
+                        app:drawableLeftCompat="@drawable/home_full"
 
-                        app:drawableLeftCompat="@drawable/home_full" />
+                        tools:text="Sống tại Bình Chánh" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -168,12 +185,46 @@
                         android:drawablePadding="@dimen/small_padding"
                         android:gravity="center_vertical"
                         android:paddingVertical="@dimen/smaller_padding"
-                        android:text="Làm việc tại thành phố Hồ Chí Minh"
-                        app:drawableLeftCompat="@drawable/work" />
+                        android:visibility="gone"
+                        app:drawableLeftCompat="@drawable/work"
+                        tools:text="Làm việc tại thành phố Hồ Chí Minh" />
                 </LinearLayout>
 
-                <!--        TODO: add friend section-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/small_padding">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_weight="1"
+                        android:text="@string/friend"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvFriendCount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:textSize="16sp"
+                        tools:text="18 bạn bè" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/small_padding" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvPosts"

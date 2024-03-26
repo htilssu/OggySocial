@@ -3,6 +3,8 @@ package com.oggysocial.oggysocial.fragments.main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -26,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.activities.MainActivity;
 import com.oggysocial.oggysocial.activities.PopupActivity;
+import com.oggysocial.oggysocial.adapters.FriendAdapter;
 import com.oggysocial.oggysocial.adapters.PostAdapter;
 import com.oggysocial.oggysocial.models.Popup;
 import com.oggysocial.oggysocial.models.Post;
@@ -45,14 +49,16 @@ public class ProfileFragment extends Fragment {
 
     WeakReference<ProfileFragment> instance;
     PostAdapter postAdapter;
+    FriendAdapter friendAdapter;
     CircleImageView civAvatar;
     ImageView ivBack;
     List<Post> postList;
+    List<User> friendList;
     MaterialButton btnEditProfile, btnAddFriend, btnCreatePost;
-    RecyclerView postRecyclerView;
+    RecyclerView postRecyclerView, rvFriend;
     SwipeRefreshLayout swipeRefreshLayout;
     LinearLayout appBarLayout;
-    TextView tvUsername;
+    TextView tvUsername, tvBirthDay;
     ActivityResultLauncher<PickVisualMediaRequest> pickImage;
     View v;
     User user;
@@ -110,14 +116,28 @@ public class ProfileFragment extends Fragment {
     private void initViews() {
         postRecyclerView = v.findViewById(R.id.rvPosts);
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        rvFriend = v.findViewById(R.id.rvFriends);
+        rvFriend.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+
+        friendAdapter = new FriendAdapter(friendList, FriendAdapter.FriendLayoutType.GRID);
+        rvFriend.setAdapter(friendAdapter);
+
         swipeRefreshLayout = v.findViewById(R.id.swipeRefreshLayout);
+
+        tvBirthDay = v.findViewById(R.id.tvBirthday);
         tvUsername = v.findViewById(R.id.tvUsername);
+
         civAvatar = v.findViewById(R.id.civAvatar);
+
+
         appBarLayout = v.findViewById(R.id.action_bar);
         if (!showAppBar) {
             appBarLayout.setVisibility(View.GONE);
         }
+
         ivBack = v.findViewById(R.id.ivBack);
+
         btnEditProfile = v.findViewById(R.id.btnEditProfile);
         btnCreatePost = v.findViewById(R.id.btnCreatePost);
         btnAddFriend = v.findViewById(R.id.btnAddFriend);
@@ -142,6 +162,7 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     private void initData() {
         tvUsername.setText(user.getFullName());
+        tvBirthDay.setText("Sinh ngày " + user.getBirthday());
 
         if (user.getAvatar() != null) {
             Glide.with(this).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(civAvatar);
@@ -173,6 +194,19 @@ public class ProfileFragment extends Fragment {
                 btnAddFriend.setText(R.string.add_friend);
             }
         }
+
+        //Get friend list
+        UserService.getFriends(user.getId(), friends -> {
+            friendList = friends;
+            friendAdapter.setFriends(friendList);
+            if (friends == null) {
+                rvFriend.setVisibility(View.VISIBLE);
+
+            }
+            ((TextView) requireView().findViewById(R.id.tvFriendCount)).setText(String.valueOf(friends == null ? 0 : friends.size()));
+
+            new Handler(Looper.getMainLooper()).post(() -> friendAdapter.notifyDataSetChanged());
+        });
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -69,7 +69,7 @@ public class UpdatePostFragment extends Fragment {
         pickMedia = ImageService.getPickMedia(requireContext(), uri -> {
             try {
                 imageUri = uri;
-                ivPostImage.setImageURI(imageUri);
+                Glide.with(requireView()).load(uri).into(ivPostImage);
             } catch (Exception ignored) {
             }
         }, null);
