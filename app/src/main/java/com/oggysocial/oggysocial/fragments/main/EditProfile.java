@@ -100,7 +100,7 @@ public class EditProfile extends Fragment {
 //        //cities.document("SF").set(data1);
         user1.setBio(bio);
 //        user1.setBio(prof);
-        UserService.saveUser(user1);
+        UserService.updateUser(user1);
     }
 
     private void loadDataIntoViews() {

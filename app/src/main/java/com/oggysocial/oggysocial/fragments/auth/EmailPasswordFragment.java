@@ -117,7 +117,7 @@ public class EmailPasswordFragment extends Fragment {
         User user = new User(firstName, lastName, email, birthday);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(v -> {
-            UserService.saveUser(user);
+            UserService.createUser(user);
             UserService.getUser(user1 -> {
                 UserService.user = user1;
             });

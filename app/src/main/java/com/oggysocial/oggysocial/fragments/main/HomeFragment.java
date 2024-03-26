@@ -1,25 +1,17 @@
 package com.oggysocial.oggysocial.fragments.main;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +32,6 @@ import com.oggysocial.oggysocial.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -80,7 +71,7 @@ public class HomeFragment extends Fragment {
 
     private void initView() {
         postRecyclerView = v.findViewById(R.id.rvPosts);
-        postAdapter = new PostAdapter(null);
+        postAdapter = new PostAdapter(postList);
         tvCreatePost = v.findViewById(R.id.tvCreatePost);
         toolbar = v.findViewById(R.id.adminoToolbar);
         civAvatar = v.findViewById(R.id.civAvatar);
@@ -104,10 +95,7 @@ public class HomeFragment extends Fragment {
             // Xử lý sự kiện click user để xem profile
             User user = userList.get(position);
             ProfileFragment profileFragment = new ProfileFragment(user, true);
-            getParentFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .addToBackStack(null)
-                    .replace(R.id.fragmentContainerView, profileFragment).commit();
+            getParentFragmentManager().beginTransaction().setReorderingAllowed(true).addToBackStack(null).replace(R.id.fragmentContainerView, profileFragment).commit();
         };
         // Khởi tạo adapter và thiết lập listener
         if (addfrAdapter == null) {
@@ -142,45 +130,41 @@ public class HomeFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadData() {
-        if (postList == null) {
-            PostService.getNewFeeds(posts -> {
-                if (postAdapter != null) {
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        postAdapter.setPosts(posts);
-                        postList = posts;
-                        postAdapter.notifyDataSetChanged();
-                    });
-                }
-            });
-        } else {
-            postAdapter.setPosts(postList);
-        }
-        // Lấy tham chiếu đến Firestore
+        PostService.getNewFeeds(posts -> {
+            if (postAdapter != null) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    postAdapter.setPosts(posts);
+                    postList = posts;
+                    postAdapter.notifyDataSetChanged();
+                });
+            }
+        });
+        postAdapter.setPosts(postList);
+
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // Lấy tất cả các user từ Firestore
-        db.collection("users")
-                .addSnapshotListener((value, error) -> {
-                    assert value != null;
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        List<User> listUser = value.toObjects(User.class);
-                        List<User> usersToRemove = new ArrayList<>();
-                        for (User user : listUser) {
-                            UserService.getUser(user1 -> {
-                                if (user.getId().equals(user1.getId()) || user1.getFriends().contains(user.getId())) {
-                                    usersToRemove.add(user);
-                                }
-                            });
+        db.collection("users").addSnapshotListener((value, error) -> {
+            assert value != null;
+            new Handler(Looper.getMainLooper()).post(() -> {
+                List<User> listUser = value.toObjects(User.class);
+                List<User> usersToRemove = new ArrayList<>();
+                for (User user : listUser) {
+                    UserService.getUser(user1 -> {
+                        if (user.getId().equals(user1.getId()) || user1.getFriends().contains(user.getId())) {
+                            usersToRemove.add(user);
                         }
-                        listUser.removeAll(usersToRemove);
-                        userList = listUser;
-                        addfrAdapter.setUserList(listUser);
-                        addfrAdapter.notifyDataSetChanged();
                     });
-                });
-
-
+                }
+                listUser.removeAll(usersToRemove);
+                userList = listUser;
+                addfrAdapter.setUserList(listUser);
+                addfrAdapter.notifyDataSetChanged();
+            });
+        });
     }
+
 
     @Override
     public void onDestroy() {

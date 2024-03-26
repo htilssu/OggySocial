@@ -4,13 +4,10 @@ import static com.google.firebase.firestore.Filter.and;
 import static com.google.firebase.firestore.Filter.equalTo;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.FriendRequest;
 
 import java.util.Date;
@@ -34,19 +31,13 @@ public class FriendService {
     }
 
     public static void acceptRequest(FriendRequest request) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference friendReference = db.collection("friend_request");
-        friendReference.where(and(equalTo("receiverId", request.getReceiverId()), equalTo("senderId", request.getSenderId()))).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            queryDocumentSnapshots.getDocuments().get(0).getReference().delete();
-        });
+        rejectRequest(request);
 
         addFriend(request.getSenderId());
     }
 
 
     public static void addFriend(String friendId) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
 
         //add friend to my self
         UserService.getUser(user -> {
@@ -103,13 +94,13 @@ public class FriendService {
     public static void removeFriend(String friendId) {
         UserService.getUser(user -> {
             user.removeFriend(friendId);
-            UserService.saveUser(user);
+            UserService.updateUser(user);
         });
 
         //add friend to friend
         UserService.getUserById(friendId, user -> {
             user.removeFriend(FirebaseAuth.getInstance().getUid());
-            UserService.saveUser(user);
+            UserService.updateUser(user);
         });
 
     }
