@@ -34,5 +34,4 @@ jobs:
         with:
           artifacts: "app/release/oggysocial.apk"
           name: "OggySocial"
-
         run: echo "Release successfully!"
