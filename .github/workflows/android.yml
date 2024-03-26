@@ -1,6 +1,5 @@
 name: Android CI
-permissions: 
-    contents: write
+
 
 on:
   push:
