@@ -46,4 +46,4 @@ jobs:
             ## Changes
             - New version ${{inputs.version}}
           make_latest: true
-          tag_name: ${{inputs.version}}
+          tag_name: v${{inputs.version}}
