@@ -26,7 +26,6 @@ import com.oggysocial.oggysocial.models.Post;
 import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.PostService;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class UpdatePostFragment extends Fragment {
@@ -103,21 +102,19 @@ public class UpdatePostFragment extends Fragment {
         btnPostIt.setOnClickListener(v -> {
             post.setContent(etPostContent.getText().toString());
             if (imageUri != null) {
-                try {
-                    ImageService.uploadImage(requireContext(), imageUri, storageReference -> {
-                        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                            Map<String, String> imageList = post.getImages();
-                            imageList.forEach((s, s2) -> {
-                                ImageService.deleteImage(s2);
-                            });
-                            post.getImages().put(storageReference.getName(), String.valueOf(uri));
-                            PostService.updatePost(post);
-                            //                        onUpdatedPost.onUpdated();
+
+                ImageService.uploadOriginImage(imageUri, storageReference -> {
+                    storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                        Map<String, String> imageList = post.getImages();
+                        imageList.forEach((s, s2) -> {
+                            ImageService.deleteImage(s2);
                         });
+                        post.getImages().put(storageReference.getName(), String.valueOf(uri));
+                        PostService.updatePost(post);
+                        //                        onUpdatedPost.onUpdated();
                     });
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                });
+
             } else {
                 PostService.updatePost(post);
 //                onUpdatedPost.onUpdated();

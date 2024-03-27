@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 Glide.with(this).load(result).into(civAvatar);
 
                 try {
-                    ImageService.uploadImage(this, result, ref -> {
+                    ImageService.uploadImageSquare(this, result, ref -> {
                         UserService.getUser(user -> {
                             ref.getDownloadUrl().addOnSuccessListener(uri1 -> {
                                 user.setAvatar(uri1.toString());

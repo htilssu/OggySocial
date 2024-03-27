@@ -35,7 +35,7 @@ public class ImageService {
      * @param listener Hàm callback sẽ được gọi khi upload thành công, trả về StorageReference của file đã upload
      * @throws RuntimeException Nếu upload thất bại
      */
-    public static void uploadImage(Context context, Uri imageUri, OnUploadImageListener listener) throws RuntimeException, IOException {
+    public static void uploadImageSquare(Context context, Uri imageUri, OnUploadImageListener listener) throws RuntimeException, IOException {
         Bitmap bitmap = getBitmapFromUri(context, imageUri);
         bitmap = resizeToSquare(bitmap, 500, 500);
         String userId = FirebaseAuth.getInstance().getUid();
@@ -46,6 +46,24 @@ public class ImageService {
         }
     }
 
+    /**
+     * Upload ảnh gốc lên storage
+     *
+     * @param imageUri Uri của file cần upload lên storage
+     * @param listener Hàm callback sẽ được gọi khi upload thành công, trả về StorageReference của file đã upload
+     */
+    public static void uploadOriginImage(Uri imageUri, OnUploadImageListener listener) {
+        String userId = FirebaseAuth.getInstance().getUid();
+        if (userId != null) {
+            StorageReference imageRef = storage.getReference().child(imageRefPath.replace("%userId%", userId)).child(UUID.randomUUID().toString());
+            imageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> listener.onUploadImage(imageRef));
+        }
+    }
+
+    /**
+     * @param bitmap Ảnh cần chuyển thành InputStream
+     * @return InputStream của ảnh
+     */
     public static InputStream bitmapToInputStream(Bitmap bitmap) {
         byte[] byteArray = bitmapToByteArray(bitmap);
         return new ByteArrayInputStream(byteArray);
@@ -99,10 +117,21 @@ public class ImageService {
         return getImageRef(userId, imageId);
     }
 
+    /**
+     * Xóa ảnh từ storage
+     *
+     * @param imageRefPath Đường dẫn của ảnh cần xóa trên storage, nó phải là đường dẫn của ảnh trên storage
+     * @param listener     Hàm callback sẽ được gọi khi ảnh đã xóa
+     */
     public static void deleteImage(String imageRefPath, OnDeletedImageListener listener) {
         storage.getReference().child(imageRefPath.replace("%userId%", Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))).delete().addOnSuccessListener(unused -> listener.onDeletedImage());
     }
 
+    /**
+     * Xóa ảnh từ storage
+     *
+     * @param downloadUri Đường dẫn của ảnh cần xóa, nó là đường dẫn download ảnh
+     */
     public static void deleteImage(String downloadUri) {
         storage.getReferenceFromUrl(downloadUri).delete();
     }
@@ -121,6 +150,13 @@ public class ImageService {
         return activity.registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), callback::onImageSelected);
     }
 
+    /**
+     * Khởi tạo bitmap từ asset trong folder assets với đường dẫn được truyền vào
+     *
+     * @param context  Context của activity hoặc fragment
+     * @param filePath Đường dẫn của file trong folder assets
+     * @return Bitmap của file
+     */
     public static Bitmap getBitmapFromAsset(Context context, String filePath) {
         AssetManager assetManager = context.getAssets();
         InputStream istr;
@@ -138,6 +174,7 @@ public class ImageService {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
+
 
     public interface OnDeletedImageListener {
         void onDeletedImage();
