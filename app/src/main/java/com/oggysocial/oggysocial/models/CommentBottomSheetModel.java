@@ -86,7 +86,6 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
         ivSend = findViewById(R.id.ivSendComment);
         ConstraintLayout clComment = findViewById(R.id.bottomSheetComment);
         assert clComment != null;
-        clComment.setMinHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
     }
 
     @SuppressLint("NotifyDataSetChanged")

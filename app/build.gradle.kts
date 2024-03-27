@@ -102,6 +102,10 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.github.AnyChart:AnyChart-Android:1.1.5")
+    implementation("androidx.emoji2:emoji2:1.4.0")
+    implementation("androidx.emoji2:emoji2-views:1.4.0")
+    implementation("androidx.emoji2:emoji2-emojipicker:1.4.0")
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.6.4")
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-auth")
