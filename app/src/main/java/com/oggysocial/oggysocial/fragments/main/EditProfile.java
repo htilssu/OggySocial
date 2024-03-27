@@ -28,6 +28,7 @@ public class EditProfile extends Fragment {
     View v;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +103,7 @@ public class EditProfile extends Fragment {
 //        user1.setBio(prof);
         UserService.updateUser(user1);
     }
+
 
     private void loadDataIntoViews() {
         if (user1 != null) {

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_register_name"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="1dp" />
+        tools:layout_editor_absoluteY="0dp" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvLogin"
