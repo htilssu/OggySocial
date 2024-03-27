@@ -12,7 +12,6 @@ public class User implements Serializable {
     String id;
     String firstName;
     String lastName;
-    String fullName;
     String email;
     String role = "user";
     String bio;
@@ -21,6 +20,7 @@ public class User implements Serializable {
     Boolean isBlocked = false;
     List<String> posts = new ArrayList<>();
     List<String> friends = new ArrayList<>();
+
     public User(String firstName, String lastName, String email, String birthday) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -136,10 +136,6 @@ public class User implements Serializable {
 
     public String getFullName() {
         return lastName + " " + firstName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public void addFriend(String friendId) {
