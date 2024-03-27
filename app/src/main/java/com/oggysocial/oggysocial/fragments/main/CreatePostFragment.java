@@ -30,8 +30,6 @@ import com.oggysocial.oggysocial.services.ImageService;
 import com.oggysocial.oggysocial.services.PostService;
 import com.oggysocial.oggysocial.services.UserService;
 
-import java.io.IOException;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -107,19 +105,17 @@ public class CreatePostFragment extends Fragment {
             Post newPost = new Post();
             newPost.setContent(etPostContent.getEditableText().toString());
             if (imageUri != null) {
-                try {
-                    ImageService.uploadImage(requireContext(), imageUri, ref -> {
-                        String name = ref.getName();
-                        ref.getDownloadUrl().addOnSuccessListener(uri -> {
-                            newPost.getImages().put(name, uri.toString());
-                            PostService.savePost(newPost, p -> showSuccess());
-                            imageUri = null;
 
-                        });
+                ImageService.uploadOriginImage(imageUri, ref -> {
+                    String name = ref.getName();
+                    ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                        newPost.getImages().put(name, uri.toString());
+                        PostService.savePost(newPost, p -> showSuccess());
+                        imageUri = null;
+
                     });
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                });
+
             } else {
                 PostService.savePost(newPost, post -> showSuccess());
             }
