@@ -1,8 +1,11 @@
 package com.oggysocial.oggysocial.models;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -37,20 +40,16 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
         super(context);
         this.post = post;
         commentAdapter = new CommentAdapter(this.post.getComments());
-        commentAdapter.setOnDeletedCommentListener(i -> {
-            this.post.setCommentCount(this.post.getCommentCount() - 1);
-            PostService.updatePost(this.post);
-        });
 
         BottomSheetBehavior<FrameLayout> behavior = getBehavior();
         setContentView(R.layout.comment_bottom_sheet);
 
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
         behavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
-        behavior.setHalfExpandedRatio(0.5f);
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
 
         initView();
-
         loadData();
         initListener();
     }
@@ -86,6 +85,9 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
         ivSend = findViewById(R.id.ivSendComment);
         ConstraintLayout clComment = findViewById(R.id.bottomSheetComment);
         assert clComment != null;
+        View parent = (View) clComment.getParent();
+        parent.getLayoutParams().height = MATCH_PARENT;
+//        clComment.setMinHeight(Resources.getSystem().getDisplayMetrics().heightPixels / 2);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -99,13 +101,16 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
                     PostService.updatePost(post);
                     commentAdapter.setComments(comments);
                     commentAdapter.notifyDataSetChanged();
-                    for (int i = 0; i < comments.size(); i++) {
-                        int finalI = i;
-                        UserService.getUserById(comments.get(i).getAuthorId(), user -> {
-                            comments.get(finalI).setAuthor(user);
-                            commentAdapter.notifyItemChanged(finalI);
-                        });
+                    try {
+                        for (int i = 0; i < comments.size(); i++) {
+                            int finalI = i;
+                            UserService.getUserById(comments.get(i).getAuthorId(), user -> {
+                                comments.get(finalI).setAuthor(user);
+                                commentAdapter.notifyItemChanged(finalI);
+                            });
 
+                        }
+                    } catch (Exception ignored) {
                     }
                 });
                 commentAdapter.notifyDataSetChanged();
