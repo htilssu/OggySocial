@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.models.Comment;
+import com.oggysocial.oggysocial.services.CommentService;
 
 import java.util.Objects;
 
@@ -66,8 +67,7 @@ public class CommentTouchHelper extends ItemTouchHelper.SimpleCallback {
             return;
         }
         if (direction == ItemTouchHelper.LEFT && Objects.equals(comment.getAuthor().getId(), FirebaseAuth.getInstance().getUid())) {
-            int position = viewHolder.getAbsoluteAdapterPosition();
-            adapter.deleteComment(position);
+            CommentService.deleteComment(comment.getId());
         }
     }
 }

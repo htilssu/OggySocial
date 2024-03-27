@@ -21,16 +21,15 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/small_padding"
         app:layout_constraintBottom_toTopOf="@+id/llCommentInput"
+        app:layout_constraintHeight_default="spread"
         app:layout_constraintTop_toBottomOf="@+id/bottomSheetDragHandle"
-        app:layout_wrapBehaviorInParent="horizontal_only"
-        tools:layout_editor_absoluteX="8dp">
+        app:layout_wrapBehaviorInParent="horizontal_only">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvComment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
