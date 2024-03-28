@@ -149,22 +149,17 @@ public class HomeFragment extends Fragment {
             assert value != null;
             new Handler(Looper.getMainLooper()).post(() -> {
                 List<User> listUser = value.toObjects(User.class);
-                List<User> usersToRemove = new ArrayList<>();
 
                 UserService.getUser(user -> {
                     List<String> friendList = new ArrayList<>(UserService.user.getFriends());
                     friendList.add(UserService.user.getId());
 
-                    for (User user1 : listUser) {
-                        if (user.getId().equals(user1.getId()) || friendList.contains(user1.getId())) {
-                            usersToRemove.add(user);
-                        }
-                    }
+                    listUser.removeIf(user1 -> user.equals(user1) || friendList.contains(user1.getId()));
+                    userList = listUser;
+                    addfrAdapter.setUserList(listUser);
+                    addfrAdapter.notifyDataSetChanged();
                 });
-                listUser.removeAll(usersToRemove);
-                userList = listUser;
-                addfrAdapter.setUserList(listUser);
-                addfrAdapter.notifyDataSetChanged();
+
             });
         });
     }

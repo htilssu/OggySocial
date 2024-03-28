@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.oggysocial.oggysocial.models.FriendRequest;
+import com.oggysocial.oggysocial.models.User;
 
 import java.util.Date;
 import java.util.List;
@@ -101,6 +102,27 @@ public class FriendService {
             UserService.updateUser(user);
         });
 
+    }
+
+    public static void getFriend(User user, OnFriendLoadedListener listener) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").whereNotIn("friends", user.getFriends())
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        return;
+                    }
+
+                    assert value != null;
+                    List<User> users = value.toObjects(User.class);
+                    users.remove(user);
+                    listener.onFriendLoaded(users);
+                });
+
+    }
+
+    public interface OnFriendLoadedListener {
+        void onFriendLoaded(List<User> users);
     }
 
     public interface OnRequestExistListener {

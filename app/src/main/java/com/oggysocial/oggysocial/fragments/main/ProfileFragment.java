@@ -68,7 +68,7 @@ public class ProfileFragment extends Fragment {
     boolean isRequest = false;
 
     public ProfileFragment() {
-
+        showAppBar = false;
     }
 
     public ProfileFragment(User user, boolean showAppBar) {
