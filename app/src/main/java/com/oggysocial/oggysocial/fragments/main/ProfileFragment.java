@@ -165,9 +165,11 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void initData() {
-        tvUsername.setText(user.getFullName());
-        tvBirthDay.setText("Sinh ngày " + user.getBirthday());
-        tvBio.setText(user.getBio() == null ? "" : user.getBio());
+        if (user != null) {
+            tvUsername.setText(user.getFullName());
+            tvBirthDay.setText("Sinh ngày " + user.getBirthday());
+            tvBio.setText(user.getBio() == null ? "" : user.getBio());
+        }
 
 
         if (user.getAvatar() != null) {
@@ -244,7 +246,9 @@ public class ProfileFragment extends Fragment {
         civAvatar.setOnClickListener(v -> {
             MainActivity main = (MainActivity) getActivity();
             assert main != null;
-            main.showPickAvatarImage();
+            if (user.equals(UserService.user)) {
+                main.showPickAvatarImage();
+            }
         });
 
         btnCreatePost.setOnClickListener(v -> {

@@ -38,12 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String CHANNEL_ID = "OGGY_SOCIAL";
     static WeakReference<MainActivity> instance;
+    public ActivityResultLauncher<PickVisualMediaRequest> pickImage;
     FrameLayout appBarLayout;
     BottomNavigationView bottomNavigationView;
     Fragment homeFragment, profileFragment, settingFragment, notifyFragment;
-
-
-    ActivityResultLauncher<PickVisualMediaRequest> pickImage;
 
     public static WeakReference<MainActivity> getInstance() {
         return instance;

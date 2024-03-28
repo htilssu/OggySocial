@@ -1,8 +1,12 @@
 package com.oggysocial.oggysocial.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,6 +53,10 @@ public class AuthActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         initField();
+        if (!internetConnection()) {
+            Toast.makeText(this, "Không có kết nối internet", Toast.LENGTH_SHORT).show();
+            return;
+        }
         checkLogin();
         initListeners();
     }
@@ -134,6 +142,12 @@ public class AuthActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         instance = null;
+    }
+
+    private boolean internetConnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 

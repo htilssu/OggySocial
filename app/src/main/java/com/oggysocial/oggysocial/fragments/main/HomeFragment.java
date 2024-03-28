@@ -146,21 +146,22 @@ public class HomeFragment extends Fragment {
 
         // Lấy tất cả các user từ Firestore
         db.collection("users").addSnapshotListener((value, error) -> {
-            assert value != null;
-            new Handler(Looper.getMainLooper()).post(() -> {
-                List<User> listUser = value.toObjects(User.class);
+            if (value != null) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    List<User> listUser = value.toObjects(User.class);
 
-                UserService.getUser(user -> {
-                    List<String> friendList = new ArrayList<>(UserService.user.getFriends());
-                    friendList.add(UserService.user.getId());
+                    UserService.getUser(user -> {
+                        List<String> friendList = new ArrayList<>(UserService.user.getFriends());
+                        friendList.add(UserService.user.getId());
 
-                    listUser.removeIf(user1 -> user.equals(user1) || friendList.contains(user1.getId()));
-                    userList = listUser;
-                    addfrAdapter.setUserList(listUser);
-                    addfrAdapter.notifyDataSetChanged();
+                        listUser.removeIf(user1 -> user.equals(user1) || friendList.contains(user1.getId()));
+                        userList = listUser;
+                        addfrAdapter.setUserList(listUser);
+                        addfrAdapter.notifyDataSetChanged();
+                    });
+
                 });
-
-            });
+            }
         });
     }
 

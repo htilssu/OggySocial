@@ -121,6 +121,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void login(String email, String password) {
+        email = email.trim();
+        password = password.trim();
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnSuccessListener(v -> {
             UserService.getUser(user -> {
                 UserService.user = user;

@@ -73,9 +73,11 @@ public class UserService {
     public static void getUserRealTime(Consumer<User> user) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).addSnapshotListener((documentSnapshot, e) -> {
-            assert documentSnapshot != null;
-            User u = documentSnapshot.toObject(User.class);
-            user.accept(u);
+
+            if (documentSnapshot != null) {
+                User u = documentSnapshot.toObject(User.class);
+                user.accept(u);
+            }
         });
     }
 

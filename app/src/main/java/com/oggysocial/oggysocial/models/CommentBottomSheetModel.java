@@ -98,7 +98,6 @@ public class CommentBottomSheetModel extends BottomSheetDialog {
             if (commentAdapter != null) {
                 CommentService.getPostComment(post, comments -> {
                     post.setComments(comments);
-                    PostService.updatePost(post);
                     commentAdapter.setComments(comments);
                     commentAdapter.notifyDataSetChanged();
                     try {
