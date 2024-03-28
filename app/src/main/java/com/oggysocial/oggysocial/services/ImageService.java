@@ -28,7 +28,7 @@ public class ImageService {
      * Đường dẫn lưu trữ ảnh trên storage
      */
     static String imageRefPath = "/users/%userId%/images/";
-    static FirebaseStorage storage = FirebaseDB.getStorage();
+    static FirebaseStorage storage = FirebaseStorage.getInstance();
 
     /**
      * @param imageUri Uri của file cần upload lên storage
