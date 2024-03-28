@@ -1,6 +1,7 @@
 package com.oggysocial.oggysocial.utils
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.oggysocial.oggysocial.models.User
 
 class UserUtil {
     companion object {
@@ -15,6 +16,20 @@ class UserUtil {
             }
 
         }
+
+        fun getFakeUsers(): List<User> {
+            val users = mutableListOf<User>()
+            for (i in 1..10) {
+                val user = User("FirstName$i", "LastName$i", "user$i@example.com", "01/01/2000")
+                user.id = "id$i"
+                user.role = "user"
+                user.bio = "This is a bio for user$i"
+                user.blocked = false
+                users.add(user)
+            }
+            return users
+        }
     }
+
 
 }

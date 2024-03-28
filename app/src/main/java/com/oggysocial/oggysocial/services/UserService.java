@@ -128,15 +128,16 @@ public class UserService {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
             User user = documentSnapshot.toObject(User.class);
-            assert user != null;
-            List<String> listFriendId = user.getFriends();
-            if (listFriendId.isEmpty()) {
-                listener.onListUserLoaded(null);
-            } else {
-                db.collection("users").whereIn("id", listFriendId).get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<User> friends = queryDocumentSnapshots.toObjects(User.class);
-                    listener.onListUserLoaded(friends);
-                });
+            if (user != null) {
+                List<String> listFriendId = user.getFriends();
+                if (listFriendId.isEmpty()) {
+                    listener.onListUserLoaded(null);
+                } else {
+                    db.collection("users").whereIn("id", listFriendId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        List<User> friends = queryDocumentSnapshots.toObjects(User.class);
+                        listener.onListUserLoaded(friends);
+                    });
+                }
             }
         });
     }

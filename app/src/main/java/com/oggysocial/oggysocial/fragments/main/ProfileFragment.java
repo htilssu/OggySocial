@@ -58,7 +58,7 @@ public class ProfileFragment extends Fragment {
     RecyclerView postRecyclerView, rvFriend;
     SwipeRefreshLayout swipeRefreshLayout;
     LinearLayout appBarLayout;
-    TextView tvUsername, tvBirthDay;
+    TextView tvUsername, tvBirthDay, tvBio;
     ActivityResultLauncher<PickVisualMediaRequest> pickImage;
     View v;
     User user;
@@ -130,6 +130,7 @@ public class ProfileFragment extends Fragment {
 
         tvBirthDay = v.findViewById(R.id.tvBirthday);
         tvUsername = v.findViewById(R.id.tvUsername);
+        tvBio = v.findViewById(R.id.tvBio);
 
         civAvatar = v.findViewById(R.id.civAvatar);
 
@@ -166,6 +167,8 @@ public class ProfileFragment extends Fragment {
     private void initData() {
         tvUsername.setText(user.getFullName());
         tvBirthDay.setText("Sinh ngày " + user.getBirthday());
+        tvBio.setText(user.getBio() == null ? "" : user.getBio());
+
 
         if (user.getAvatar() != null) {
             Glide.with(this).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(civAvatar);

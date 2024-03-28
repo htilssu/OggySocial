@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.oggysocial.oggysocial.R;
 import com.oggysocial.oggysocial.fragments.main.ProfileFragment;
 import com.oggysocial.oggysocial.models.User;
+import com.oggysocial.oggysocial.utils.UserUtil;
 
 import java.util.List;
 
