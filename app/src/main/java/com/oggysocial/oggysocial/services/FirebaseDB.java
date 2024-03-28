@@ -5,7 +5,7 @@ import com.google.firebase.storage.FirebaseStorage;
 
 public class FirebaseDB {
     static FirebaseDatabase database = FirebaseDatabase.getInstance("https://mobilesocialapp-1668a-default-rtdb.asia-southeast1.firebasedatabase.app/");
-    static FirebaseStorage storage = FirebaseStorage.getInstance("gs://mobilesocialapp-1668a.appspot.com");
+    static FirebaseStorage storage = FirebaseStorage.getInstance("gs://aaaa-7d974.appspot.com");
 
     public static FirebaseDatabase getDatabase() {
         return database;
