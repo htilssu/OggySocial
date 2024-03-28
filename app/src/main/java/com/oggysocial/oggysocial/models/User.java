@@ -1,10 +1,12 @@
 package com.oggysocial.oggysocial.models;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class User implements Serializable {
@@ -152,6 +154,8 @@ public class User implements Serializable {
         return id;
     }
 
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

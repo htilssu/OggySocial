@@ -59,7 +59,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
     @Override
     public int getItemCount() {
         if (friends == null) return 0;
-        return friends.size();
+        return Math.min(friends.size(), 6);
     }
 
     public enum FriendLayoutType {
